@@ -1,0 +1,439 @@
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================================
+// ENUMS
+// ============================================================
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+  ACCOUNTANT
+  STAFF
+}
+
+enum ContentType {
+  PAGE
+  SECTION
+}
+
+enum ContentStatus {
+  DRAFT
+  PUBLISHED
+}
+
+enum FinanceTransactionType {
+  INCOME
+  EXPENSE
+}
+
+enum FinanceTransactionStatus {
+  DRAFT
+  SUBMITTED
+  APPROVED
+  REJECTED
+  PAID
+  CANCELLED
+}
+
+enum FinancePaymentMethod {
+  CASH
+  BANK_TRANSFER
+  ESEWA
+  KHALTI
+  CONNECT_IPS
+  CHEQUE
+  OTHER
+}
+
+enum FinancePartyType {
+  DONOR
+  FUNDER
+  VENDOR
+  BENEFICIARY
+  OTHER
+}
+
+enum FinanceAuditAction {
+  CREATED
+  UPDATED
+  SUBMITTED
+  APPROVED
+  REJECTED
+  MARKED_PAID
+  CANCELLED
+}
+
+// ============================================================
+// USER AND ACCESS MANAGEMENT
+// ============================================================
+
+model User {
+  id                String  @id @default(cuid())
+  name              String
+  email             String  @unique
+  passwordHash      String
+  role              Role    @default(STAFF)
+  customPermissions Json?
+  isActive          Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  uploadedMedia       Media[]
+  createdContentItems ContentItem[] @relation("ContentCreatedBy")
+  updatedContentItems ContentItem[] @relation("ContentUpdatedBy")
+
+  financeTransactionsCreated  FinanceTransaction[] @relation("FinanceTransactionCreatedBy")
+  financeTransactionsApproved FinanceTransaction[] @relation("FinanceTransactionApprovedBy")
+  financeTransactionsPaid     FinanceTransaction[] @relation("FinanceTransactionPaidBy")
+  financeAuditLogs            FinanceAuditLog[] @relation("FinanceAuditActor")
+}
+
+// ============================================================
+// MEDIA LIBRARY
+// ============================================================
+
+model MediaFolder {
+  id   String @id @default(cuid())
+  name String
+  slug String @unique
+
+  parentId String?
+  parent   MediaFolder?  @relation("FolderTree", fields: [parentId], references: [id], onDelete: Cascade)
+  children MediaFolder[] @relation("FolderTree")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  media Media[]
+
+  @@index([parentId])
+}
+
+model Media {
+  id           String  @id @default(cuid())
+  filename     String
+  originalName String
+  mimeType     String
+  size         Int
+  url          String
+  alt          String?
+
+  folderId String?
+  folder   MediaFolder? @relation(fields: [folderId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdById String?
+  createdBy   User?   @relation(fields: [createdById], references: [id], onDelete: SetNull)
+
+  teamMembers TeamMember[]
+
+  // Gallery relations
+  galleryPhotos      GalleryPhoto[]
+  galleryCoverAlbums GalleryAlbum[] @relation("GalleryAlbumCover")
+
+  @@index([folderId])
+  @@index([mimeType])
+  @@index([createdAt])
+}
+
+// ============================================================
+// NGO TEAM MANAGEMENT
+// ============================================================
+
+model TeamMember {
+  id          String  @id @default(cuid())
+  name        String
+  slug        String  @unique
+  designation String
+  department  String?
+  bio         String?
+  email       String?
+  phone       String?
+
+  imageId String?
+  image   Media?  @relation(fields: [imageId], references: [id], onDelete: SetNull)
+
+  facebook  String?
+  instagram String?
+  linkedin  String?
+  twitter   String?
+  website   String?
+
+  isFeatured Boolean @default(false)
+  isActive   Boolean @default(true)
+  sortOrder  Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive])
+  @@index([sortOrder])
+  @@index([department])
+}
+
+// ============================================================
+// WEBSITE CONTENT MANAGEMENT
+// ============================================================
+
+model ContentItem {
+  id    String  @id @default(cuid())
+  title String
+  key   String  @unique
+  slug  String? @unique
+
+  type   ContentType   @default(PAGE)
+  status ContentStatus @default(DRAFT)
+
+  excerpt  String? @db.Text
+  content  String? @db.Text
+  imageUrl String?
+
+  seoTitle       String?
+  seoDescription String? @db.Text
+  seoKeywords    String?
+
+  isHomepage Boolean @default(false)
+  isFeatured Boolean @default(false)
+  sortOrder  Int     @default(0)
+
+  createdById String?
+  createdBy   User?   @relation("ContentCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  updatedById String?
+  updatedBy   User?   @relation("ContentUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type])
+  @@index([status])
+  @@index([sortOrder])
+  @@index([isHomepage])
+  @@index([isFeatured])
+  @@index([createdAt])
+}
+
+// ============================================================
+// GALLERY ALBUM MANAGEMENT
+// ============================================================
+
+model GalleryAlbum {
+  id          String        @id @default(cuid())
+  title       String
+  slug        String        @unique
+  description String?       @db.Text
+  category    String
+  year        String
+  status      ContentStatus @default(DRAFT)
+  sortOrder   Int           @default(0)
+  isFeatured  Boolean       @default(false)
+
+  coverMediaId String?
+  coverMedia   Media? @relation("GalleryAlbumCover", fields: [coverMediaId], references: [id], onDelete: SetNull)
+
+  photos GalleryPhoto[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([category])
+  @@index([year])
+  @@index([sortOrder])
+  @@index([isFeatured])
+}
+
+// ============================================================
+// GALLERY PHOTOS
+// ============================================================
+
+model GalleryPhoto {
+  id        String @id @default(cuid())
+  title     String
+  albumId   String
+  mediaId   String
+  sortOrder Int    @default(0)
+
+  album GalleryAlbum @relation(fields: [albumId], references: [id], onDelete: Cascade)
+  media Media        @relation(fields: [mediaId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([albumId, mediaId])
+  @@index([albumId, sortOrder])
+  @@index([mediaId])
+}
+
+// ============================================================
+// CONTACT MESSAGES
+// ============================================================
+
+model Message {
+  id String @id @default(cuid())
+
+  name        String
+  email       String
+  phone       String?
+  enquiryType String
+  subject     String
+  message     String  @db.Text
+
+  isRead      Boolean @default(false)
+  isImportant Boolean @default(false)
+  isArchived  Boolean @default(false)
+
+  readAt    DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  @@index([isRead, createdAt])
+  @@index([isImportant])
+  @@index([isArchived, createdAt])
+  @@index([email])
+}
+
+// ============================================================
+// GENERAL APPLICATION SETTINGS
+// ============================================================
+
+model SystemSetting {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  value       Json
+  description String?
+  updatedById String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([updatedAt])
+}
+
+// ============================================================
+// FINANCE CATEGORIES
+// ============================================================
+
+model FinanceCategory {
+  id          String                 @id @default(cuid())
+  name        String
+  type        FinanceTransactionType
+  description String?
+  isActive    Boolean                @default(true)
+  sortOrder   Int                    @default(0)
+
+  transactions FinanceTransaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([name, type])
+  @@index([type, isActive])
+  @@index([sortOrder])
+}
+
+// ============================================================
+// FINANCE PARTIES
+// ============================================================
+
+model FinanceParty {
+  id        String           @id @default(cuid())
+  name      String
+  type      FinancePartyType
+  email     String?
+  phone     String?
+  address   String?
+  panNumber String?
+  notes     String?          @db.Text
+  isActive  Boolean          @default(true)
+
+  transactions FinanceTransaction[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+  @@index([type, isActive])
+}
+
+// ============================================================
+// FINANCE TRANSACTIONS
+// ============================================================
+
+model FinanceTransaction {
+  id              String                   @id @default(cuid())
+  referenceNumber String                   @unique
+  type            FinanceTransactionType
+  status          FinanceTransactionStatus @default(DRAFT)
+
+  title           String
+  description     String?              @db.Text
+  amount          Decimal              @db.Decimal(14, 2)
+  currency        String               @default("NPR")
+  transactionDate DateTime
+  paymentMethod   FinancePaymentMethod @default(CASH)
+  paymentReference String?
+  attachmentUrl    String?
+
+  categoryId String
+  category   FinanceCategory @relation(fields: [categoryId], references: [id], onDelete: Restrict)
+
+  partyId String?
+  party   FinanceParty? @relation(fields: [partyId], references: [id], onDelete: SetNull)
+
+  createdById String
+  createdBy   User @relation("FinanceTransactionCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+
+  approvedById String?
+  approvedBy   User?     @relation("FinanceTransactionApprovedBy", fields: [approvedById], references: [id], onDelete: SetNull)
+  approvedAt   DateTime?
+  approvalNote String?   @db.Text
+
+  paidAt   DateTime?
+  paidById String?
+  paidBy   User?     @relation("FinanceTransactionPaidBy", fields: [paidById], references: [id], onDelete: SetNull)
+
+  notes     String?           @db.Text
+  auditLogs FinanceAuditLog[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([type, status, transactionDate])
+  @@index([categoryId, transactionDate])
+  @@index([partyId])
+  @@index([createdById, createdAt])
+  @@index([approvedById])
+  @@index([paidAt])
+}
+
+// ============================================================
+// FINANCE AUDIT LOGS
+// ============================================================
+
+model FinanceAuditLog {
+  id            String             @id @default(cuid())
+  transactionId String
+  transaction   FinanceTransaction @relation(fields: [transactionId], references: [id], onDelete: Restrict)
+
+  actorId String?
+  actor   User? @relation("FinanceAuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+
+  action    FinanceAuditAction
+  details   Json?
+  createdAt DateTime @default(now())
+
+  @@index([transactionId, createdAt])
+  @@index([actorId, createdAt])
+}
