@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "src/app/api/billing/categories", "src/app/admin/billing/categories"  ],
+, "src/app/api/billing/categories", "src/app/admin/billing/categories", "src/app/api/billing/categories/[id]/actions"  ],
   "exclude": ["node_modules"]
 }

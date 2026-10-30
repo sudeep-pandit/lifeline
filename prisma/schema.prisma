@@ -30,6 +30,27 @@ enum ContentStatus {
   PUBLISHED
 }
 
+enum NewsCategory {
+  NEWS
+  NOTICE
+  ANNOUNCEMENT
+  UPDATES
+}
+
+enum ReportCategory {
+  ANNUAL
+  FINANCIAL
+  PROGRAM
+  PROJECT
+}
+
+enum PublicationCategory {
+  GUIDE_MANUAL
+  AWARENESS_MATERIAL
+  RESEARCH_LEARNING
+  PUBLICATION
+}
+
 enum FinanceTransactionType {
   INCOME
   EXPENSE
@@ -73,6 +94,49 @@ enum FinanceAuditAction {
 }
 
 // ============================================================
+// BLOOD DONATION ENUMS
+// ============================================================
+
+enum BloodGroup {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+}
+
+enum DonorStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum DonorApplicationStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  WITHDRAWN
+}
+
+enum BloodRequestStatus {
+  PENDING
+  VERIFIED
+  IN_PROGRESS
+  FULFILLED
+  CANCELLED
+  EXPIRED
+}
+
+enum BloodRequestUrgency {
+  NORMAL
+  URGENT
+  EMERGENCY
+}
+
+// ============================================================
 // USER AND ACCESS MANAGEMENT
 // ============================================================
 
@@ -88,14 +152,36 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  uploadedMedia       Media[]
+  // Media
+  uploadedMedia Media[]
+
+  // Website content
   createdContentItems ContentItem[] @relation("ContentCreatedBy")
   updatedContentItems ContentItem[] @relation("ContentUpdatedBy")
 
+  // News and stories
+  newsArticlesCreated NewsArticle[] @relation("NewsCreatedBy")
+  newsArticlesUpdated NewsArticle[] @relation("NewsUpdatedBy")
+
+  // Reports
+  reportsCreated Report[] @relation("ReportCreatedBy")
+  reportsUpdated Report[] @relation("ReportUpdatedBy")
+
+  // Publications
+  publicationsCreated Publication[] @relation("PublicationCreatedBy")
+  publicationsUpdated Publication[] @relation("PublicationUpdatedBy")
+
+  // Finance
   financeTransactionsCreated  FinanceTransaction[] @relation("FinanceTransactionCreatedBy")
   financeTransactionsApproved FinanceTransaction[] @relation("FinanceTransactionApprovedBy")
   financeTransactionsPaid     FinanceTransaction[] @relation("FinanceTransactionPaidBy")
-  financeAuditLogs            FinanceAuditLog[] @relation("FinanceAuditActor")
+  financeAuditLogs            FinanceAuditLog[]    @relation("FinanceAuditActor")
+
+  // Blood donation management
+  donorsCreated             Donor[]            @relation("DonorCreatedBy")
+  donorApplicationsReviewed DonorApplication[] @relation("DonorApplicationReviewedBy")
+  bloodRequestsCreated      BloodRequest[]     @relation("BloodRequestCreatedBy")
+  donationsRecorded         DonationRecord[]   @relation("DonationRecordedBy")
 }
 
 // ============================================================
@@ -158,7 +244,7 @@ model TeamMember {
   slug        String  @unique
   designation String
   department  String?
-  bio         String?
+  bio         String? @db.Text
   email       String?
   phone       String?
 
@@ -226,6 +312,142 @@ model ContentItem {
 }
 
 // ============================================================
+// NEWS AND STORIES
+// ============================================================
+
+model NewsArticle {
+  id    String @id @default(cuid())
+  title String
+  slug  String @unique
+
+  excerpt String @db.Text
+  content String @db.Text
+
+  category NewsCategory  @default(NEWS)
+  status   ContentStatus @default(DRAFT)
+
+  imageUrl String?
+  imageAlt String?
+
+  location String?
+
+  isFeatured  Boolean   @default(false)
+  publishedAt DateTime?
+
+  seoTitle       String?
+  seoDescription String? @db.Text
+
+  createdById String?
+  createdBy   User?   @relation("NewsCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  updatedById String?
+  updatedBy   User?   @relation("NewsUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, publishedAt])
+  @@index([category])
+  @@index([isFeatured])
+  @@index([createdAt])
+  @@index([createdById])
+  @@index([updatedById])
+}
+
+// ============================================================
+// REPORTS
+// ============================================================
+
+model Report {
+  id          String  @id @default(cuid())
+  title       String
+  slug        String  @unique
+  description String? @db.Text
+
+  category ReportCategory
+  status   ContentStatus  @default(DRAFT)
+
+  reportYear String?
+
+  publishedAt DateTime?
+  isFeatured  Boolean   @default(false)
+  sortOrder   Int       @default(0)
+
+  pdfUrl   String
+  pdfName  String
+  pdfSize  Int
+  mimeType String @default("application/pdf")
+
+  coverImageUrl String?
+
+  createdById String?
+  createdBy   User?   @relation("ReportCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  updatedById String?
+  updatedBy   User?   @relation("ReportUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category, status])
+  @@index([reportYear])
+  @@index([publishedAt])
+  @@index([isFeatured])
+  @@index([sortOrder])
+  @@index([createdById])
+  @@index([updatedById])
+}
+
+// ============================================================
+// PUBLICATIONS
+// ============================================================
+
+model Publication {
+  id          String  @id @default(cuid())
+  title       String
+  slug        String  @unique
+  description String? @db.Text
+
+  category PublicationCategory
+  status   ContentStatus       @default(DRAFT)
+
+  publicationYear String?
+  language        String? @default("English")
+  publisher       String?
+  author          String?
+  edition         String?
+  isbn            String?
+
+  pdfUrl   String
+  pdfName  String
+  pdfSize  Int
+  mimeType String @default("application/pdf")
+
+  coverImageUrl String?
+
+  isFeatured  Boolean   @default(false)
+  sortOrder   Int       @default(0)
+  publishedAt DateTime?
+
+  createdById String?
+  createdBy   User?   @relation("PublicationCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  updatedById String?
+  updatedBy   User?   @relation("PublicationUpdatedBy", fields: [updatedById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category, status])
+  @@index([publicationYear])
+  @@index([publishedAt])
+  @@index([isFeatured])
+  @@index([sortOrder])
+  @@index([createdById])
+  @@index([updatedById])
+}
+
+// ============================================================
 // GALLERY ALBUM MANAGEMENT
 // ============================================================
 
@@ -241,7 +463,7 @@ model GalleryAlbum {
   isFeatured  Boolean       @default(false)
 
   coverMediaId String?
-  coverMedia   Media? @relation("GalleryAlbumCover", fields: [coverMediaId], references: [id], onDelete: SetNull)
+  coverMedia   Media?  @relation("GalleryAlbumCover", fields: [coverMediaId], references: [id], onDelete: SetNull)
 
   photos GalleryPhoto[]
 
@@ -377,12 +599,12 @@ model FinanceTransaction {
   type            FinanceTransactionType
   status          FinanceTransactionStatus @default(DRAFT)
 
-  title           String
-  description     String?              @db.Text
-  amount          Decimal              @db.Decimal(14, 2)
-  currency        String               @default("NPR")
-  transactionDate DateTime
-  paymentMethod   FinancePaymentMethod @default(CASH)
+  title            String
+  description      String?              @db.Text
+  amount           Decimal              @db.Decimal(14, 2)
+  currency         String               @default("NPR")
+  transactionDate  DateTime
+  paymentMethod    FinancePaymentMethod @default(CASH)
   paymentReference String?
   attachmentUrl    String?
 
@@ -393,7 +615,7 @@ model FinanceTransaction {
   party   FinanceParty? @relation(fields: [partyId], references: [id], onDelete: SetNull)
 
   createdById String
-  createdBy   User @relation("FinanceTransactionCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
+  createdBy   User   @relation("FinanceTransactionCreatedBy", fields: [createdById], references: [id], onDelete: Restrict)
 
   approvedById String?
   approvedBy   User?     @relation("FinanceTransactionApprovedBy", fields: [approvedById], references: [id], onDelete: SetNull)
@@ -428,12 +650,184 @@ model FinanceAuditLog {
   transaction   FinanceTransaction @relation(fields: [transactionId], references: [id], onDelete: Restrict)
 
   actorId String?
-  actor   User? @relation("FinanceAuditActor", fields: [actorId], references: [id], onDelete: SetNull)
+  actor   User?   @relation("FinanceAuditActor", fields: [actorId], references: [id], onDelete: SetNull)
 
   action    FinanceAuditAction
   details   Json?
-  createdAt DateTime @default(now())
+  createdAt DateTime           @default(now())
 
   @@index([transactionId, createdAt])
-  @@index([actorId, createdAt])
+  @@index([actorId])
+}
+
+// ============================================================
+// BLOOD DONATION: DONOR APPLICATIONS
+// ============================================================
+
+model DonorApplication {
+  id                String @id @default(cuid())
+  applicationNumber String @unique
+
+  fullName String
+  phone    String
+  email    String?
+
+  // Gregorian date of birth.
+  dateOfBirth DateTime?
+
+  // Original Nepali B.S. date in YYYY-MM-DD format.
+  dateOfBirthBS String?
+
+  bloodGroup BloodGroup
+
+  // Nepal address hierarchy.
+  province   String?
+  district   String
+  localLevel String?
+  wardName   String?
+  wardNumber Int?
+  address    String?
+
+  notes        String? @db.Text
+  consentGiven Boolean @default(false)
+
+  status     DonorApplicationStatus @default(PENDING)
+  reviewNote String?                @db.Text
+
+  reviewedById String?
+  reviewedBy   User?     @relation("DonorApplicationReviewedBy", fields: [reviewedById], references: [id], onDelete: SetNull)
+  reviewedAt   DateTime?
+
+  donorId String? @unique
+  donor   Donor?  @relation("ApplicationConvertedToDonor", fields: [donorId], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, createdAt])
+  @@index([bloodGroup, district])
+  @@index([province, district, localLevel])
+  @@index([phone])
+}
+
+// ============================================================
+// BLOOD DONATION: DONOR DIRECTORY
+// ============================================================
+
+model Donor {
+  id        String @id @default(cuid())
+  donorCode String @unique
+
+  fullName String
+  phone    String
+  email    String?
+
+  // Gregorian date of birth.
+  dateOfBirth DateTime?
+
+  // Original Nepali B.S. date in YYYY-MM-DD format.
+  dateOfBirthBS String?
+
+  bloodGroup BloodGroup
+
+  // Nepal address hierarchy.
+  province   String?
+  district   String
+  localLevel String?
+  wardName   String?
+  wardNumber Int?
+  address    String?
+
+  status       DonorStatus @default(ACTIVE)
+  isVerified   Boolean     @default(false)
+  consentGiven Boolean     @default(false)
+
+  lastDonationAt DateTime?
+  notes          String?   @db.Text
+
+  createdById String?
+  createdBy   User?   @relation("DonorCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  application DonorApplication? @relation("ApplicationConvertedToDonor")
+
+  donations DonationRecord[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([bloodGroup, district, status])
+  @@index([province, district, localLevel])
+  @@index([fullName])
+  @@index([phone])
+  @@index([email])
+  @@index([status, createdAt])
+  @@index([isVerified, status])
+  @@index([createdAt])
+}
+
+// ============================================================
+// BLOOD DONATION: BLOOD REQUESTS
+// ============================================================
+
+model BloodRequest {
+  id            String @id @default(cuid())
+  requestNumber String @unique
+
+  requesterName  String
+  requesterPhone String
+
+  bloodGroup  BloodGroup
+  unitsNeeded Int        @default(1)
+
+  hospitalName    String?
+  district        String
+  province        String?
+  locationDetails String?
+
+  urgency BloodRequestUrgency @default(NORMAL)
+  status  BloodRequestStatus  @default(PENDING)
+
+  neededBy         DateTime?
+  notes            String?   @db.Text
+  consentToContact Boolean   @default(false)
+
+  createdById String?
+  createdBy   User?   @relation("BloodRequestCreatedBy", fields: [createdById], references: [id], onDelete: SetNull)
+
+  donations DonationRecord[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status, urgency, createdAt])
+  @@index([bloodGroup, district])
+  @@index([neededBy])
+}
+
+// ============================================================
+// BLOOD DONATION: DONATION RECORDS
+// ============================================================
+
+model DonationRecord {
+  id      String @id @default(cuid())
+  donorId String
+  donor   Donor  @relation(fields: [donorId], references: [id], onDelete: Restrict)
+
+  bloodRequestId String?
+  bloodRequest   BloodRequest? @relation(fields: [bloodRequestId], references: [id], onDelete: SetNull)
+
+  donationDate   DateTime
+  donationCenter String?
+  unitsDonated   Int      @default(1)
+  notes          String?  @db.Text
+
+  recordedById String?
+  recordedBy   User?   @relation("DonationRecordedBy", fields: [recordedById], references: [id], onDelete: SetNull)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([donorId, donationDate])
+  @@index([bloodRequestId])
+  @@index([recordedById])
 }

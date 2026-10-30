@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -12,19 +13,49 @@ import {
   Filter,
   FolderOpen,
   GraduationCap,
+  LoaderCircle,
   Search,
-  ShieldCheck,
   Sparkles,
   X,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
+
+type PublicationCategoryKey =
+  | "GUIDE_MANUAL"
+  | "AWARENESS_MATERIAL"
+  | "RESEARCH_LEARNING"
+  | "PUBLICATION";
 
 type PublicationCategory =
   | "Guides & Manuals"
   | "Awareness Materials"
   | "Research & Learning"
   | "Publications";
+
+type ApiPublication = {
+  id: string;
+  title: string;
+  slug: string;
+  description: string | null;
+  category: PublicationCategoryKey;
+  status: "DRAFT" | "PUBLISHED";
+  publicationYear: string | null;
+  language: string | null;
+  author: string | null;
+  publisher: string | null;
+  edition: string | null;
+  isbn: string | null;
+  pdfUrl: string;
+  pdfName: string;
+  pdfSize: number;
+  coverImageUrl: string | null;
+  isFeatured: boolean;
+  sortOrder: number;
+  publishedAt: string | null;
+  createdAt: string;
+  updatedAt: string;
+};
 
 type Publication = {
   id: string;
@@ -33,109 +64,12 @@ type Publication = {
   year: string;
   category: PublicationCategory;
   type: string;
-  pages: string;
   fileSize: string;
   fileUrl: string;
+  language: string | null;
+  author: string | null;
+  isFeatured: boolean;
 };
-
-const publications: Publication[] = [
-  {
-    id: "01",
-    title: "Community Engagement Guide",
-    description:
-      "A practical resource designed to support meaningful community participation, communication and collaboration.",
-    year: "2026",
-    category: "Guides & Manuals",
-    type: "PDF",
-    pages: "36 pages",
-    fileSize: "2.8 MB",
-    fileUrl: "#",
-  },
-  {
-    id: "02",
-    title: "Community Awareness Resource",
-    description:
-      "An awareness-oriented publication covering key messages and approaches for community-level engagement.",
-    year: "2026",
-    category: "Awareness Materials",
-    type: "PDF",
-    pages: "24 pages",
-    fileSize: "2.1 MB",
-    fileUrl: "#",
-  },
-  {
-    id: "03",
-    title: "Youth Participation Handbook",
-    description:
-      "A practical publication focused on encouraging youth participation, learning and constructive community involvement.",
-    year: "2026",
-    category: "Guides & Manuals",
-    type: "PDF",
-    pages: "42 pages",
-    fileSize: "3.2 MB",
-    fileUrl: "#",
-  },
-  {
-    id: "04",
-    title: "Community Health Awareness Materials",
-    description:
-      "Educational and awareness material designed to support clear communication around community health topics.",
-    year: "2026",
-    category: "Awareness Materials",
-    type: "PDF",
-    pages: "28 pages",
-    fileSize: "2.5 MB",
-    fileUrl: "#",
-  },
-  {
-    id: "05",
-    title: "Community Learning & Reflection",
-    description:
-      "A learning resource bringing together observations, reflections and lessons from community-focused activities.",
-    year: "2025",
-    category: "Research & Learning",
-    type: "PDF",
-    pages: "31 pages",
-    fileSize: "2.4 MB",
-    fileUrl: "#",
-  },
-  {
-    id: "06",
-    title: "Program Implementation Guide",
-    description:
-      "A structured reference for planning, implementing and reviewing community-oriented programs.",
-    year: "2025",
-    category: "Guides & Manuals",
-    type: "PDF",
-    pages: "40 pages",
-    fileSize: "3.1 MB",
-    fileUrl: "#",
-  },
-  {
-    id: "07",
-    title: "Community Participation Insights",
-    description:
-      "A publication presenting learning and observations related to participation and community collaboration.",
-    year: "2025",
-    category: "Research & Learning",
-    type: "PDF",
-    pages: "26 pages",
-    fileSize: "2.0 MB",
-    fileUrl: "#",
-  },
-  {
-    id: "08",
-    title: "Lifeline Achham Information Booklet",
-    description:
-      "An organizational publication introducing areas of work, community engagement and available resources.",
-    year: "2025",
-    category: "Publications",
-    type: "PDF",
-    pages: "20 pages",
-    fileSize: "1.7 MB",
-    fileUrl: "#",
-  },
-];
 
 const categories = [
   "All",
@@ -143,21 +77,27 @@ const categories = [
   "Awareness Materials",
   "Research & Learning",
   "Publications",
-];
+] as const;
 
-const years = ["All", "2026", "2025"];
+const categoryLabels: Record<
+  PublicationCategoryKey,
+  PublicationCategory
+> = {
+  GUIDE_MANUAL: "Guides & Manuals",
+  AWARENESS_MATERIAL: "Awareness Materials",
+  RESEARCH_LEARNING: "Research & Learning",
+  PUBLICATION: "Publications",
+};
 
 const fadeUp = {
-  hidden: {
-    opacity: 0,
-    y: 28,
-  },
+  hidden: { opacity: 0, y: 28 },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.65,
-ease: [0.22, 1, 0.36, 1] as const,    },
+      ease: [0.22, 1, 0.36, 1] as const,
+    },
   },
 };
 
@@ -170,11 +110,147 @@ const staggerContainer = {
   },
 };
 
+function formatFileSize(bytes: number): string {
+  if (!Number.isFinite(bytes) || bytes <= 0) return "PDF";
+
+  if (bytes < 1024 * 1024) {
+    return `${(bytes / 1024).toFixed(0)} KB`;
+  }
+
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function normalizePublication(
+  item: ApiPublication,
+): Publication {
+  return {
+    id: item.id,
+    title: item.title,
+    description: item.description ?? "",
+    year: item.publicationYear ?? "",
+    category:
+      categoryLabels[item.category] ?? "Publications",
+    type: "PDF",
+    fileSize: formatFileSize(item.pdfSize),
+    fileUrl: item.pdfUrl,
+    language: item.language,
+    author: item.author,
+    isFeatured: item.isFeatured,
+  };
+}
+
 export default function PublicationsPage() {
-  const [activeCategory, setActiveCategory] = useState("All");
-  const [activeYear, setActiveYear] = useState("All");
+  const [publications, setPublications] = useState<
+    Publication[]
+  >([]);
+  const [activeCategory, setActiveCategory] =
+    useState<string>("All");
+  const [activeYear, setActiveYear] =
+    useState<string>("All");
   const [search, setSearch] = useState("");
   const [showFilters, setShowFilters] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    async function loadPublications() {
+      setLoading(true);
+      setError("");
+
+      try {
+        const response = await fetch(
+          "/api/publications/public",
+          {
+            method: "GET",
+            headers: {
+              Accept: "application/json",
+            },
+            cache: "no-store",
+            signal: controller.signal,
+          },
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Unable to load publications (HTTP ${response.status}).`,
+          );
+        }
+
+        const data: unknown = await response.json();
+
+        let records: ApiPublication[];
+
+        if (Array.isArray(data)) {
+          records = data as ApiPublication[];
+        } else if (
+          data !== null &&
+          typeof data === "object" &&
+          "publications" in data &&
+          Array.isArray(data.publications)
+        ) {
+          records = data.publications as ApiPublication[];
+        } else {
+          throw new Error(
+            "The publications API returned an unexpected response.",
+          );
+        }
+
+        const normalized = records
+        .filter(
+          (item) =>
+            item &&
+            typeof item.id === "string" &&
+            typeof item.title === "string" &&
+            typeof item.pdfUrl === "string",
+        )
+        .map(normalizePublication)
+          .sort((a, b) => {
+            if (a.isFeatured !== b.isFeatured) {
+              return a.isFeatured ? -1 : 1;
+            }
+
+            return b.year.localeCompare(a.year);
+          });
+
+        setPublications(normalized);
+      } catch (err) {
+        if (
+          err instanceof Error &&
+          err.name === "AbortError"
+        ) {
+          return;
+        }
+
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Something went wrong while loading publications.",
+        );
+      } finally {
+        if (!controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    }
+
+    void loadPublications();
+
+    return () => controller.abort();
+  }, []);
+
+  const years = useMemo(() => {
+    const availableYears = [
+      ...new Set(
+        publications
+          .map((publication) => publication.year)
+          .filter(Boolean),
+      ),
+    ].sort((a, b) => b.localeCompare(a));
+
+    return ["All", ...availableYears];
+  }, [publications]);
 
   const filteredPublications = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -185,17 +261,33 @@ export default function PublicationsPage() {
         publication.category === activeCategory;
 
       const matchesYear =
-        activeYear === "All" || publication.year === activeYear;
+        activeYear === "All" ||
+        publication.year === activeYear;
 
       const matchesSearch =
         !query ||
         publication.title.toLowerCase().includes(query) ||
         publication.description.toLowerCase().includes(query) ||
-        publication.category.toLowerCase().includes(query);
+        publication.category.toLowerCase().includes(query) ||
+        (publication.author ?? "")
+          .toLowerCase()
+          .includes(query) ||
+        (publication.language ?? "")
+          .toLowerCase()
+          .includes(query);
 
-      return matchesCategory && matchesYear && matchesSearch;
+      return (
+        matchesCategory &&
+        matchesYear &&
+        matchesSearch
+      );
     });
-  }, [activeCategory, activeYear, search]);
+  }, [
+    publications,
+    activeCategory,
+    activeYear,
+    search,
+  ]);
 
   const clearFilters = () => {
     setActiveCategory("All");
@@ -206,14 +298,11 @@ export default function PublicationsPage() {
   const hasFilters =
     activeCategory !== "All" ||
     activeYear !== "All" ||
-    search !== "";
+    search.trim() !== "";
 
   return (
     <main className="bg-[#FCFAF7]">
-      {/* =====================================================
-          HERO
-      ====================================================== */}
-
+      {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="relative h-[500px] sm:h-[540px] lg:h-[580px]">
           <Image
@@ -226,21 +315,14 @@ export default function PublicationsPage() {
           />
 
           <div className="absolute inset-0 bg-[#55152B]/80" />
-
           <div className="absolute inset-0 bg-gradient-to-r from-[#55152B]/95 via-[#7A1F3D]/65 to-[#2457C5]/20" />
 
-          {/* Abstract shapes */}
           <div className="absolute -right-32 -top-32 h-96 w-96 rounded-full border border-white/10" />
-
           <div className="absolute -bottom-40 -left-24 h-[420px] w-[420px] rounded-full border border-white/10" />
-
           <div className="absolute right-[18%] top-24 h-20 w-20 rotate-12 rounded-2xl border border-white/10" />
-
           <div className="absolute bottom-24 left-[32%] h-2 w-2 rounded-full bg-white/30" />
-
           <div className="absolute right-[30%] top-28 h-1.5 w-1.5 rounded-full bg-white/30" />
 
-          {/* Hero content */}
           <div className="relative mx-auto flex h-full max-w-7xl items-start px-5 pt-32 sm:px-8 sm:pt-36 lg:px-10 lg:pt-40">
             <motion.div
               initial="hidden"
@@ -252,24 +334,17 @@ export default function PublicationsPage() {
                 variants={fadeUp}
                 className="mb-6 flex flex-wrap items-center gap-2 text-sm text-white/75"
               >
-                <Link
-                  href="/"
-                  className="transition hover:text-white"
-                >
+                <Link href="/" className="transition hover:text-white">
                   Home
                 </Link>
-
                 <span>/</span>
-
                 <Link
                   href="/resources/news"
                   className="transition hover:text-white"
                 >
                   Resources
                 </Link>
-
                 <span>/</span>
-
                 <span className="text-white">Publications</span>
               </motion.div>
 
@@ -285,26 +360,23 @@ export default function PublicationsPage() {
                 variants={fadeUp}
                 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
               >
-                Publications & Resources
+                Publications &amp; Resources
               </motion.h1>
 
               <motion.p
                 variants={fadeUp}
                 className="mt-6 max-w-2xl text-base leading-8 text-white/80 sm:text-lg"
               >
-                Explore guides, awareness materials, learning resources and
-                publications created to support knowledge sharing and
-                community engagement.
+                Explore guides, awareness materials, learning resources
+                and publications created to support knowledge sharing
+                and community engagement.
               </motion.p>
             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* =====================================================
-          INTRO
-      ====================================================== */}
-
+      {/* INTRO */}
       <section className="section">
         <div className="container-main">
           <div className="grid gap-12 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
@@ -316,7 +388,7 @@ export default function PublicationsPage() {
             >
               <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.18em] text-[#7A1F3D]">
                 <span className="h-[3px] w-9 rounded-full bg-[#7A1F3D]" />
-                Knowledge & Learning
+                Knowledge &amp; Learning
               </div>
 
               <h2 className="mt-5 max-w-2xl text-3xl font-bold tracking-tight text-[#172033] sm:text-4xl lg:text-5xl">
@@ -327,52 +399,37 @@ export default function PublicationsPage() {
               </h2>
 
               <p className="mt-6 max-w-2xl text-base leading-8 text-slate-600">
-                Publications can help communities, partners and stakeholders
-                access practical knowledge, learning materials and
-                organizational resources in one place.
+                Publications can help communities, partners and
+                stakeholders access practical knowledge, learning
+                materials and organizational resources in one place.
               </p>
 
               <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 <div className="rounded-2xl border border-slate-200 bg-white p-5">
-                  <BookOpen
-                    size={22}
-                    className="text-[#2457C5]"
-                  />
-
+                  <BookOpen size={22} className="text-[#2457C5]" />
                   <p className="mt-4 text-sm font-bold text-[#172033]">
                     Guides
                   </p>
-
                   <p className="mt-1 text-xs leading-5 text-slate-500">
                     Practical resources
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 bg-white p-5">
-                  <Sparkles
-                    size={22}
-                    className="text-[#7A1F3D]"
-                  />
-
+                  <Sparkles size={22} className="text-[#7A1F3D]" />
                   <p className="mt-4 text-sm font-bold text-[#172033]">
                     Awareness
                   </p>
-
                   <p className="mt-1 text-xs leading-5 text-slate-500">
                     Community materials
                   </p>
                 </div>
 
                 <div className="rounded-2xl border border-slate-200 bg-white p-5">
-                  <GraduationCap
-                    size={22}
-                    className="text-[#2457C5]"
-                  />
-
+                  <GraduationCap size={22} className="text-[#2457C5]" />
                   <p className="mt-4 text-sm font-bold text-[#172033]">
                     Learning
                   </p>
-
                   <p className="mt-1 text-xs leading-5 text-slate-500">
                     Knowledge resources
                   </p>
@@ -403,12 +460,10 @@ export default function PublicationsPage() {
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF4FF] text-[#2457C5]">
                       <CheckCircle2 size={21} />
                     </div>
-
                     <div>
                       <p className="text-sm font-bold text-[#172033]">
                         Knowledge made accessible
                       </p>
-
                       <p className="mt-1 text-xs leading-5 text-slate-500">
                         A central space for useful public learning resources.
                       </p>
@@ -421,10 +476,7 @@ export default function PublicationsPage() {
         </div>
       </section>
 
-      {/* =====================================================
-          PUBLICATION LIBRARY
-      ====================================================== */}
-
+      {/* PUBLICATION LIBRARY */}
       <section className="border-y border-slate-200 bg-white py-20 sm:py-24">
         <div className="container-main">
           <motion.div
@@ -441,7 +493,7 @@ export default function PublicationsPage() {
                 </div>
 
                 <h2 className="mt-4 text-3xl font-bold tracking-tight text-[#172033] sm:text-4xl">
-                  Publications & Materials
+                  Publications &amp; Materials
                 </h2>
 
                 <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-500">
@@ -466,7 +518,7 @@ export default function PublicationsPage() {
               </div>
             </div>
 
-            {/* Search */}
+            {/* SEARCH */}
             <div className="mt-8 flex flex-col gap-4 lg:flex-row">
               <div className="relative flex-1">
                 <Search
@@ -479,6 +531,7 @@ export default function PublicationsPage() {
                   value={search}
                   onChange={(event) => setSearch(event.target.value)}
                   placeholder="Search publications and resources..."
+                  aria-label="Search publications"
                   className="h-12 w-full rounded-xl border border-slate-200 bg-[#FCFAF7] pl-11 pr-11 text-sm text-[#172033] outline-none transition placeholder:text-slate-400 focus:border-[#2457C5] focus:bg-white focus:ring-4 focus:ring-[#2457C5]/10"
                 />
 
@@ -495,22 +548,13 @@ export default function PublicationsPage() {
               </div>
             </div>
 
-            {/* Filters */}
+            {/* FILTERS */}
             <AnimatePresence initial={false}>
               {showFilters && (
                 <motion.div
-                  initial={{
-                    opacity: 0,
-                    height: 0,
-                  }}
-                  animate={{
-                    opacity: 1,
-                    height: "auto",
-                  }}
-                  exit={{
-                    opacity: 0,
-                    height: 0,
-                  }}
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
                   className="overflow-hidden"
                 >
                   <div className="mt-5 rounded-2xl border border-slate-200 bg-[#FCFAF7] p-5">
@@ -522,16 +566,13 @@ export default function PublicationsPage() {
 
                         <div className="flex flex-wrap gap-2">
                           {categories.map((category) => {
-                            const active =
-                              activeCategory === category;
+                            const active = activeCategory === category;
 
                             return (
                               <button
                                 key={category}
                                 type="button"
-                                onClick={() =>
-                                  setActiveCategory(category)
-                                }
+                                onClick={() => setActiveCategory(category)}
                                 className={`rounded-full px-4 py-2 text-xs font-bold transition ${
                                   active
                                     ? "bg-[#7A1F3D] text-white"
@@ -590,8 +631,37 @@ export default function PublicationsPage() {
               )}
             </AnimatePresence>
 
-            {/* Results */}
-            {filteredPublications.length > 0 ? (
+            {/* RESULTS */}
+            {loading ? (
+              <div className="mt-10 flex flex-col items-center justify-center rounded-3xl border border-slate-200 bg-[#FCFAF7] px-6 py-16 text-center">
+                <LoaderCircle
+                  size={30}
+                  className="animate-spin text-[#2457C5]"
+                />
+                <h3 className="mt-5 text-lg font-bold text-[#172033]">
+                  Loading publications
+                </h3>
+                <p className="mt-2 text-sm text-slate-500">
+                  Please wait while we load the resource library.
+                </p>
+              </div>
+            ) : error ? (
+              <div className="mt-10 rounded-3xl border border-red-200 bg-red-50 px-6 py-12 text-center">
+                <h3 className="text-lg font-bold text-[#172033]">
+                  Unable to load publications
+                </h3>
+                <p className="mx-auto mt-2 max-w-xl text-sm leading-6 text-slate-600">
+                  {error}
+                </p>
+                <button
+                  type="button"
+                  onClick={() => window.location.reload()}
+                  className="mt-6 rounded-xl bg-[#7A1F3D] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#55152B]"
+                >
+                  Try again
+                </button>
+              </div>
+            ) : filteredPublications.length > 0 ? (
               <motion.div
                 initial="hidden"
                 whileInView="visible"
@@ -616,10 +686,18 @@ export default function PublicationsPage() {
                             {publication.category}
                           </span>
 
-                          <span className="flex items-center gap-1 text-xs font-medium text-slate-400">
-                            <CalendarDays size={13} />
-                            {publication.year}
-                          </span>
+                          {publication.year && (
+                            <span className="flex items-center gap-1 text-xs font-medium text-slate-400">
+                              <CalendarDays size={13} />
+                              {publication.year}
+                            </span>
+                          )}
+
+                          {publication.isFeatured && (
+                            <span className="rounded-full bg-amber-50 px-2.5 py-1 text-[10px] font-bold text-amber-700">
+                              Featured
+                            </span>
+                          )}
                         </div>
 
                         <h3 className="mt-3 text-lg font-bold leading-7 text-[#172033] transition group-hover:text-[#7A1F3D]">
@@ -627,29 +705,42 @@ export default function PublicationsPage() {
                         </h3>
 
                         <p className="mt-2 text-sm leading-6 text-slate-500">
-                          {publication.description}
+                          {publication.description ||
+                            "View this publication for more information."}
                         </p>
+
+                        {(publication.author || publication.language) && (
+                          <p className="mt-2 text-xs text-slate-500">
+                            {publication.author && (
+                              <span>By {publication.author}</span>
+                            )}
+
+                            {publication.author && publication.language && (
+                              <span className="mx-2">·</span>
+                            )}
+
+                            {publication.language && (
+                              <span>{publication.language}</span>
+                            )}
+                          </p>
+                        )}
 
                         <div className="mt-5 flex flex-wrap items-center justify-between gap-4 border-t border-slate-100 pt-4">
                           <div className="flex flex-wrap items-center gap-3 text-xs font-medium text-slate-400">
                             <span>{publication.type}</span>
-
                             <span className="h-1 w-1 rounded-full bg-slate-300" />
-
-                            <span>{publication.pages}</span>
-
-                            <span className="h-1 w-1 rounded-full bg-slate-300" />
-
                             <span>{publication.fileSize}</span>
                           </div>
 
                           <a
                             href={publication.fileUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             download
                             className="inline-flex items-center gap-2 rounded-lg bg-[#2457C5] px-3.5 py-2.5 text-xs font-bold text-white transition hover:bg-[#17439F]"
                           >
                             <ArrowDownToLine size={15} />
-                            Download
+                            Download PDF
                           </a>
                         </div>
                       </div>
@@ -664,31 +755,33 @@ export default function PublicationsPage() {
                 </div>
 
                 <h3 className="mt-5 text-lg font-bold text-[#172033]">
-                  No publications found
+                  {publications.length === 0
+                    ? "No publications available yet"
+                    : "No publications found"}
                 </h3>
 
                 <p className="mx-auto mt-2 max-w-md text-sm leading-6 text-slate-500">
-                  Try changing your search or selecting another category or
-                  year.
+                  {publications.length === 0
+                    ? "New resources will appear here once they are published by Lifeline Achham."
+                    : "Try changing your search or selecting another category or year."}
                 </p>
 
-                <button
-                  type="button"
-                  onClick={clearFilters}
-                  className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#7A1F3D] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#55152B]"
-                >
-                  Clear filters
-                </button>
+                {hasFilters && (
+                  <button
+                    type="button"
+                    onClick={clearFilters}
+                    className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#7A1F3D] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#55152B]"
+                  >
+                    Clear filters
+                  </button>
+                )}
               </div>
             )}
           </motion.div>
         </div>
       </section>
 
-      {/* =====================================================
-          RESOURCE TYPES
-      ====================================================== */}
-
+      {/* RESOURCE TYPES */}
       <section className="section">
         <div className="container-main">
           <motion.div
@@ -756,11 +849,9 @@ export default function PublicationsPage() {
                   <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#EEF4FF] text-[#2457C5]">
                     <Icon size={21} />
                   </div>
-
                   <h3 className="mt-5 text-base font-bold text-[#172033]">
                     {item.title}
                   </h3>
-
                   <p className="mt-2 text-sm leading-6 text-slate-500">
                     {item.text}
                   </p>
@@ -771,10 +862,7 @@ export default function PublicationsPage() {
         </div>
       </section>
 
-      {/* =====================================================
-          HOW RESOURCES HELP
-      ====================================================== */}
-
+      {/* HOW RESOURCES HELP */}
       <section className="border-y border-slate-200 bg-white py-20 sm:py-24">
         <div className="container-main">
           <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
@@ -786,7 +874,6 @@ export default function PublicationsPage() {
               className="relative overflow-hidden rounded-[28px] bg-[#EEF4FF] p-8 sm:p-10"
             >
               <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full border border-[#2457C5]/10" />
-
               <div className="absolute -bottom-24 -left-20 h-64 w-64 rounded-full border border-[#7A1F3D]/10" />
 
               <div className="relative">
@@ -818,7 +905,6 @@ export default function PublicationsPage() {
                       <span className="flex h-6 w-6 items-center justify-center rounded-full bg-white text-[#2457C5]">
                         <CheckCircle2 size={15} />
                       </span>
-
                       {item}
                     </div>
                   ))}
@@ -872,12 +958,10 @@ export default function PublicationsPage() {
                     <span className="text-sm font-black text-[#7A1F3D]">
                       {item.number}
                     </span>
-
                     <div>
                       <h3 className="text-sm font-bold text-[#172033]">
                         {item.title}
                       </h3>
-
                       <p className="mt-1 text-sm leading-6 text-slate-500">
                         {item.text}
                       </p>
@@ -890,23 +974,19 @@ export default function PublicationsPage() {
         </div>
       </section>
 
-      {/* =====================================================
-          CMS CTA
-      ====================================================== */}
-
+      {/* CONTACT CTA */}
       <section className="section">
         <div className="container-main">
           <div className="overflow-hidden rounded-[28px] bg-[#55152B]">
             <div className="relative px-7 py-12 sm:px-10 lg:px-14 lg:py-14">
               <div className="absolute -right-24 -top-24 h-72 w-72 rounded-full border border-white/10" />
-
               <div className="absolute -bottom-32 -left-20 h-80 w-80 rounded-full border border-white/10" />
 
               <div className="relative grid gap-10 lg:grid-cols-[1fr_auto] lg:items-center">
                 <div className="max-w-2xl">
                   <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-[0.18em] text-white/60">
                     <span className="h-[3px] w-8 rounded-full bg-white/70" />
-                    Future-ready
+                    Knowledge for Everyone
                   </div>
 
                   <h2 className="mt-5 text-3xl font-bold tracking-tight text-white sm:text-4xl">
@@ -914,11 +994,9 @@ export default function PublicationsPage() {
                   </h2>
 
                   <p className="mt-5 text-sm leading-7 text-white/70 sm:text-base">
-                    Once the custom admin system is connected, authorized
-                    administrators will be able to upload publications,
-                    assign categories and years, manage descriptions and
-                    publish or unpublish resources without changing the
-                    website code.
+                    Explore resources shared by Lifeline Achham to support
+                    community awareness, learning and access to useful
+                    information.
                   </p>
                 </div>
 

@@ -1,6 +1,6 @@
-﻿"use client";
+﻿
+"use client";
 
-import { useEffect, useRef, useState } from "react";
 import {
   CheckCircle2,
   ImagePlus,
@@ -8,63 +8,109 @@ import {
   RefreshCw,
   Trash2,
 } from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+type BrandingResponse = {
+  success?: boolean;
+  message?: string;
+  data?: {
+    logoUrl?: string | null;
+  };
+};
+
+type UploadResponse = {
+  error?: string;
+  media?: {
+    url?: string;
+  };
+};
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+
+const ALLOWED_TYPES = new Set([
+  "image/png",
+  "image/jpeg",
+  "image/webp",
+  "image/gif",
+  "image/svg+xml",
+]);
+
+async function readJson<T>(response: Response): Promise<T> {
+  try {
+    return (await response.json()) as T;
+  } catch {
+    throw new Error("The server returned an invalid response.");
+  }
+}
 
 export default function OrganizationBrandingSettings() {
   const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [removing, setRemoving] = useState(false);
+  const [logoLoadFailed, setLogoLoadFailed] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  useEffect(() => {
-    let active = true;
+  const busy = loading || uploading || removing;
 
-    async function loadBranding() {
-      try {
-        const response = await fetch(
-          "/api/settings/organization-branding",
-          { cache: "no-store" },
+  const loadBranding = useCallback(async () => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch(
+        "/api/settings/organization-branding",
+        { cache: "no-store" },
+      );
+
+      const result = await readJson<BrandingResponse>(response);
+
+      if (!response.ok || !result.success) {
+        throw new Error(
+          result.message || "Unable to load organization branding.",
         );
-        const result = await response.json();
-
-        if (!response.ok || !result.success) {
-          throw new Error(result.message || "Unable to load settings.");
-        }
-
-        if (active) setLogoUrl(result.data.logoUrl);
-      } catch (err) {
-        if (active) {
-          setError(
-            err instanceof Error ? err.message : "Unable to load settings.",
-          );
-        }
-      } finally {
-        if (active) setLoading(false);
       }
+
+      setLogoUrl(result.data?.logoUrl ?? null);
+      setLogoLoadFailed(false);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Unable to load organization branding.",
+      );
+    } finally {
+      setLoading(false);
     }
-
-    loadBranding();
-
-    return () => {
-      active = false;
-    };
   }, []);
 
+  useEffect(() => {
+    void loadBranding();
+  }, [loadBranding]);
+
   async function uploadLogo(file?: File) {
-    if (!file) return;
+    if (!file || busy) return;
 
     setMessage("");
     setError("");
 
-    if (!file.type.startsWith("image/")) {
-      setError("Please select an image file.");
+    if (!ALLOWED_TYPES.has(file.type)) {
+      setError("Choose a PNG, JPEG, WebP, GIF, or SVG image.");
       return;
     }
 
-    if (file.size > 10 * 1024 * 1024) {
-      setError("The logo must be smaller than 10 MB.");
+    if (file.size === 0 || file.size > MAX_FILE_SIZE) {
+      setError(
+        "The image must be greater than 0 bytes and no larger than 10 MB.",
+      );
       return;
     }
 
@@ -79,46 +125,69 @@ export default function OrganizationBrandingSettings() {
         method: "POST",
         body: formData,
       });
-      const uploadResult = await uploadResponse.json();
 
-      if (!uploadResponse.ok || !uploadResult.media?.url) {
-        throw new Error(uploadResult.error || "Logo upload failed.");
+      const uploadResult =
+        await readJson<UploadResponse>(uploadResponse);
+
+      const newLogoUrl = uploadResult.media?.url;
+
+      if (
+        !uploadResponse.ok ||
+        typeof newLogoUrl !== "string" ||
+        !newLogoUrl.trim()
+      ) {
+        throw new Error(
+          uploadResult.error || "The logo upload failed.",
+        );
       }
-
-      const newLogoUrl = uploadResult.media.url as string;
 
       const saveResponse = await fetch(
         "/api/settings/organization-branding",
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({ logoUrl: newLogoUrl }),
         },
       );
-      const saveResult = await saveResponse.json();
+
+      const saveResult =
+        await readJson<BrandingResponse>(saveResponse);
 
       if (!saveResponse.ok || !saveResult.success) {
         throw new Error(
-          saveResult.message || "The logo uploaded but could not be saved.",
+          saveResult.message ||
+            "The image uploaded, but the logo setting could not be saved.",
         );
       }
 
-      setLogoUrl(newLogoUrl);
+      setLogoUrl(saveResult.data?.logoUrl ?? newLogoUrl);
+      setLogoLoadFailed(false);
       setMessage("Organization logo updated successfully.");
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Unable to upload the logo.",
+        err instanceof Error
+          ? err.message
+          : "Unable to upload the logo.",
       );
     } finally {
       setUploading(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
     }
   }
 
   async function removeLogo() {
-    if (!logoUrl) return;
+    if (!logoUrl || busy) return;
 
-    if (!window.confirm("Remove the current organization logo?")) return;
+    const confirmed = window.confirm(
+      "Remove the current organization logo?",
+    );
+
+    if (!confirmed) return;
 
     setRemoving(true);
     setMessage("");
@@ -129,21 +198,29 @@ export default function OrganizationBrandingSettings() {
         "/api/settings/organization-branding",
         {
           method: "PATCH",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify({ logoUrl: null }),
         },
       );
-      const result = await response.json();
+
+      const result = await readJson<BrandingResponse>(response);
 
       if (!response.ok || !result.success) {
-        throw new Error(result.message || "Unable to remove the logo.");
+        throw new Error(
+          result.message || "Unable to remove the organization logo.",
+        );
       }
 
       setLogoUrl(null);
+      setLogoLoadFailed(false);
       setMessage("Organization logo removed successfully.");
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "Unable to remove the logo.",
+        err instanceof Error
+          ? err.message
+          : "Unable to remove the logo.",
       );
     } finally {
       setRemoving(false);
@@ -152,48 +229,57 @@ export default function OrganizationBrandingSettings() {
 
   return (
     <div className="space-y-6">
-      <div>
-        <p className="text-sm font-medium text-[#2457C5]">
+      <header>
+        <p className="text-sm font-semibold text-[#2457C5]">
           ORGANIZATION SETTINGS
         </p>
-        <h1 className="mt-2 text-3xl font-bold tracking-tight text-[#172033]">
+
+        <h2 className="mt-2 text-2xl font-bold tracking-tight text-[#172033]">
           Organization Branding
-        </h1>
+        </h2>
+
         <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-          Manage the official Lifeline Achham logo displayed throughout
-          your website and administration panel.
+          Manage the official Lifeline Achham logo used across the
+          organization&apos;s website and administration panel.
         </p>
-      </div>
+      </header>
 
       {message && (
-        <div role="status" className="flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-800">
+        <div
+          role="status"
+          className="flex items-center gap-2 rounded-xl border border-green-200 bg-green-50 p-4 text-sm text-green-800"
+        >
           <CheckCircle2 size={18} />
-          {message}
+          <span>{message}</span>
         </div>
       )}
 
       {error && (
-        <div role="alert" className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
+        <div
+          role="alert"
+          className="rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700"
+        >
           {error}
         </div>
       )}
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-8">
-        <div className="flex flex-col gap-8 lg:flex-row lg:items-start">
-          <div className="flex-1">
-            <h2 className="text-lg font-semibold text-[#172033]">
+      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-7">
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px]">
+          <div>
+            <h3 className="text-lg font-semibold text-[#172033]">
               Official organization logo
-            </h2>
+            </h3>
+
             <p className="mt-2 text-sm leading-6 text-slate-500">
-              Upload a transparent PNG or high-quality SVG for the cleanest
-              appearance. JPG, WebP and GIF are also supported.
+              Choose a high-quality image with a transparent background
+              for the best appearance.
             </p>
 
             <div className="mt-6 flex flex-wrap gap-3">
               <button
                 type="button"
                 onClick={() => fileInputRef.current?.click()}
-                disabled={loading || uploading || removing}
+                disabled={busy}
                 className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#2457C5] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1946a7] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {uploading ? (
@@ -203,21 +289,27 @@ export default function OrganizationBrandingSettings() {
                 ) : (
                   <ImagePlus size={18} />
                 )}
-                {uploading ? "Uploading..." : logoUrl ? "Replace logo" : "Upload logo"}
+
+                {uploading
+                  ? "Uploading..."
+                  : logoUrl
+                    ? "Replace logo"
+                    : "Upload logo"}
               </button>
 
               {logoUrl && (
                 <button
                   type="button"
-                  onClick={removeLogo}
-                  disabled={uploading || removing}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-red-200 px-5 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:opacity-60"
+                  onClick={() => void removeLogo()}
+                  disabled={busy}
+                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-red-200 px-5 py-3 text-sm font-semibold text-red-600 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {removing ? (
                     <LoaderCircle size={18} className="animate-spin" />
                   ) : (
                     <Trash2 size={18} />
                   )}
+
                   {removing ? "Removing..." : "Remove logo"}
                 </button>
               )}
@@ -228,38 +320,53 @@ export default function OrganizationBrandingSettings() {
               type="file"
               accept="image/png,image/jpeg,image/webp,image/gif,image/svg+xml"
               className="hidden"
-              onChange={(event) => void uploadLogo(event.target.files?.[0])}
+              disabled={busy}
+              onChange={(event) => {
+                void uploadLogo(event.target.files?.[0]);
+              }}
             />
 
             <p className="mt-4 text-xs leading-5 text-slate-400">
-              Maximum file size: 10 MB. The previous media file is not
-              automatically deleted when replacing the logo.
+              Maximum size: 10 MB. Replacing a logo does not automatically
+              delete the old media file.
             </p>
           </div>
 
-          <div className="w-full lg:w-80">
+          <div>
             <p className="mb-3 text-sm font-semibold text-slate-700">
               Live logo preview
             </p>
-            <div className="flex min-h-52 items-center justify-center rounded-2xl border border-dashed border-slate-300 bg-[#FCFAF7] p-8">
+
+            <div className="flex min-h-52 items-center justify-center overflow-hidden rounded-2xl border border-dashed border-slate-300 bg-[#FCFAF7] p-8">
               {loading ? (
-                <LoaderCircle size={28} className="animate-spin text-[#2457C5]" />
-              ) : logoUrl ? (
+                <LoaderCircle
+                  size={28}
+                  className="animate-spin text-[#2457C5]"
+                />
+              ) : logoUrl && !logoLoadFailed ? (
+                // eslint-disable-next-line @next/next/no-img-element
                 <img
                   src={logoUrl}
                   alt="Lifeline Achham organization logo preview"
                   className="max-h-36 max-w-full object-contain"
+                  onError={() => setLogoLoadFailed(true)}
                 />
               ) : (
                 <div className="text-center">
                   <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#7A1F3D] text-2xl font-bold text-white">
                     LA
                   </div>
+
                   <p className="mt-3 text-sm font-medium text-slate-600">
-                    No custom logo uploaded
+                    {logoUrl
+                      ? "Logo preview unavailable"
+                      : "No custom logo uploaded"}
                   </p>
+
                   <p className="mt-1 text-xs text-slate-400">
-                    Upload your official logo to replace this fallback.
+                    {logoUrl
+                      ? "Check that the media file exists and is accessible."
+                      : "Upload your official logo to replace this fallback."}
                   </p>
                 </div>
               )}
@@ -269,9 +376,10 @@ export default function OrganizationBrandingSettings() {
       </section>
 
       <div className="rounded-xl border border-blue-100 bg-blue-50/70 p-4 text-sm leading-6 text-slate-600">
-        <strong className="text-[#172033]">Where it will appear:</strong>{" "}
-        the public website navigation, website footer and admin sidebar once
-        those shared components are connected to the saved branding.
+        <strong className="text-[#172033]">Display note:</strong>{" "}
+        Saving the logo updates the database. The website header, footer,
+        and admin sidebar must separately read this saved branding setting
+        before they display the new logo.
       </div>
     </div>
   );

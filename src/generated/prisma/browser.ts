@@ -43,6 +43,21 @@ export type TeamMember = Prisma.TeamMemberModel
  */
 export type ContentItem = Prisma.ContentItemModel
 /**
+ * Model NewsArticle
+ * 
+ */
+export type NewsArticle = Prisma.NewsArticleModel
+/**
+ * Model Report
+ * 
+ */
+export type Report = Prisma.ReportModel
+/**
+ * Model Publication
+ * 
+ */
+export type Publication = Prisma.PublicationModel
+/**
  * Model GalleryAlbum
  * 
  */
@@ -82,3 +97,23 @@ export type FinanceTransaction = Prisma.FinanceTransactionModel
  * 
  */
 export type FinanceAuditLog = Prisma.FinanceAuditLogModel
+/**
+ * Model DonorApplication
+ * 
+ */
+export type DonorApplication = Prisma.DonorApplicationModel
+/**
+ * Model Donor
+ * 
+ */
+export type Donor = Prisma.DonorModel
+/**
+ * Model BloodRequest
+ * 
+ */
+export type BloodRequest = Prisma.BloodRequestModel
+/**
+ * Model DonationRecord
+ * 
+ */
+export type DonationRecord = Prisma.DonationRecordModel

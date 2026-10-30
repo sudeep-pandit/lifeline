@@ -1,5 +1,7 @@
+
 "use client";
 
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -11,66 +13,28 @@ import {
   HeartHandshake,
   Megaphone,
   MapPin,
-  Share2,
   Target,
   Users,
 } from "lucide-react";
 import { motion } from "framer-motion";
 
-const campaigns = [
-  {
-    id: "01",
-    slug: "community-awareness-campaign",
-    title: "Community Awareness Campaign",
-    category: "Awareness",
-    status: "Active",
-    location: "Achham, Nepal",
-    description:
-      "A community-focused campaign designed to encourage awareness, dialogue and meaningful participation around important local issues.",
-    image:
-      "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=1400&q=90",
-    icon: Megaphone,
-  },
-  {
-    id: "02",
-    slug: "health-awareness-campaign",
-    title: "Health Awareness Campaign",
-    category: "Health",
-    status: "Upcoming",
-    location: "Achham, Nepal",
-    description:
-      "An awareness-focused campaign supporting responsible health information sharing and community participation.",
-    image:
-      "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1400&q=90",
-    icon: HeartHandshake,
-  },
-  {
-    id: "03",
-    slug: "youth-participation-campaign",
-    title: "Youth Participation Campaign",
-    category: "Youth",
-    status: "Planned",
-    location: "Achham, Nepal",
-    description:
-      "A campaign framework encouraging young people to participate, share ideas and contribute to community-focused activities.",
-    image:
-      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=90",
-    icon: Users,
-  },
-  {
-    id: "04",
-    slug: "community-action-campaign",
-    title: "Community Action Campaign",
-    category: "Community",
-    status: "Planned",
-    location: "Achham, Nepal",
-    description:
-      "A campaign designed to bring people together around practical community participation and local action.",
-    image:
-      "https://images.unsplash.com/photo-1531206715517-5c0ba140b2b8?auto=format&fit=crop&w=1400&q=90",
-    icon: Heart,
-  },
-];
+type Campaign = {
+  id: string;
+  key: string;
+  slug: string | null;
+  title: string;
+  excerpt: string | null;
+  content: string | null;
+  imageUrl: string | null;
+  isFeatured: boolean;
+  sortOrder: number;
+};
+
+const heroImage =
+  "https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=2000&q=90";
+
+const introImage =
+  "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=90";
 
 const campaignPrinciples = [
   {
@@ -124,13 +88,65 @@ const campaignFlow = [
 ];
 
 export default function CampaignsPage() {
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  async function loadCampaigns() {
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/content/public", {
+        cache: "no-store",
+      });
+
+      if (!response.ok) {
+        throw new Error("Unable to load campaigns right now.");
+      }
+
+      const result = await response.json();
+
+      if (result.success === false) {
+        throw new Error(result.message || "Unable to load campaigns.");
+      }
+
+      const records: Campaign[] = Array.isArray(result.data)
+        ? result.data
+        : [];
+
+      const publishedCampaigns = records
+        .filter(
+          (item) =>
+            typeof item.key === "string" &&
+            item.key.startsWith("campaign_") &&
+            Boolean(item.slug),
+        )
+        .sort((a, b) => a.sortOrder - b.sortOrder);
+
+      setCampaigns(publishedCampaigns);
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Something went wrong while loading campaigns.",
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    void loadCampaigns();
+  }, []);
+
   return (
     <main className="overflow-hidden bg-[#FCFAF7]">
       {/* HERO */}
       <section className="relative overflow-hidden bg-[#55152B] pt-[112px]">
         <div className="relative h-[390px] w-full sm:h-[430px] lg:h-[470px]">
           <Image
-            src="https://images.unsplash.com/photo-1517457373958-b7bdd4587205?auto=format&fit=crop&w=2000&q=90"
+            src={heroImage}
             alt="Community campaign activity"
             fill
             priority
@@ -139,7 +155,6 @@ export default function CampaignsPage() {
           />
 
           <div className="absolute inset-0 bg-[#55152B]/70" />
-
           <div className="absolute inset-0 bg-gradient-to-r from-[#55152B]/95 via-[#55152B]/65 to-transparent" />
 
           <div className="container-main relative z-10 flex h-full items-center">
@@ -151,7 +166,6 @@ export default function CampaignsPage() {
             >
               <div className="mb-5 flex items-center gap-3">
                 <span className="h-2 w-2 rounded-full bg-[#2457C5]" />
-
                 <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9B6C7]">
                   Our Work
                 </span>
@@ -162,29 +176,19 @@ export default function CampaignsPage() {
               </h1>
 
               <p className="mt-5 max-w-2xl text-sm leading-7 text-white/75 sm:text-base lg:text-lg">
-                Community-focused campaigns that turn awareness, participation
-                and shared purpose into meaningful action.
+                Community-focused campaigns that turn awareness,
+                participation and shared purpose into meaningful action.
               </p>
 
               <div className="mt-7 flex items-center gap-3 text-xs">
-                <Link
-                  href="/"
-                  className="text-white/60 transition hover:text-white"
-                >
+                <Link href="/" className="text-white/60 transition hover:text-white">
                   Home
                 </Link>
-
                 <span className="text-white/30">/</span>
-
-                <Link
-                  href="/work"
-                  className="text-white/60 transition hover:text-white"
-                >
+                <Link href="/work" className="text-white/60 transition hover:text-white">
                   Our Work
                 </Link>
-
                 <span className="text-white/30">/</span>
-
                 <span className="text-white/50">Campaigns</span>
               </div>
             </motion.div>
@@ -206,13 +210,12 @@ export default function CampaignsPage() {
               <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-3 shadow-sm">
                 <div className="relative h-[360px] overflow-hidden rounded-2xl sm:h-[430px]">
                   <Image
-                    src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1400&q=90"
+                    src={introImage}
                     alt="People participating in a community activity"
                     fill
                     sizes="(max-width: 1024px) 100vw, 45vw"
                     className="object-cover"
                   />
-
                   <div className="absolute inset-0 bg-gradient-to-t from-[#172033]/70 via-transparent to-transparent" />
 
                   <div className="absolute bottom-5 left-5 right-5">
@@ -221,14 +224,12 @@ export default function CampaignsPage() {
                         <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#7A1F3D] text-white">
                           <Megaphone size={18} />
                         </div>
-
                         <div>
                           <p className="text-sm font-bold text-[#172033]">
                             Awareness into action
                           </p>
-
                           <p className="mt-1 text-xs text-slate-500">
-                            Connect • Engage • Act
+                            Connect · Engage · Act
                           </p>
                         </div>
                       </div>
@@ -247,7 +248,6 @@ export default function CampaignsPage() {
             >
               <div className="mb-5 flex items-center gap-3">
                 <span className="brand-line" />
-
                 <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#7A1F3D]">
                   Campaigns
                 </span>
@@ -274,11 +274,9 @@ export default function CampaignsPage() {
                 <span className="rounded-full bg-[#F7E9EE] px-4 py-2 text-xs font-semibold text-[#7A1F3D]">
                   Awareness
                 </span>
-
                 <span className="rounded-full bg-[#EEF4FF] px-4 py-2 text-xs font-semibold text-[#2457C5]">
                   Participation
                 </span>
-
                 <span className="rounded-full bg-slate-100 px-4 py-2 text-xs font-semibold text-slate-600">
                   Community Action
                 </span>
@@ -288,128 +286,167 @@ export default function CampaignsPage() {
         </div>
       </section>
 
-      {/* FEATURED CAMPAIGNS */}
+      {/* CMS CAMPAIGN DIRECTORY */}
       <section className="border-y border-slate-200 bg-white py-20">
         <div className="container-main">
           <div className="mx-auto max-w-3xl text-center">
             <div className="mb-4 flex items-center justify-center gap-3">
               <span className="blue-dot" />
-
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#2457C5]">
                 Campaign Directory
               </span>
-
               <span className="blue-dot" />
             </div>
 
             <h2 className="text-3xl font-bold tracking-tight text-[#172033] sm:text-4xl">
-              Explore our
-              <span className="text-[#2457C5]"> campaigns.</span>
+              Explore our <span className="text-[#2457C5]">campaigns.</span>
             </h2>
 
             <p className="mt-4 text-sm leading-7 text-slate-500 sm:text-base">
-              Explore campaign themes and initiatives. Detailed campaign
-              information can be managed through the future CMS.
+              Discover published campaigns and learn more about the work
+              Lifeline Achham is sharing with the community.
             </p>
           </div>
 
-          <div className="mt-12 grid gap-7 md:grid-cols-2">
-            {campaigns.map((campaign) => {
-              const Icon = campaign.icon;
-
-              return (
+          {loading ? (
+            <div className="mt-12 grid gap-7 md:grid-cols-2">
+              {[1, 2, 3, 4].map((item) => (
+                <div
+                  key={item}
+                  className="animate-pulse overflow-hidden rounded-2xl border border-slate-200 bg-[#FCFAF7]"
+                >
+                  <div className="h-[270px] bg-slate-200" />
+                  <div className="space-y-4 p-7">
+                    <div className="h-5 w-2/3 rounded bg-slate-200" />
+                    <div className="h-4 w-full rounded bg-slate-200" />
+                    <div className="h-4 w-4/5 rounded bg-slate-200" />
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : error ? (
+            <div className="mx-auto mt-12 max-w-2xl rounded-2xl border border-red-200 bg-red-50 p-8 text-center">
+              <p className="font-semibold text-red-800">
+                We couldn&apos;t load the campaigns.
+              </p>
+              <p className="mt-2 text-sm leading-6 text-red-700">{error}</p>
+              <button
+                type="button"
+                onClick={() => void loadCampaigns()}
+                className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#7A1F3D] px-5 py-3 text-sm font-bold text-white transition hover:bg-[#55152B]"
+              >
+                Try again <ArrowRight size={16} />
+              </button>
+            </div>
+          ) : campaigns.length === 0 ? (
+            <div className="mx-auto mt-12 max-w-2xl rounded-2xl border border-slate-200 bg-[#FCFAF7] px-6 py-12 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-[#F7E9EE] text-[#7A1F3D]">
+                <Megaphone size={24} />
+              </div>
+              <h3 className="mt-5 text-xl font-bold text-[#172033]">
+                Campaigns are coming soon
+              </h3>
+              <p className="mx-auto mt-3 max-w-md text-sm leading-7 text-slate-500">
+                Published campaigns will appear here when they are added
+                through the Lifeline Achham content management system.
+              </p>
+              <Link
+                href="/contact"
+                className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-[#2457C5] hover:text-[#17439F]"
+              >
+                Contact us <ArrowUpRight size={16} />
+              </Link>
+            </div>
+          ) : (
+            <div className="mt-12 grid gap-7 md:grid-cols-2">
+              {campaigns.map((campaign, index) => (
                 <motion.article
                   key={campaign.id}
                   initial={{ opacity: 0, y: 25 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
-                  transition={{ duration: 0.6 }}
+                  transition={{ duration: 0.5, delay: index * 0.04 }}
                   whileHover={{ y: -5 }}
                   className="group overflow-hidden rounded-2xl border border-slate-200 bg-[#FCFAF7] shadow-sm transition-shadow duration-300 hover:shadow-xl"
                 >
-                  <div className="relative h-[270px] overflow-hidden">
-                    <Image
-                      src={campaign.image}
-                      alt={campaign.title}
-                      fill
-                      sizes="(max-width: 768px) 100vw, 50vw"
-                      className="object-cover transition duration-700 group-hover:scale-105"
-                    />
+                  <Link
+                    href={`/work/campaigns/${campaign.slug}`}
+                    className="block"
+                    aria-label={`View ${campaign.title}`}
+                  >
+                    <div className="relative h-[270px] overflow-hidden bg-[#F7E9EE]">
+                      {campaign.imageUrl ? (
+                        <Image
+                          src={campaign.imageUrl}
+                          alt={campaign.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, 50vw"
+                          className="object-cover transition duration-700 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="flex h-full items-center justify-center bg-gradient-to-br from-[#F7E9EE] to-[#EEF4FF]">
+                          <Megaphone
+                            size={52}
+                            className="text-[#7A1F3D]/50"
+                          />
+                        </div>
+                      )}
 
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#172033]/80 via-[#172033]/10 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#172033]/75 via-transparent to-transparent" />
 
-                    <div className="absolute left-5 top-5 flex flex-wrap gap-2">
-                      <span className="rounded-full bg-white/90 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-[#7A1F3D] shadow-sm backdrop-blur">
-                        {campaign.category}
+                      <span className="absolute left-5 top-5 rounded-full bg-white/90 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-[#7A1F3D] shadow-sm backdrop-blur">
+                        Campaign
                       </span>
 
-                      <span
-                        className={`rounded-full px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.12em] ${
-                          campaign.status === "Active"
-                            ? "bg-[#198754] text-white"
-                            : campaign.status === "Upcoming"
-                              ? "bg-[#2457C5] text-white"
-                              : "bg-white/90 text-slate-600"
-                        }`}
-                      >
-                        {campaign.status}
+                      {campaign.isFeatured && (
+                        <span className="absolute right-5 top-5 rounded-full bg-[#2457C5] px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-white">
+                          Featured
+                        </span>
+                      )}
+
+                      <div className="absolute bottom-5 left-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#7A1F3D] text-white shadow-lg">
+                        <Megaphone size={19} />
+                      </div>
+
+                      <span className="absolute bottom-5 right-5 text-xs font-bold tracking-[0.18em] text-white/65">
+                        CAMPAIGN {String(index + 1).padStart(2, "0")}
                       </span>
                     </div>
 
-                    <div className="absolute bottom-5 left-5 flex h-11 w-11 items-center justify-center rounded-xl bg-[#7A1F3D] text-white shadow-lg">
-                      <Icon size={19} />
-                    </div>
+                    <div className="p-7">
+                      <h3 className="text-xl font-bold text-[#172033] transition group-hover:text-[#7A1F3D]">
+                        {campaign.title}
+                      </h3>
 
-                    <span className="absolute bottom-5 right-5 text-xs font-bold tracking-[0.18em] text-white/55">
-                      CAMPAIGN {campaign.id}
-                    </span>
-                  </div>
+                      <p className="mt-3 line-clamp-3 text-sm leading-7 text-slate-500">
+                        {campaign.excerpt ||
+                          "Learn more about this campaign, its purpose and the community activities it supports."}
+                      </p>
 
-                  <div className="p-7">
-                    <h3 className="text-xl font-bold text-[#172033]">
-                      {campaign.title}
-                    </h3>
-
-                    <p className="mt-3 text-sm leading-7 text-slate-500">
-                      {campaign.description}
-                    </p>
-
-                    <div className="mt-5 flex flex-wrap gap-4 border-y border-slate-200 py-4">
-                      <div className="flex items-center gap-2 text-xs text-slate-500">
-                        <MapPin
-                          size={14}
-                          className="shrink-0 text-[#7A1F3D]"
-                        />
-
-                        <span>{campaign.location}</span>
+                      <div className="mt-5 flex flex-wrap gap-4 border-y border-slate-200 py-4">
+                        <div className="flex items-center gap-2 text-xs text-slate-500">
+                          <MapPin size={14} className="shrink-0 text-[#7A1F3D]" />
+                          <span>Achham, Nepal</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-xs text-slate-500">
+                          <CalendarDays size={14} className="shrink-0 text-[#2457C5]" />
+                          <span>Campaign information</span>
+                        </div>
                       </div>
 
-                      <div className="flex items-center gap-2 text-xs text-slate-500">
-                        <CalendarDays
-                          size={14}
-                          className="shrink-0 text-[#2457C5]"
+                      <span className="mt-6 inline-flex items-center gap-2 text-sm font-bold text-[#2457C5]">
+                        View campaign
+                        <ArrowRight
+                          size={15}
+                          className="transition-transform group-hover:translate-x-1"
                         />
-
-                        <span>Campaign timeline</span>
-                      </div>
+                      </span>
                     </div>
-
-                    <Link
-                      href={`/work/campaigns/${campaign.slug}`}
-                      className="group/link mt-6 inline-flex items-center gap-2 text-sm font-bold text-[#2457C5]"
-                    >
-                      View campaign
-
-                      <ArrowRight
-                        size={15}
-                        className="transition-transform group-hover/link:translate-x-1"
-                      />
-                    </Link>
-                  </div>
+                  </Link>
                 </motion.article>
-              );
-            })}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 
@@ -419,17 +456,14 @@ export default function CampaignsPage() {
           <div className="mx-auto max-w-3xl text-center">
             <div className="mb-4 flex items-center justify-center gap-3">
               <span className="brand-line" />
-
               <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#7A1F3D]">
                 Our Approach
               </span>
-
               <span className="brand-line" />
             </div>
 
             <h2 className="text-3xl font-bold tracking-tight text-[#172033] sm:text-4xl">
-              Campaigns built around
-              <span className="text-[#7A1F3D]"> purpose.</span>
+              Campaigns built around <span className="text-[#7A1F3D]">purpose.</span>
             </h2>
 
             <p className="mt-4 text-sm leading-7 text-slate-500 sm:text-base">
@@ -454,15 +488,12 @@ export default function CampaignsPage() {
                   <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-[#F7E9EE] text-[#7A1F3D] transition group-hover:bg-[#7A1F3D] group-hover:text-white">
                     <Icon size={21} />
                   </div>
-
                   <div className="mt-5 text-[10px] font-bold tracking-[0.18em] text-slate-300">
                     {principle.number}
                   </div>
-
                   <h3 className="mt-2 text-lg font-bold text-[#172033]">
                     {principle.title}
                   </h3>
-
                   <p className="mt-3 text-sm leading-7 text-slate-500">
                     {principle.description}
                   </p>
@@ -480,23 +511,19 @@ export default function CampaignsPage() {
             <div className="lg:sticky lg:top-32 lg:self-start">
               <div className="rounded-3xl bg-[#55152B] p-8 sm:p-10">
                 <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-white">
-                  <Share2 size={22} />
+                  <HeartHandshake size={22} />
                 </div>
-
                 <h2 className="mt-7 text-2xl font-bold tracking-tight text-white sm:text-3xl">
                   From message to movement.
                 </h2>
-
                 <p className="mt-4 text-sm leading-7 text-white/60">
                   A structured campaign approach helps transform an important
                   message into meaningful participation and action.
                 </p>
-
                 <div className="mt-8 flex items-center gap-3">
                   <span className="h-2 w-2 rounded-full bg-[#2457C5]" />
-
                   <span className="text-[10px] font-bold uppercase tracking-[0.18em] text-white/45">
-                    Understand • Connect • Act • Reflect
+                    Understand · Connect · Act · Reflect
                   </span>
                 </div>
               </div>
@@ -507,7 +534,6 @@ export default function CampaignsPage() {
                 <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#7A1F3D]">
                   Campaign Flow
                 </span>
-
                 <h3 className="mt-3 text-2xl font-bold text-[#172033]">
                   A clear path from purpose to action.
                 </h3>
@@ -522,12 +548,10 @@ export default function CampaignsPage() {
                     <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#EEF4FF] text-sm font-bold text-[#2457C5]">
                       {item.step}
                     </div>
-
                     <div>
                       <h4 className="text-lg font-bold text-[#172033]">
                         {item.title}
                       </h4>
-
                       <p className="mt-2 text-sm leading-7 text-slate-500">
                         {item.description}
                       </p>
@@ -540,16 +564,15 @@ export default function CampaignsPage() {
         </div>
       </section>
 
-      {/* CMS READY */}
+      {/* CMS INFORMATION */}
       <section className="section">
         <div className="container-main">
           <div className="grid items-center gap-10 lg:grid-cols-[1fr_0.75fr] lg:gap-20">
             <div>
               <div className="mb-5 flex items-center gap-3">
                 <span className="brand-line" />
-
                 <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#7A1F3D]">
-                  CMS Ready
+                  Content Management
                 </span>
               </div>
 
@@ -559,21 +582,21 @@ export default function CampaignsPage() {
               </h2>
 
               <p className="mt-5 max-w-2xl text-sm leading-8 text-slate-500 sm:text-base">
-                The future custom CMS will allow administrators to create,
-                update and publish campaign information without changing the
-                frontend code.
+                Campaign titles, summaries, featured images, publication
+                status and display order can be maintained through the content
+                management system.
               </p>
 
               <div className="mt-7 grid gap-3 sm:grid-cols-2">
                 {[
-                  "Campaign title & category",
-                  "Campaign status",
+                  "Campaign title and summary",
+                  "Publication status",
                   "Featured image",
-                  "Campaign dates",
-                  "Location",
-                  "Campaign description",
-                  "Objectives & activities",
-                  "Gallery & resources",
+                  "Unique campaign URL",
+                  "Featured campaign setting",
+                  "Display order",
+                  "Campaign content",
+                  "SEO information",
                 ].map((item) => (
                   <div
                     key={item}
@@ -582,7 +605,6 @@ export default function CampaignsPage() {
                     <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#EEF4FF] text-xs font-bold text-[#2457C5]">
                       ✓
                     </span>
-
                     <span className="text-xs font-medium text-slate-600">
                       {item}
                     </span>
@@ -595,25 +617,19 @@ export default function CampaignsPage() {
               <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#7A1F3D] text-white">
                 <Heart size={21} />
               </div>
-
               <h3 className="mt-7 text-2xl font-bold text-[#172033]">
                 Built for community participation.
               </h3>
-
               <p className="mt-4 text-sm leading-7 text-slate-600">
-                Campaign pages can eventually include participation options,
-                campaign resources, updates, media and calls to action.
+                Publish campaign updates and information so visitors can
+                discover initiatives and contact Lifeline Achham to learn
+                about ways to contribute.
               </p>
-
               <div className="mt-7 rounded-2xl border border-[#7A1F3D]/10 bg-white/70 p-5">
                 <div className="flex items-center gap-3">
-                  <CheckCircle2
-                    size={18}
-                    className="text-[#198754]"
-                  />
-
+                  <CheckCircle2 size={18} className="text-[#198754]" />
                   <span className="text-xs font-semibold text-slate-600">
-                    Structured for future CMS management
+                    Connected to the public content API
                   </span>
                 </div>
               </div>
@@ -627,13 +643,11 @@ export default function CampaignsPage() {
         <div className="container-main">
           <div className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl bg-[#55152B] px-7 py-14 text-center sm:px-12 sm:py-16 lg:px-16 lg:py-20">
             <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full border-[35px] border-white/[0.045]" />
-
             <div className="pointer-events-none absolute -bottom-24 left-1/4 h-52 w-52 rounded-full bg-[#2457C5]/15 blur-3xl" />
 
             <div className="relative z-10 mx-auto max-w-3xl">
               <div className="mb-5 flex items-center justify-center gap-2">
                 <span className="h-2 w-2 rounded-full bg-[#2457C5]" />
-
                 <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/55">
                   Get Involved
                 </span>
@@ -642,7 +656,6 @@ export default function CampaignsPage() {
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 Be part of meaningful action.
               </h2>
-
               <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-white/65 sm:text-base">
                 Whether you want to volunteer, collaborate, share a campaign
                 or support community-focused work, there is always a meaningful
@@ -655,7 +668,6 @@ export default function CampaignsPage() {
                   className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[#2457C5] px-6 py-3.5 text-sm font-bold text-white shadow-xl transition hover:bg-[#17439F]"
                 >
                   Get Involved
-
                   <ArrowUpRight
                     size={17}
                     className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
@@ -667,7 +679,6 @@ export default function CampaignsPage() {
                   className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white/80 transition hover:bg-white/10 hover:text-white"
                 >
                   Blood Donation
-
                   <HeartHandshake size={16} />
                 </Link>
               </div>

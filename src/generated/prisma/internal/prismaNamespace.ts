@@ -402,6 +402,9 @@ export const ModelName = {
   Media: 'Media',
   TeamMember: 'TeamMember',
   ContentItem: 'ContentItem',
+  NewsArticle: 'NewsArticle',
+  Report: 'Report',
+  Publication: 'Publication',
   GalleryAlbum: 'GalleryAlbum',
   GalleryPhoto: 'GalleryPhoto',
   Message: 'Message',
@@ -409,7 +412,11 @@ export const ModelName = {
   FinanceCategory: 'FinanceCategory',
   FinanceParty: 'FinanceParty',
   FinanceTransaction: 'FinanceTransaction',
-  FinanceAuditLog: 'FinanceAuditLog'
+  FinanceAuditLog: 'FinanceAuditLog',
+  DonorApplication: 'DonorApplication',
+  Donor: 'Donor',
+  BloodRequest: 'BloodRequest',
+  DonationRecord: 'DonationRecord'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -425,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "mediaFolder" | "media" | "teamMember" | "contentItem" | "galleryAlbum" | "galleryPhoto" | "message" | "systemSetting" | "financeCategory" | "financeParty" | "financeTransaction" | "financeAuditLog"
+    modelProps: "user" | "mediaFolder" | "media" | "teamMember" | "contentItem" | "newsArticle" | "report" | "publication" | "galleryAlbum" | "galleryPhoto" | "message" | "systemSetting" | "financeCategory" | "financeParty" | "financeTransaction" | "financeAuditLog" | "donorApplication" | "donor" | "bloodRequest" | "donationRecord"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -796,6 +803,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.ContentItemCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.ContentItemCountAggregateOutputType> | number
+        }
+      }
+    }
+    NewsArticle: {
+      payload: Prisma.$NewsArticlePayload<ExtArgs>
+      fields: Prisma.NewsArticleFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.NewsArticleFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NewsArticlePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.NewsArticleFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NewsArticlePayload>
+        }
+        findFirst: {
+          args: Prisma.NewsArticleFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NewsArticlePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.NewsArticleFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NewsArticlePayload>
+        }
+        findMany: {
+          args: Prisma.NewsArticleFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NewsArticlePayload>[]
+        }
+        create: {
+          args: Prisma.NewsArticleCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NewsArticlePayload>
+        }
+        createMany: {
+          args: Prisma.NewsArticleCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.NewsArticleCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NewsArticlePayload>[]
+        }
+        delete: {
+          args: Prisma.NewsArticleDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NewsArticlePayload>
+        }
+        update: {
+          args: Prisma.NewsArticleUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NewsArticlePayload>
+        }
+        deleteMany: {
+          args: Prisma.NewsArticleDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.NewsArticleUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.NewsArticleUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NewsArticlePayload>[]
+        }
+        upsert: {
+          args: Prisma.NewsArticleUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$NewsArticlePayload>
+        }
+        aggregate: {
+          args: Prisma.NewsArticleAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateNewsArticle>
+        }
+        groupBy: {
+          args: Prisma.NewsArticleGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NewsArticleGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.NewsArticleCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.NewsArticleCountAggregateOutputType> | number
+        }
+      }
+    }
+    Report: {
+      payload: Prisma.$ReportPayload<ExtArgs>
+      fields: Prisma.ReportFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ReportFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ReportFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPayload>
+        }
+        findFirst: {
+          args: Prisma.ReportFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ReportFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPayload>
+        }
+        findMany: {
+          args: Prisma.ReportFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPayload>[]
+        }
+        create: {
+          args: Prisma.ReportCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPayload>
+        }
+        createMany: {
+          args: Prisma.ReportCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ReportCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPayload>[]
+        }
+        delete: {
+          args: Prisma.ReportDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPayload>
+        }
+        update: {
+          args: Prisma.ReportUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPayload>
+        }
+        deleteMany: {
+          args: Prisma.ReportDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ReportUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ReportUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPayload>[]
+        }
+        upsert: {
+          args: Prisma.ReportUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ReportPayload>
+        }
+        aggregate: {
+          args: Prisma.ReportAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateReport>
+        }
+        groupBy: {
+          args: Prisma.ReportGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReportGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ReportCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ReportCountAggregateOutputType> | number
+        }
+      }
+    }
+    Publication: {
+      payload: Prisma.$PublicationPayload<ExtArgs>
+      fields: Prisma.PublicationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.PublicationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.PublicationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationPayload>
+        }
+        findFirst: {
+          args: Prisma.PublicationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.PublicationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationPayload>
+        }
+        findMany: {
+          args: Prisma.PublicationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationPayload>[]
+        }
+        create: {
+          args: Prisma.PublicationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationPayload>
+        }
+        createMany: {
+          args: Prisma.PublicationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.PublicationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationPayload>[]
+        }
+        delete: {
+          args: Prisma.PublicationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationPayload>
+        }
+        update: {
+          args: Prisma.PublicationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationPayload>
+        }
+        deleteMany: {
+          args: Prisma.PublicationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.PublicationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.PublicationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationPayload>[]
+        }
+        upsert: {
+          args: Prisma.PublicationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$PublicationPayload>
+        }
+        aggregate: {
+          args: Prisma.PublicationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregatePublication>
+        }
+        groupBy: {
+          args: Prisma.PublicationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PublicationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.PublicationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.PublicationCountAggregateOutputType> | number
         }
       }
     }
@@ -1391,6 +1620,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DonorApplication: {
+      payload: Prisma.$DonorApplicationPayload<ExtArgs>
+      fields: Prisma.DonorApplicationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DonorApplicationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorApplicationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DonorApplicationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorApplicationPayload>
+        }
+        findFirst: {
+          args: Prisma.DonorApplicationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorApplicationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DonorApplicationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorApplicationPayload>
+        }
+        findMany: {
+          args: Prisma.DonorApplicationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorApplicationPayload>[]
+        }
+        create: {
+          args: Prisma.DonorApplicationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorApplicationPayload>
+        }
+        createMany: {
+          args: Prisma.DonorApplicationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DonorApplicationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorApplicationPayload>[]
+        }
+        delete: {
+          args: Prisma.DonorApplicationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorApplicationPayload>
+        }
+        update: {
+          args: Prisma.DonorApplicationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorApplicationPayload>
+        }
+        deleteMany: {
+          args: Prisma.DonorApplicationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DonorApplicationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DonorApplicationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorApplicationPayload>[]
+        }
+        upsert: {
+          args: Prisma.DonorApplicationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorApplicationPayload>
+        }
+        aggregate: {
+          args: Prisma.DonorApplicationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDonorApplication>
+        }
+        groupBy: {
+          args: Prisma.DonorApplicationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DonorApplicationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DonorApplicationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DonorApplicationCountAggregateOutputType> | number
+        }
+      }
+    }
+    Donor: {
+      payload: Prisma.$DonorPayload<ExtArgs>
+      fields: Prisma.DonorFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DonorFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DonorFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorPayload>
+        }
+        findFirst: {
+          args: Prisma.DonorFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DonorFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorPayload>
+        }
+        findMany: {
+          args: Prisma.DonorFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorPayload>[]
+        }
+        create: {
+          args: Prisma.DonorCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorPayload>
+        }
+        createMany: {
+          args: Prisma.DonorCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DonorCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorPayload>[]
+        }
+        delete: {
+          args: Prisma.DonorDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorPayload>
+        }
+        update: {
+          args: Prisma.DonorUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorPayload>
+        }
+        deleteMany: {
+          args: Prisma.DonorDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DonorUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DonorUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorPayload>[]
+        }
+        upsert: {
+          args: Prisma.DonorUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonorPayload>
+        }
+        aggregate: {
+          args: Prisma.DonorAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDonor>
+        }
+        groupBy: {
+          args: Prisma.DonorGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DonorGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DonorCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DonorCountAggregateOutputType> | number
+        }
+      }
+    }
+    BloodRequest: {
+      payload: Prisma.$BloodRequestPayload<ExtArgs>
+      fields: Prisma.BloodRequestFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BloodRequestFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BloodRequestPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BloodRequestFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BloodRequestPayload>
+        }
+        findFirst: {
+          args: Prisma.BloodRequestFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BloodRequestPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BloodRequestFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BloodRequestPayload>
+        }
+        findMany: {
+          args: Prisma.BloodRequestFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BloodRequestPayload>[]
+        }
+        create: {
+          args: Prisma.BloodRequestCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BloodRequestPayload>
+        }
+        createMany: {
+          args: Prisma.BloodRequestCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BloodRequestCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BloodRequestPayload>[]
+        }
+        delete: {
+          args: Prisma.BloodRequestDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BloodRequestPayload>
+        }
+        update: {
+          args: Prisma.BloodRequestUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BloodRequestPayload>
+        }
+        deleteMany: {
+          args: Prisma.BloodRequestDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BloodRequestUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BloodRequestUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BloodRequestPayload>[]
+        }
+        upsert: {
+          args: Prisma.BloodRequestUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BloodRequestPayload>
+        }
+        aggregate: {
+          args: Prisma.BloodRequestAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBloodRequest>
+        }
+        groupBy: {
+          args: Prisma.BloodRequestGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BloodRequestGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BloodRequestCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BloodRequestCountAggregateOutputType> | number
+        }
+      }
+    }
+    DonationRecord: {
+      payload: Prisma.$DonationRecordPayload<ExtArgs>
+      fields: Prisma.DonationRecordFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DonationRecordFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationRecordPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DonationRecordFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationRecordPayload>
+        }
+        findFirst: {
+          args: Prisma.DonationRecordFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationRecordPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DonationRecordFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationRecordPayload>
+        }
+        findMany: {
+          args: Prisma.DonationRecordFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationRecordPayload>[]
+        }
+        create: {
+          args: Prisma.DonationRecordCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationRecordPayload>
+        }
+        createMany: {
+          args: Prisma.DonationRecordCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DonationRecordCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationRecordPayload>[]
+        }
+        delete: {
+          args: Prisma.DonationRecordDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationRecordPayload>
+        }
+        update: {
+          args: Prisma.DonationRecordUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationRecordPayload>
+        }
+        deleteMany: {
+          args: Prisma.DonationRecordDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DonationRecordUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DonationRecordUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationRecordPayload>[]
+        }
+        upsert: {
+          args: Prisma.DonationRecordUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DonationRecordPayload>
+        }
+        aggregate: {
+          args: Prisma.DonationRecordAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDonationRecord>
+        }
+        groupBy: {
+          args: Prisma.DonationRecordGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DonationRecordGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DonationRecordCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DonationRecordCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1522,6 +2047,85 @@ export const ContentItemScalarFieldEnum = {
 } as const
 
 export type ContentItemScalarFieldEnum = (typeof ContentItemScalarFieldEnum)[keyof typeof ContentItemScalarFieldEnum]
+
+
+export const NewsArticleScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  excerpt: 'excerpt',
+  content: 'content',
+  category: 'category',
+  status: 'status',
+  imageUrl: 'imageUrl',
+  imageAlt: 'imageAlt',
+  location: 'location',
+  isFeatured: 'isFeatured',
+  publishedAt: 'publishedAt',
+  seoTitle: 'seoTitle',
+  seoDescription: 'seoDescription',
+  createdById: 'createdById',
+  updatedById: 'updatedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NewsArticleScalarFieldEnum = (typeof NewsArticleScalarFieldEnum)[keyof typeof NewsArticleScalarFieldEnum]
+
+
+export const ReportScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  description: 'description',
+  category: 'category',
+  status: 'status',
+  reportYear: 'reportYear',
+  publishedAt: 'publishedAt',
+  isFeatured: 'isFeatured',
+  sortOrder: 'sortOrder',
+  pdfUrl: 'pdfUrl',
+  pdfName: 'pdfName',
+  pdfSize: 'pdfSize',
+  mimeType: 'mimeType',
+  coverImageUrl: 'coverImageUrl',
+  createdById: 'createdById',
+  updatedById: 'updatedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReportScalarFieldEnum = (typeof ReportScalarFieldEnum)[keyof typeof ReportScalarFieldEnum]
+
+
+export const PublicationScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  description: 'description',
+  category: 'category',
+  status: 'status',
+  publicationYear: 'publicationYear',
+  language: 'language',
+  publisher: 'publisher',
+  author: 'author',
+  edition: 'edition',
+  isbn: 'isbn',
+  pdfUrl: 'pdfUrl',
+  pdfName: 'pdfName',
+  pdfSize: 'pdfSize',
+  mimeType: 'mimeType',
+  coverImageUrl: 'coverImageUrl',
+  isFeatured: 'isFeatured',
+  sortOrder: 'sortOrder',
+  publishedAt: 'publishedAt',
+  createdById: 'createdById',
+  updatedById: 'updatedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PublicationScalarFieldEnum = (typeof PublicationScalarFieldEnum)[keyof typeof PublicationScalarFieldEnum]
 
 
 export const GalleryAlbumScalarFieldEnum = {
@@ -1657,6 +2261,103 @@ export const FinanceAuditLogScalarFieldEnum = {
 } as const
 
 export type FinanceAuditLogScalarFieldEnum = (typeof FinanceAuditLogScalarFieldEnum)[keyof typeof FinanceAuditLogScalarFieldEnum]
+
+
+export const DonorApplicationScalarFieldEnum = {
+  id: 'id',
+  applicationNumber: 'applicationNumber',
+  fullName: 'fullName',
+  phone: 'phone',
+  email: 'email',
+  dateOfBirth: 'dateOfBirth',
+  dateOfBirthBS: 'dateOfBirthBS',
+  bloodGroup: 'bloodGroup',
+  province: 'province',
+  district: 'district',
+  localLevel: 'localLevel',
+  wardName: 'wardName',
+  wardNumber: 'wardNumber',
+  address: 'address',
+  notes: 'notes',
+  consentGiven: 'consentGiven',
+  status: 'status',
+  reviewNote: 'reviewNote',
+  reviewedById: 'reviewedById',
+  reviewedAt: 'reviewedAt',
+  donorId: 'donorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DonorApplicationScalarFieldEnum = (typeof DonorApplicationScalarFieldEnum)[keyof typeof DonorApplicationScalarFieldEnum]
+
+
+export const DonorScalarFieldEnum = {
+  id: 'id',
+  donorCode: 'donorCode',
+  fullName: 'fullName',
+  phone: 'phone',
+  email: 'email',
+  dateOfBirth: 'dateOfBirth',
+  dateOfBirthBS: 'dateOfBirthBS',
+  bloodGroup: 'bloodGroup',
+  province: 'province',
+  district: 'district',
+  localLevel: 'localLevel',
+  wardName: 'wardName',
+  wardNumber: 'wardNumber',
+  address: 'address',
+  status: 'status',
+  isVerified: 'isVerified',
+  consentGiven: 'consentGiven',
+  lastDonationAt: 'lastDonationAt',
+  notes: 'notes',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DonorScalarFieldEnum = (typeof DonorScalarFieldEnum)[keyof typeof DonorScalarFieldEnum]
+
+
+export const BloodRequestScalarFieldEnum = {
+  id: 'id',
+  requestNumber: 'requestNumber',
+  requesterName: 'requesterName',
+  requesterPhone: 'requesterPhone',
+  bloodGroup: 'bloodGroup',
+  unitsNeeded: 'unitsNeeded',
+  hospitalName: 'hospitalName',
+  district: 'district',
+  province: 'province',
+  locationDetails: 'locationDetails',
+  urgency: 'urgency',
+  status: 'status',
+  neededBy: 'neededBy',
+  notes: 'notes',
+  consentToContact: 'consentToContact',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BloodRequestScalarFieldEnum = (typeof BloodRequestScalarFieldEnum)[keyof typeof BloodRequestScalarFieldEnum]
+
+
+export const DonationRecordScalarFieldEnum = {
+  id: 'id',
+  donorId: 'donorId',
+  bloodRequestId: 'bloodRequestId',
+  donationDate: 'donationDate',
+  donationCenter: 'donationCenter',
+  unitsDonated: 'unitsDonated',
+  notes: 'notes',
+  recordedById: 'recordedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DonationRecordScalarFieldEnum = (typeof DonationRecordScalarFieldEnum)[keyof typeof DonationRecordScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1819,6 +2520,48 @@ export type ListEnumContentStatusFieldRefInput<$PrismaModel> = FieldRefInputType
 
 
 /**
+ * Reference to a field of type 'NewsCategory'
+ */
+export type EnumNewsCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NewsCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'NewsCategory[]'
+ */
+export type ListEnumNewsCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'NewsCategory[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ReportCategory'
+ */
+export type EnumReportCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReportCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'ReportCategory[]'
+ */
+export type ListEnumReportCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ReportCategory[]'>
+    
+
+
+/**
+ * Reference to a field of type 'PublicationCategory'
+ */
+export type EnumPublicationCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PublicationCategory'>
+    
+
+
+/**
+ * Reference to a field of type 'PublicationCategory[]'
+ */
+export type ListEnumPublicationCategoryFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'PublicationCategory[]'>
+    
+
+
+/**
  * Reference to a field of type 'FinanceTransactionType'
  */
 export type EnumFinanceTransactionTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FinanceTransactionType'>
@@ -1899,6 +2642,76 @@ export type EnumFinanceAuditActionFieldRefInput<$PrismaModel> = FieldRefInputTyp
  * Reference to a field of type 'FinanceAuditAction[]'
  */
 export type ListEnumFinanceAuditActionFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FinanceAuditAction[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BloodGroup'
+ */
+export type EnumBloodGroupFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BloodGroup'>
+    
+
+
+/**
+ * Reference to a field of type 'BloodGroup[]'
+ */
+export type ListEnumBloodGroupFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BloodGroup[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DonorApplicationStatus'
+ */
+export type EnumDonorApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonorApplicationStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DonorApplicationStatus[]'
+ */
+export type ListEnumDonorApplicationStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonorApplicationStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'DonorStatus'
+ */
+export type EnumDonorStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonorStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'DonorStatus[]'
+ */
+export type ListEnumDonorStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DonorStatus[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BloodRequestUrgency'
+ */
+export type EnumBloodRequestUrgencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BloodRequestUrgency'>
+    
+
+
+/**
+ * Reference to a field of type 'BloodRequestUrgency[]'
+ */
+export type ListEnumBloodRequestUrgencyFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BloodRequestUrgency[]'>
+    
+
+
+/**
+ * Reference to a field of type 'BloodRequestStatus'
+ */
+export type EnumBloodRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BloodRequestStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'BloodRequestStatus[]'
+ */
+export type ListEnumBloodRequestStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BloodRequestStatus[]'>
     
 
 
@@ -2071,6 +2884,9 @@ export type GlobalOmitConfig = {
   media?: Prisma.MediaOmit
   teamMember?: Prisma.TeamMemberOmit
   contentItem?: Prisma.ContentItemOmit
+  newsArticle?: Prisma.NewsArticleOmit
+  report?: Prisma.ReportOmit
+  publication?: Prisma.PublicationOmit
   galleryAlbum?: Prisma.GalleryAlbumOmit
   galleryPhoto?: Prisma.GalleryPhotoOmit
   message?: Prisma.MessageOmit
@@ -2079,6 +2895,10 @@ export type GlobalOmitConfig = {
   financeParty?: Prisma.FinancePartyOmit
   financeTransaction?: Prisma.FinanceTransactionOmit
   financeAuditLog?: Prisma.FinanceAuditLogOmit
+  donorApplication?: Prisma.DonorApplicationOmit
+  donor?: Prisma.DonorOmit
+  bloodRequest?: Prisma.BloodRequestOmit
+  donationRecord?: Prisma.DonationRecordOmit
 }
 
 /* Types for Logging */

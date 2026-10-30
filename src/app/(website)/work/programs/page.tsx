@@ -1,3 +1,4 @@
+
 "use client";
 
 import Image from "next/image";
@@ -9,453 +10,633 @@ import {
   Lightbulb,
   ShieldCheck,
   Users,
+  BookOpen,
+  HandHeart,
+  Leaf,
+  LoaderCircle,
+  RefreshCw,
+  Sparkles,
+  Target,
+  AlertCircle,
+  CalendarDays,
 } from "lucide-react";
 import { motion } from "framer-motion";
+import { useCallback, useEffect, useState } from "react";
+
+type CMSProgram = {
+  id: string;
+  title: string;
+  key: string;
+  slug: string | null;
+  type: "PAGE" | "SECTION";
+  excerpt: string | null;
+  content: string | null;
+  imageUrl: string | null;
+  isFeatured: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+type PublicContentResponse = {
+  success?: boolean;
+  data?: CMSProgram[] | CMSProgram | null;
+  message?: string;
+};
 
 const heroImage =
-  "https://images.unsplash.com/photo-1494386346843-e12284507169?auto=format&fit=crop&w=2000&q=90";
-
-const programs = [
-  {
-    id: "01",
-    title: "Community Wellbeing",
-    category: "Community Development",
-    description:
-      "A flexible program area focused on supporting healthier, safer and more connected communities.",
-    image:
-      "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=1200&q=90",
-    icon: HeartHandshake,
-  },
-  {
-    id: "02",
-    title: "Youth & Education",
-    category: "Education & Youth",
-    description:
-      "Supporting opportunities that encourage learning, participation, confidence and positive development among young people.",
-    image:
-      "https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&fit=crop&w=1200&q=90",
-    icon: Lightbulb,
-  },
-  {
-    id: "03",
-    title: "Health & Awareness",
-    category: "Health",
-    description:
-      "Community-focused activities that promote awareness, participation and access to health-related information.",
-    image:
-      "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=90",
-    icon: ShieldCheck,
-  },
-  {
-    id: "04",
-    title: "Community Participation",
-    category: "Participation",
-    description:
-      "Creating opportunities for people to contribute, collaborate and take part in initiatives that matter to their communities.",
-    image:
-      "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=1200&q=90",
-    icon: Users,
-  },
-];
+  "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?auto=format&fit=crop&w=2000&q=85";
 
 const focusAreas = [
   {
     number: "01",
-    title: "People",
+    title: "Community Wellbeing",
     description:
-      "Keeping people, participation and community needs at the center of our work.",
+      "Strengthening communities through inclusive support, awareness, and locally driven development.",
+    icon: HeartHandshake,
   },
   {
     number: "02",
-    title: "Opportunity",
+    title: "Education & Awareness",
     description:
-      "Supporting opportunities that can strengthen knowledge, confidence and local capacity.",
+      "Encouraging learning, informed decisions, and opportunities for children and young people.",
+    icon: BookOpen,
   },
   {
     number: "03",
-    title: "Wellbeing",
+    title: "Health & Human Dignity",
     description:
-      "Encouraging healthier, safer and more supportive community environments.",
+      "Promoting health awareness, mutual care, and access to community-based support.",
+    icon: HandHeart,
   },
   {
     number: "04",
-    title: "Partnership",
+    title: "Sustainable Development",
     description:
-      "Building cooperation with people and organizations around shared objectives.",
+      "Supporting practical, locally relevant initiatives that help communities build a stronger future.",
+    icon: Leaf,
   },
 ];
 
 const fadeUp = {
-  hidden: {
-    opacity: 0,
-    y: 28,
-  },
-  visible: {
-    opacity: 1,
-    y: 0,
-  },
+  hidden: { opacity: 0, y: 24 },
+  visible: { opacity: 1, y: 0 },
 };
 
 const stagger = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.1,
+      staggerChildren: 0.12,
     },
   },
 };
 
-export default function ProgramsPage() {
+function getProgramDescription(program: CMSProgram) {
   return (
-    <main className="overflow-hidden bg-[#FCFAF7]">
-      {/* =========================================================
-          HERO
-      ========================================================= */}
+    program.excerpt?.trim() ||
+    program.content?.trim() ||
+    "Discover how Lifeline Achham works alongside communities to create meaningful and sustainable change."
+  );
+}
 
-      <section className="relative overflow-hidden bg-[#55152B] pt-[112px]">
-        <div className="relative h-[390px] w-full overflow-hidden sm:h-[430px] lg:h-[470px]">
+function getProgramHref(program: CMSProgram) {
+  if (program.slug?.trim()) {
+    return `/work/programs/${program.slug}`;
+  }
+
+  return null;
+}
+
+export default function ProgramsPage() {
+  const [programs, setPrograms] = useState<CMSProgram[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const loadPrograms = useCallback(async (signal?: AbortSignal) => {
+    setLoading(true);
+    setError("");
+
+    try {
+      const response = await fetch("/api/content/public", {
+        method: "GET",
+        cache: "no-store",
+        signal,
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      const result: PublicContentResponse = await response.json();
+
+      if (!response.ok || result.success === false) {
+        throw new Error(
+          result.message || "Unable to load programs at this time.",
+        );
+      }
+
+      const items = Array.isArray(result.data) ? result.data : [];
+
+      const publishedPrograms = items
+        .filter(
+          (item) =>
+            typeof item.key === "string" &&
+            item.key.startsWith("program_"),
+        )
+        .sort((a, b) => a.sortOrder - b.sortOrder);
+
+      if (!signal?.aborted) {
+        setPrograms(publishedPrograms);
+      }
+    } catch (err) {
+      if (err instanceof Error && err.name === "AbortError") {
+        return;
+      }
+
+      if (!signal?.aborted) {
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Something went wrong while loading programs.",
+        );
+      }
+    } finally {
+      if (!signal?.aborted) {
+        setLoading(false);
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const controller = new AbortController();
+
+    void loadPrograms(controller.signal);
+
+    return () => controller.abort();
+  }, [loadPrograms]);
+
+  return (
+    <main className="overflow-hidden bg-[#FCFAF7] text-[#172033]">
+      {/* HERO */}
+      <section className="relative isolate min-h-[570px] overflow-hidden bg-[#55152B] sm:min-h-[640px] lg:min-h-[700px]">
+        <Image
+          src={heroImage}
+          alt="Community members working together"
+          fill
+          priority
+          sizes="100vw"
+          unoptimized
+          className="object-cover"
+        />
+
+        <div className="absolute inset-0 bg-gradient-to-r from-[#310B1B]/95 via-[#55152B]/80 to-[#55152B]/30" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#310B1B]/60 via-transparent to-[#310B1B]/10" />
+
+        <div className="relative mx-auto flex min-h-[570px] max-w-7xl items-center px-5 py-24 sm:min-h-[640px] sm:px-8 lg:min-h-[700px] lg:px-12">
           <motion.div
-            initial={{ scale: 1.08 }}
-            animate={{ scale: 1 }}
-            transition={{
-              duration: 1.5,
-              ease: [0.22, 1, 0.36, 1],
-            }}
-            className="absolute inset-0"
+            initial="hidden"
+            animate="visible"
+            variants={stagger}
+            className="max-w-3xl"
           >
-            <Image
-              src={heroImage}
-              alt="Community program"
-              fill
-              priority
-              sizes="100vw"
-              className="object-cover"
-            />
+            <motion.div
+              variants={fadeUp}
+              className="mb-7 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-md sm:text-sm"
+            >
+              <span className="h-2 w-2 rounded-full bg-[#F4B7C9]" />
+              Our Work · Programs
+            </motion.div>
+
+            <motion.h1
+              variants={fadeUp}
+              className="max-w-3xl text-4xl font-bold leading-[1.1] tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl"
+            >
+              Turning community needs into{" "}
+              <span className="text-[#F4B7C9]">lasting impact.</span>
+            </motion.h1>
+
+            <motion.p
+              variants={fadeUp}
+              className="mt-6 max-w-2xl text-base leading-8 text-white/80 sm:text-lg sm:leading-9"
+            >
+              Lifeline Achham works with communities to advance wellbeing,
+              opportunity, and sustainable development through meaningful,
+              people-centred initiatives.
+            </motion.p>
+
+            <motion.div
+              variants={fadeUp}
+              className="mt-9 flex flex-col gap-3 sm:flex-row"
+            >
+              <a
+                href="#program-directory"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-[#55152B] shadow-lg transition hover:-translate-y-0.5 hover:bg-[#FCFAF7]"
+              >
+                Explore our programs
+                <ArrowRight size={17} />
+              </a>
+
+              <Link
+                href="/contact"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-md transition hover:bg-white/20"
+              >
+                Work with us
+                <ArrowUpRight size={17} />
+              </Link>
+            </motion.div>
+
+            <motion.div
+              variants={fadeUp}
+              className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-white/20 pt-6 text-sm text-white/75"
+            >
+              <span className="inline-flex items-center gap-2">
+                <Users size={17} />
+                Community-centred
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <Target size={17} />
+                Impact-focused
+              </span>
+              <span className="inline-flex items-center gap-2">
+                <ShieldCheck size={17} />
+                Accountability-driven
+              </span>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        <div className="absolute bottom-0 left-0 h-1 w-full bg-gradient-to-r from-[#7A1F3D] via-[#F4B7C9] to-[#2457C5]" />
+      </section>
+
+      {/* INTRODUCTION */}
+      <section className="px-5 py-20 sm:px-8 sm:py-24 lg:px-12">
+        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[0.85fr_1.15fr] lg:items-center lg:gap-20">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={stagger}
+          >
+            <motion.p
+              variants={fadeUp}
+              className="text-xs font-bold uppercase tracking-[0.2em] text-[#7A1F3D]"
+            >
+              What guides our work
+            </motion.p>
+
+            <motion.h2
+              variants={fadeUp}
+              className="mt-4 text-3xl font-bold leading-tight tracking-tight text-[#172033] sm:text-4xl lg:text-5xl"
+            >
+              Practical action.
+              <span className="block text-[#7A1F3D]">
+                Meaningful change.
+              </span>
+            </motion.h2>
           </motion.div>
 
-          <div className="absolute inset-0 bg-[#55152B]/70" />
-
-          <div className="absolute inset-0 bg-gradient-to-r from-[#55152B]/95 via-[#55152B]/60 to-transparent" />
-
           <motion.div
-            animate={{
-              y: [0, -12, 0],
-              rotate: [0, 3, 0],
-            }}
-            transition={{
-              duration: 7,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-            className="pointer-events-none absolute -right-24 -top-24 hidden h-80 w-80 rounded-full border-[45px] border-white/[0.045] lg:block"
-          />
-
-          <div className="container-main relative z-10 flex h-full items-center">
-            <motion.div
-              initial="hidden"
-              animate="visible"
-              variants={stagger}
-              className="max-w-3xl"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={stagger}
+            className="space-y-5"
+          >
+            <motion.p
+              variants={fadeUp}
+              className="text-base leading-8 text-slate-600 sm:text-lg"
             >
-              <motion.div
-                variants={fadeUp}
-                transition={{ duration: 0.7 }}
-                className="mb-5 flex items-center gap-3"
-              >
-                <span className="h-2 w-2 rounded-full bg-[#2457C5]" />
+              We believe sustainable progress begins when communities are
+              listened to, included in decisions, and supported with practical
+              opportunities to shape their own future.
+            </motion.p>
 
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#E9B6C7]">
-                  Our Work
-                </span>
-              </motion.div>
+            <motion.p
+              variants={fadeUp}
+              className="text-base leading-8 text-slate-600"
+            >
+              Our programs provide a framework for turning that belief into
+              action. Each initiative is designed around community priorities,
+              collaboration, responsible implementation, and learning from
+              experience.
+            </motion.p>
 
-              <motion.h1
-                variants={fadeUp}
-                transition={{ duration: 0.8 }}
-                className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl"
-              >
-                Programs
-              </motion.h1>
-
-              <motion.p
-                variants={fadeUp}
-                transition={{ duration: 0.8 }}
-                className="mt-5 max-w-2xl text-sm leading-7 text-white/75 sm:text-base lg:text-lg"
-              >
-                Structured areas of work designed to support community needs,
-                participation and meaningful long-term progress.
-              </motion.p>
-
-              <motion.div
-                variants={fadeUp}
-                transition={{ duration: 0.7 }}
-                className="mt-7 flex items-center gap-3 text-xs"
-              >
-                <Link
-                  href="/"
-                  className="text-white/60 transition hover:text-white"
-                >
-                  Home
-                </Link>
-
-                <span className="text-white/30">/</span>
-
-                <Link
-                  href="/work"
-                  className="text-white/60 transition hover:text-white"
-                >
-                  Our Work
-                </Link>
-
-                <span className="text-white/30">/</span>
-
-                <span className="text-white/50">Programs</span>
-              </motion.div>
+            <motion.div
+              variants={fadeUp}
+              className="flex items-start gap-4 rounded-2xl border border-[#7A1F3D]/10 bg-white p-5 shadow-sm sm:p-6"
+            >
+              <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#7A1F3D]/10 text-[#7A1F3D]">
+                <Lightbulb size={23} />
+              </div>
+              <div>
+                <h3 className="font-bold text-[#172033]">
+                  Designed around people
+                </h3>
+                <p className="mt-1 text-sm leading-6 text-slate-600">
+                  We value local knowledge, inclusive participation, and
+                  solutions shaped by the communities they serve.
+                </p>
+              </div>
             </motion.div>
-          </div>
+          </motion.div>
         </div>
       </section>
 
-      {/* =========================================================
-          INTRO
-      ========================================================= */}
-
-      <section className="section">
-        <div className="container-main">
-          <div className="grid items-center gap-12 lg:grid-cols-[1fr_0.85fr] lg:gap-20">
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{
-                once: true,
-                amount: 0.2,
-              }}
-              variants={stagger}
-            >
-              <motion.div
+      {/* PROGRAM DIRECTORY */}
+      <section
+        id="program-directory"
+        className="scroll-mt-24 border-y border-slate-200/70 bg-white px-5 py-20 sm:px-8 sm:py-24 lg:px-12"
+      >
+        <div className="mx-auto max-w-7xl">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={stagger}
+            className="mb-10 flex flex-col justify-between gap-5 md:flex-row md:items-end"
+          >
+            <div className="max-w-2xl">
+              <motion.p
                 variants={fadeUp}
-                transition={{ duration: 0.7 }}
-                className="mb-5 flex items-center gap-3"
+                className="text-xs font-bold uppercase tracking-[0.2em] text-[#7A1F3D]"
               >
-                <span className="brand-line" />
-
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#7A1F3D]">
-                  Our Programs
-                </span>
-              </motion.div>
+                Our program directory
+              </motion.p>
 
               <motion.h2
                 variants={fadeUp}
-                transition={{ duration: 0.7 }}
-                className="text-3xl font-bold tracking-tight text-[#172033] sm:text-4xl"
+                className="mt-4 text-3xl font-bold tracking-tight text-[#172033] sm:text-4xl lg:text-5xl"
               >
-                Organized around
-                <span className="text-[#7A1F3D]"> community needs.</span>
+                Where our work begins
               </motion.h2>
 
               <motion.p
                 variants={fadeUp}
-                transition={{ duration: 0.7 }}
-                className="mt-6 text-sm leading-8 text-slate-500 sm:text-base"
+                className="mt-4 max-w-xl text-base leading-7 text-slate-600"
               >
-                Our programs provide a structure for organizing sustained work
-                around areas that can contribute to stronger and more
-                supportive communities.
+                Explore our published programs and learn more about the
+                initiatives we share with our communities.
               </motion.p>
-
-              <motion.p
-                variants={fadeUp}
-                transition={{ duration: 0.7 }}
-                className="mt-4 text-sm leading-8 text-slate-500 sm:text-base"
-              >
-                Each program can bring together activities, projects,
-                partnerships and campaigns under a clear area of focus.
-              </motion.p>
-            </motion.div>
+            </div>
 
             <motion.div
-              initial={{
-                opacity: 0,
-                x: 30,
-              }}
-              whileInView={{
-                opacity: 1,
-                x: 0,
-              }}
-              viewport={{
-                once: true,
-                amount: 0.2,
-              }}
-              transition={{ duration: 0.8 }}
-              className="relative"
+              variants={fadeUp}
+              className="inline-flex w-fit items-center gap-2 rounded-xl border border-slate-200 bg-[#FCFAF7] px-4 py-3 text-sm font-medium text-slate-600"
             >
-              <div className="rounded-3xl border border-slate-200 bg-white p-3 shadow-sm">
-                <div className="relative h-[330px] overflow-hidden rounded-2xl sm:h-[390px]">
-                  <Image
-                    src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?auto=format&fit=crop&w=1200&q=90"
-                    alt="People participating in a community activity"
-                    fill
-                    sizes="(max-width: 1024px) 100vw, 45vw"
-                    className="object-cover"
-                  />
+              <Sparkles size={17} className="text-[#7A1F3D]" />
+              <span>
+                {loading
+                  ? "Loading programs"
+                  : `${programs.length} published ${
+                      programs.length === 1 ? "program" : "programs"
+                    }`}
+              </span>
+            </motion.div>
+          </motion.div>
 
-                  <div className="absolute inset-0 bg-gradient-to-t from-[#172033]/60 via-transparent to-transparent" />
+          {/* Loading state */}
+          {loading && (
+            <div
+              role="status"
+              aria-live="polite"
+              className="flex min-h-64 flex-col items-center justify-center rounded-3xl border border-slate-200 bg-[#FCFAF7] px-6 py-12 text-center"
+            >
+              <LoaderCircle
+                size={34}
+                className="animate-spin text-[#7A1F3D]"
+              />
+              <p className="mt-4 font-semibold text-[#172033]">
+                Loading our programs
+              </p>
+              <p className="mt-2 text-sm text-slate-500">
+                Please wait while we retrieve the latest published content.
+              </p>
+            </div>
+          )}
 
-                  <div className="absolute bottom-5 left-5 right-5">
-                    <div className="rounded-2xl border border-white/20 bg-white/90 p-5 backdrop-blur-md">
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#2457C5] text-white">
-                          <Users size={18} />
-                        </div>
+          {/* Error state */}
+          {!loading && error && (
+            <div
+              role="alert"
+              className="rounded-3xl border border-red-200 bg-red-50 p-6 sm:p-8"
+            >
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-red-100 text-red-700">
+                  <AlertCircle size={22} />
+                </div>
 
-                        <div>
-                          <p className="text-sm font-bold text-[#172033]">
-                            People at the center
-                          </p>
+                <div className="flex-1">
+                  <h3 className="font-bold text-red-900">
+                    We could not load the programs
+                  </h3>
+                  <p className="mt-2 break-words text-sm leading-6 text-red-800">
+                    {error}
+                  </p>
 
-                          <p className="mt-1 text-xs text-slate-500">
-                            Participation guides meaningful work.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <button
+                    type="button"
+                    onClick={() => void loadPrograms()}
+                    className="mt-5 inline-flex items-center gap-2 rounded-xl bg-[#7A1F3D] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#55152B]"
+                  >
+                    <RefreshCw size={16} />
+                    Try again
+                  </button>
                 </div>
               </div>
+            </div>
+          )}
 
-              <div className="pointer-events-none absolute -bottom-5 -left-5 h-20 w-20 rounded-full border border-[#7A1F3D]/10" />
+          {/* Empty state */}
+          {!loading && !error && programs.length === 0 && (
+            <div className="rounded-3xl border border-dashed border-slate-300 bg-[#FCFAF7] px-6 py-14 text-center sm:px-10">
+              <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-[#7A1F3D]/10 text-[#7A1F3D]">
+                <HeartHandshake size={30} />
+              </div>
+
+              <h3 className="mt-5 text-xl font-bold text-[#172033]">
+                Our programs are being prepared
+              </h3>
+
+              <p className="mx-auto mt-3 max-w-lg text-sm leading-7 text-slate-600">
+                Program information will appear here once it has been
+                published through the Lifeline Achham content management
+                system.
+              </p>
+
+              <Link
+                href="/contact"
+                className="mt-6 inline-flex items-center gap-2 rounded-xl bg-[#7A1F3D] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#55152B]"
+              >
+                Contact Lifeline Achham
+                <ArrowRight size={16} />
+              </Link>
+            </div>
+          )}
+
+          {/* Published program cards */}
+          {!loading && !error && programs.length > 0 && (
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={stagger}
+              className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
+            >
+              {programs.map((program, index) => {
+                const href = getProgramHref(program);
+
+                return (
+                  <motion.article
+                    key={program.id}
+                    variants={fadeUp}
+                    className="group flex min-w-0 flex-col overflow-hidden rounded-3xl border border-slate-200 bg-white transition duration-300 hover:-translate-y-1 hover:border-[#7A1F3D]/25 hover:shadow-xl hover:shadow-[#55152B]/5"
+                  >
+                    <div className="relative aspect-[16/10] overflow-hidden bg-[#FCFAF7]">
+                      {program.imageUrl ? (
+                        <img
+                          src={program.imageUrl}
+                          alt={program.title}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition duration-700 group-hover:scale-105"
+                        />
+                      ) : (
+                        <div className="flex h-full w-full flex-col items-center justify-center bg-gradient-to-br from-[#7A1F3D]/10 via-[#FCFAF7] to-[#2457C5]/10">
+                          <HeartHandshake
+                            size={43}
+                            strokeWidth={1.4}
+                            className="text-[#7A1F3D]/60"
+                          />
+                          <span className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500">
+                            Lifeline Achham
+                          </span>
+                        </div>
+                      )}
+
+                      <div className="absolute left-4 top-4">
+                        <span className="inline-flex items-center gap-2 rounded-full border border-white/70 bg-white/95 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.14em] text-[#7A1F3D] shadow-sm backdrop-blur-md">
+                          {program.isFeatured && (
+                            <Sparkles size={12} />
+                          )}
+                          {program.isFeatured
+                            ? "Featured program"
+                            : "Our program"}
+                        </span>
+                      </div>
+
+                      <div className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-xl border border-white/60 bg-white/90 text-xs font-bold text-[#7A1F3D] shadow-sm backdrop-blur-md">
+                        {String(index + 1).padStart(2, "0")}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-1 flex-col p-5 sm:p-6">
+                      <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#7A1F3D]">
+                        <span className="h-1.5 w-1.5 rounded-full bg-[#7A1F3D]" />
+                        Community program
+                      </div>
+
+                      <h3 className="text-xl font-bold leading-snug text-[#172033] transition-colors group-hover:text-[#7A1F3D]">
+                        {program.title}
+                      </h3>
+
+                      <p className="mt-3 flex-1 whitespace-pre-line text-sm leading-7 text-slate-600">
+                        {getProgramDescription(program)}
+                      </p>
+
+                      <div className="mt-6 border-t border-slate-100 pt-4">
+                        {href ? (
+                          <Link
+                            href={href}
+                            className="inline-flex items-center gap-2 text-sm font-bold text-[#7A1F3D] transition hover:gap-3"
+                          >
+                            Explore program
+                            <ArrowRight size={16} />
+                          </Link>
+                        ) : (
+                          <span className="inline-flex items-center gap-2 text-xs font-medium text-slate-400">
+                            <CalendarDays size={15} />
+                            Program information
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </motion.article>
+                );
+              })}
             </motion.div>
-          </div>
+          )}
+
+          {!loading && !error && programs.length > 0 && (
+            <p className="mt-8 text-center text-xs leading-6 text-slate-500">
+              Showing published programs managed by Lifeline Achham.
+            </p>
+          )}
         </div>
       </section>
 
-      {/* =========================================================
-          PROGRAM DIRECTORY
-      ========================================================= */}
-
-      <section className="border-y border-slate-200 bg-white py-20">
-        <div className="container-main">
+      {/* FOCUS AREAS */}
+      <section className="px-5 py-20 sm:px-8 sm:py-24 lg:px-12">
+        <div className="mx-auto max-w-7xl">
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{
-              once: true,
-              amount: 0.2,
-            }}
+            viewport={{ once: true, amount: 0.2 }}
             variants={stagger}
-            className="mx-auto max-w-3xl text-center"
+            className="mx-auto mb-12 max-w-2xl text-center"
           >
-            <motion.div
+            <motion.p
               variants={fadeUp}
-              transition={{ duration: 0.7 }}
-              className="mb-4 flex items-center justify-center gap-3"
+              className="text-xs font-bold uppercase tracking-[0.2em] text-[#7A1F3D]"
             >
-              <span className="blue-dot" />
-
-              <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#2457C5]">
-                Program Areas
-              </span>
-
-              <span className="blue-dot" />
-            </motion.div>
+              Our areas of focus
+            </motion.p>
 
             <motion.h2
               variants={fadeUp}
-              transition={{ duration: 0.7 }}
-              className="text-3xl font-bold tracking-tight text-[#172033] sm:text-4xl"
+              className="mt-4 text-3xl font-bold tracking-tight text-[#172033] sm:text-4xl"
             >
-              Explore our
-              <span className="text-[#2457C5]"> programs.</span>
+              Guided by community priorities
             </motion.h2>
 
             <motion.p
               variants={fadeUp}
-              transition={{ duration: 0.7 }}
-              className="mt-4 text-sm leading-7 text-slate-500 sm:text-base"
+              className="mt-4 text-base leading-7 text-slate-600"
             >
-              These program areas are structured to be expanded and managed
-              through the Lifeline Achham CMS.
+              Our approach centres on inclusion, collaboration, responsible
+              action, and the long-term wellbeing of the communities we serve.
             </motion.p>
           </motion.div>
 
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{
-              once: true,
-              amount: 0.1,
-            }}
+            viewport={{ once: true, amount: 0.15 }}
             variants={stagger}
-            className="mt-12 grid gap-6 md:grid-cols-2"
+            className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
           >
-            {programs.map((program) => {
-              const Icon = program.icon;
+            {focusAreas.map((area) => {
+              const Icon = area.icon;
 
               return (
                 <motion.article
-                  key={program.id}
+                  key={area.number}
                   variants={fadeUp}
-                  transition={{ duration: 0.65 }}
-                  whileHover={{
-                    y: -5,
-                    transition: {
-                      duration: 0.25,
-                    },
-                  }}
-                  className="group overflow-hidden rounded-2xl border border-slate-200 bg-[#FCFAF7] shadow-sm transition-shadow duration-300 hover:shadow-xl"
+                  className="rounded-2xl border border-slate-200 bg-white p-6 transition duration-300 hover:-translate-y-1 hover:border-[#7A1F3D]/20 hover:shadow-lg"
                 >
-                  <div className="grid sm:grid-cols-[0.85fr_1fr]">
-                    <div className="relative h-[250px] overflow-hidden sm:h-full sm:min-h-[310px]">
-                      <Image
-                        src={program.image}
-                        alt={program.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, 42vw"
-                        className="object-cover transition duration-700 group-hover:scale-105"
-                      />
-
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#172033]/65 via-transparent to-transparent" />
-
-                      <div className="absolute left-5 top-5">
-                        <span className="rounded-full bg-white/90 px-3 py-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-[#7A1F3D] shadow-sm backdrop-blur">
-                          {program.category}
-                        </span>
-                      </div>
-
-                      <div className="absolute bottom-5 left-5 flex h-10 w-10 items-center justify-center rounded-xl bg-[#2457C5] text-white">
-                        <Icon size={18} />
-                      </div>
+                  <div className="flex items-center justify-between">
+                    <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-[#7A1F3D]/10 text-[#7A1F3D]">
+                      <Icon size={23} />
                     </div>
-
-                    <div className="flex flex-col justify-center p-7">
-                      <span className="text-[10px] font-bold tracking-[0.18em] text-slate-400">
-                        PROGRAM {program.id}
-                      </span>
-
-                      <h3 className="mt-3 text-xl font-bold text-[#172033]">
-                        {program.title}
-                      </h3>
-
-                      <p className="mt-3 text-sm leading-7 text-slate-500">
-                        {program.description}
-                      </p>
-
-                      <Link
-                        href={`/work/programs/${program.title
-                          .toLowerCase()
-                          .replace(/[^a-z0-9]+/g, "-")
-                          .replace(/(^-|-$)/g, "")}`}
-                        className="group/link mt-6 inline-flex w-fit items-center gap-2 text-sm font-bold text-[#2457C5]"
-                      >
-                        View program
-
-                        <ArrowRight
-                          size={15}
-                          className="transition-transform group-hover/link:translate-x-1"
-                        />
-                      </Link>
-                    </div>
+                    <span className="text-sm font-bold text-slate-300">
+                      {area.number}
+                    </span>
                   </div>
+
+                  <h3 className="mt-6 text-lg font-bold text-[#172033]">
+                    {area.title}
+                  </h3>
+
+                  <p className="mt-3 text-sm leading-7 text-slate-600">
+                    {area.description}
+                  </p>
                 </motion.article>
               );
             })}
@@ -463,290 +644,103 @@ export default function ProgramsPage() {
         </div>
       </section>
 
-      {/* =========================================================
-          FOCUS AREAS
-      ========================================================= */}
-
-      <section className="section">
-        <div className="container-main">
-          <div className="grid gap-12 lg:grid-cols-[0.75fr_1fr] lg:gap-20">
-            <motion.div
-              initial={{
-                opacity: 0,
-                x: -30,
-              }}
-              whileInView={{
-                opacity: 1,
-                x: 0,
-              }}
-              viewport={{
-                once: true,
-                amount: 0.2,
-              }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="mb-5 flex items-center gap-3">
-                <span className="brand-line" />
-
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#7A1F3D]">
-                  Program Focus
-                </span>
+      {/* CMS INFORMATION */}
+      <section className="px-5 pb-20 sm:px-8 lg:px-12">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl bg-[#172033]">
+          <div className="grid lg:grid-cols-[1fr_auto] lg:items-center">
+            <div className="p-7 sm:p-10 lg:p-12">
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-3 py-1.5 text-xs font-semibold text-white/80">
+                <Sparkles size={14} className="text-[#F4B7C9]" />
+                Community-led approach
               </div>
 
-              <h2 className="text-3xl font-bold tracking-tight text-[#172033] sm:text-4xl">
-                What shapes our
-                <span className="text-[#7A1F3D]"> programs?</span>
+              <h2 className="mt-5 max-w-2xl text-2xl font-bold leading-tight text-white sm:text-3xl">
+                Every program starts with understanding what matters to people.
               </h2>
 
-              <p className="mt-5 text-sm leading-8 text-slate-500 sm:text-base">
-                While individual programs may have different objectives, our
-                broader approach remains centered around people, opportunity,
-                wellbeing and collaboration.
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-white/65 sm:text-base">
+                We aim to work transparently, listen to local voices, and
+                continuously improve our initiatives through collaboration
+                and learning.
               </p>
-
-              <Link
-                href="/about/mission-vision"
-                className="group mt-7 inline-flex items-center gap-2 text-sm font-bold text-[#2457C5]"
-              >
-                Learn about our mission
-
-                <ArrowRight
-                  size={16}
-                  className="transition-transform group-hover:translate-x-1"
-                />
-              </Link>
-            </motion.div>
-
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{
-                once: true,
-                amount: 0.15,
-              }}
-              variants={stagger}
-              className="grid gap-4 sm:grid-cols-2"
-            >
-              {focusAreas.map((area) => (
-                <motion.div
-                  key={area.number}
-                  variants={fadeUp}
-                  transition={{ duration: 0.55 }}
-                  whileHover={{
-                    y: -4,
-                    transition: {
-                      duration: 0.2,
-                    },
-                  }}
-                  className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
-                >
-                  <div className="flex items-center justify-between">
-                    <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#F7E9EE] text-xs font-bold text-[#7A1F3D]">
-                      {area.number}
-                    </span>
-
-                    <span className="h-1.5 w-1.5 rounded-full bg-[#2457C5]" />
-                  </div>
-
-                  <h3 className="mt-5 text-lg font-bold text-[#172033]">
-                    {area.title}
-                  </h3>
-
-                  <p className="mt-2 text-sm leading-7 text-slate-500">
-                    {area.description}
-                  </p>
-                </motion.div>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          CMS READY SECTION
-      ========================================================= */}
-
-      <section className="border-y border-slate-200 bg-white py-20">
-        <div className="container-main">
-          <div className="grid items-center gap-10 lg:grid-cols-[1fr_0.8fr] lg:gap-20">
-            <motion.div
-              initial={{
-                opacity: 0,
-                x: -30,
-              }}
-              whileInView={{
-                opacity: 1,
-                x: 0,
-              }}
-              viewport={{
-                once: true,
-                amount: 0.2,
-              }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="mb-5 flex items-center gap-3">
-                <span className="blue-dot" />
-
-                <span className="text-xs font-bold uppercase tracking-[0.2em] text-[#2457C5]">
-                  Built for Growth
-                </span>
-              </div>
-
-              <h2 className="text-3xl font-bold tracking-tight text-[#172033] sm:text-4xl">
-                Ready for a
-                <span className="text-[#2457C5]"> living CMS.</span>
-              </h2>
-
-              <p className="mt-5 max-w-2xl text-sm leading-8 text-slate-500 sm:text-base">
-                The program structure is intentionally designed so that
-                administrators can later add, edit, publish and organize
-                programs without changing the frontend layout.
-              </p>
-
-              <div className="mt-7 grid gap-3 sm:grid-cols-2">
-                {[
-                  "Program title & category",
-                  "Featured image",
-                  "Description & objectives",
-                  "Status & visibility",
-                  "Program detail page",
-                  "Related projects & campaigns",
-                ].map((item) => (
-                  <div
-                    key={item}
-                    className="flex items-center gap-3 rounded-xl border border-slate-200 bg-[#FCFAF7] px-4 py-3"
-                  >
-                    <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-[#EEF4FF] text-[#2457C5]">
-                      ✓
-                    </span>
-
-                    <span className="text-xs font-medium text-slate-600">
-                      {item}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{
-                opacity: 0,
-                x: 30,
-              }}
-              whileInView={{
-                opacity: 1,
-                x: 0,
-              }}
-              viewport={{
-                once: true,
-                amount: 0.2,
-              }}
-              transition={{ duration: 0.8 }}
-              className="rounded-3xl bg-[#55152B] p-8 sm:p-10"
-            >
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white/10 text-white">
-                <Lightbulb size={22} />
-              </div>
-
-              <h3 className="mt-7 text-2xl font-bold text-white">
-                One structure.
-                <br />
-                Many possibilities.
-              </h3>
-
-              <p className="mt-4 text-sm leading-7 text-white/65">
-                As the organization grows, the CMS can connect each program
-                with projects, campaigns, news, gallery items and reports.
-              </p>
-
-              <div className="mt-8 h-px bg-white/10" />
-
-              <div className="mt-6 flex items-center justify-between text-xs">
-                <span className="text-white/45">
-                  Future CMS architecture
-                </span>
-
-                <span className="font-bold text-[#E9B6C7]">
-                  Flexible
-                </span>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* =========================================================
-          CTA
-      ========================================================= */}
-
-      <section className="bg-[#FCFAF7] pb-24 sm:pb-28 lg:pb-32">
-        <div className="container-main">
-          <motion.div
-            initial={{
-              opacity: 0,
-              y: 30,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-              amount: 0.2,
-            }}
-            transition={{
-              duration: 0.8,
-            }}
-            className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl bg-[#55152B] px-7 py-14 text-center sm:px-12 sm:py-16 lg:px-16 lg:py-20"
-          >
-            <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full border-[35px] border-white/[0.045]" />
-
-            <div className="pointer-events-none absolute -bottom-24 left-1/4 h-52 w-52 rounded-full bg-[#2457C5]/15 blur-3xl" />
-
-            <div className="relative z-10 mx-auto max-w-3xl">
-              <div className="mb-5 flex items-center justify-center gap-2">
-                <span className="h-2 w-2 rounded-full bg-[#2457C5]" />
-
-                <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-white/55">
-                  Get Involved
-                </span>
-              </div>
-
-              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Be part of meaningful community work.
-              </h2>
-
-              <p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-white/65 sm:text-base">
-                Connect with Lifeline Achham to learn more about our work,
-                explore collaboration opportunities or find a meaningful way
-                to contribute.
-              </p>
-
-              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center justify-center gap-2 rounded-xl bg-[#2457C5] px-6 py-3.5 text-sm font-bold text-white shadow-xl transition hover:bg-[#17439F]"
-                >
-                  Get Involved
-
-                  <ArrowUpRight
-                    size={17}
-                    className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
-                  />
-                </Link>
-
-                <Link
-                  href="/work"
-                  className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-6 py-3.5 text-sm font-semibold text-white/80 transition hover:bg-white/10 hover:text-white"
-                >
-                  Back to Our Work
-
-                  <ArrowRight size={16} />
-                </Link>
-              </div>
             </div>
-          </motion.div>
+
+            <div className="border-t border-white/10 p-7 sm:p-10 lg:border-l lg:border-t-0 lg:p-12">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 text-[#F4B7C9]">
+                <ShieldCheck size={28} />
+              </div>
+
+              <p className="mt-5 text-sm font-semibold text-white">
+                Transparency & accountability
+              </p>
+
+              <p className="mt-2 max-w-xs text-sm leading-6 text-white/60">
+                Clear information, responsible implementation, and a focus on
+                meaningful community outcomes.
+              </p>
+            </div>
+          </div>
         </div>
+      </section>
+
+      {/* CALL TO ACTION */}
+      <section className="relative overflow-hidden bg-[#7A1F3D] px-5 py-20 sm:px-8 sm:py-24 lg:px-12">
+        <div className="pointer-events-none absolute -right-20 -top-28 h-80 w-80 rounded-full border border-white/10" />
+        <div className="pointer-events-none absolute -right-5 -top-12 h-52 w-52 rounded-full border border-white/10" />
+        <div className="pointer-events-none absolute -bottom-36 left-[15%] h-72 w-72 rounded-full bg-white/[0.04] blur-2xl" />
+
+        <motion.div
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          variants={stagger}
+          className="relative mx-auto flex max-w-7xl flex-col justify-between gap-8 lg:flex-row lg:items-center"
+        >
+          <div className="max-w-2xl">
+            <motion.p
+              variants={fadeUp}
+              className="text-xs font-bold uppercase tracking-[0.2em] text-white/70"
+            >
+              Be part of the change
+            </motion.p>
+
+            <motion.h2
+              variants={fadeUp}
+              className="mt-4 text-3xl font-bold leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl"
+            >
+              Let&apos;s create a stronger future, together.
+            </motion.h2>
+
+            <motion.p
+              variants={fadeUp}
+              className="mt-5 max-w-xl text-base leading-8 text-white/80"
+            >
+              Have an idea, want to collaborate, or looking for ways to
+              support our work? We would love to hear from you.
+            </motion.p>
+          </div>
+
+          <motion.div
+            variants={fadeUp}
+            className="flex shrink-0 flex-col gap-3 sm:flex-row lg:flex-col xl:flex-row"
+          >
+            <Link
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-[#55152B] transition hover:-translate-y-0.5 hover:bg-[#FCFAF7]"
+            >
+              Get in touch
+              <ArrowRight size={17} />
+            </Link>
+
+            <Link
+              href="/about"
+              className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/30 px-6 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10"
+            >
+              About Lifeline Achham
+              <ArrowUpRight size={17} />
+            </Link>
+          </motion.div>
+        </motion.div>
       </section>
     </main>
   );

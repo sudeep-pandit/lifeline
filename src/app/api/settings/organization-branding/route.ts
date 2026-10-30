@@ -1,23 +1,35 @@
 import { NextResponse } from "next/server";
+
 import { prisma } from "@/lib/prisma";
 import { requirePermission } from "@/lib/permissions";
 
+export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 const BRANDING_KEY = "organization_branding";
 
-function handleError(error: unknown) {
+type BrandingBody = {
+  logoUrl: string | null;
+};
+
+function errorResponse(error: unknown) {
   if (error instanceof Error) {
     if (error.message === "UNAUTHORIZED") {
       return NextResponse.json(
-        { success: false, message: "Please log in." },
+        {
+          success: false,
+          message: "Please log in.",
+        },
         { status: 401 },
       );
     }
 
     if (error.message === "FORBIDDEN") {
       return NextResponse.json(
-        { success: false, message: "You do not have permission." },
+        {
+          success: false,
+          message: "You do not have permission to change this setting.",
+        },
         { status: 403 },
       );
     }
@@ -32,6 +44,38 @@ function handleError(error: unknown) {
     },
     { status: 500 },
   );
+}
+
+function isValidLogoUrl(value: unknown): value is string | null {
+  if (value === null) return true;
+
+  if (typeof value !== "string" || value.length > 1000) {
+    return false;
+  }
+
+  // Allow URLs served from the application's media upload directory.
+  if (value.startsWith("/uploads/media/")) {
+    return (
+      !value.startsWith("//") &&
+      !value.includes("\\") &&
+      !value.includes("..") &&
+      !/[\u0000-\u001F\u007F]/.test(value)
+    );
+  }
+
+  // External logo URLs must use HTTPS.
+  try {
+    const url = new URL(value);
+
+    return (
+      url.protocol === "https:" &&
+      Boolean(url.hostname) &&
+      !url.username &&
+      !url.password
+    );
+  } catch {
+    return false;
+  }
 }
 
 export async function GET() {
@@ -54,14 +98,27 @@ export async function GET() {
       },
     });
   } catch (error) {
-    return handleError(error);
+    return errorResponse(error);
   }
 }
 
 export async function PATCH(request: Request) {
   try {
     const user = await requirePermission("settings.edit");
-    const body: unknown = await request.json();
+
+    let body: unknown;
+
+    try {
+      body = await request.json();
+    } catch {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Request body must contain valid JSON.",
+        },
+        { status: 400 },
+      );
+    }
 
     if (
       typeof body !== "object" ||
@@ -70,28 +127,22 @@ export async function PATCH(request: Request) {
       !("logoUrl" in body)
     ) {
       return NextResponse.json(
-        { success: false, message: "Invalid branding request." },
+        {
+          success: false,
+          message: "Invalid branding request.",
+        },
         { status: 400 },
       );
     }
 
-    const logoUrl = body.logoUrl;
+    const logoUrl = (body as BrandingBody).logoUrl;
 
-    if (
-      logoUrl !== null &&
-      (
-        typeof logoUrl !== "string" ||
-        logoUrl.length > 1000 ||
-        !(
-          logoUrl.startsWith("/uploads/media/") ||
-          /^https:\/\/[^\s]+$/i.test(logoUrl)
-        )
-      )
-    ) {
+    if (!isValidLogoUrl(logoUrl)) {
       return NextResponse.json(
         {
           success: false,
-          message: "Please provide a valid logo URL or null to remove it.",
+          message:
+            "Provide a valid HTTPS logo URL, an application media URL, or null to remove the logo.",
         },
         { status: 400 },
       );
@@ -129,6 +180,6 @@ export async function PATCH(request: Request) {
       },
     });
   } catch (error) {
-    return handleError(error);
+    return errorResponse(error);
   }
 }

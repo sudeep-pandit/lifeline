@@ -10,7 +10,6 @@ import {
 } from "react";
 import {
   AlertCircle,
-  ArrowUpRight,
   Check,
   CheckCircle2,
   ChevronDown,
@@ -33,6 +32,7 @@ import {
 
 type ContentType = "PAGE" | "SECTION";
 type ContentStatus = "DRAFT" | "PUBLISHED";
+type ContentSection = "programs" | "projects" | "campaigns";
 
 type ContentItem = {
   id: string;
@@ -71,6 +71,30 @@ type ContentForm = {
   sortOrder: number;
 };
 
+const sectionConfig: Record<
+  ContentSection,
+  { title: string; description: string; prefix: string }
+> = {
+  programs: {
+    title: "Programs Management",
+    description:
+      "Create and manage Lifeline Achham programs, descriptions, images, and publication status.",
+    prefix: "program",
+  },
+  projects: {
+    title: "Projects Management",
+    description:
+      "Manage project information, featured images, descriptions, and publication status.",
+    prefix: "project",
+  },
+  campaigns: {
+    title: "Campaigns Management",
+    description:
+      "Create and manage campaigns, announcements, images, and publication status.",
+    prefix: "campaign",
+  },
+};
+
 const emptyForm: ContentForm = {
   title: "",
   key: "",
@@ -91,8 +115,7 @@ const emptyForm: ContentForm = {
 const inputClass =
   "block w-full min-w-0 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10";
 
-const labelClass =
-  "mb-2 block text-sm font-semibold text-slate-700";
+const labelClass = "mb-2 block text-sm font-semibold text-slate-700";
 
 function makeKey(value: string) {
   return value
@@ -114,6 +137,10 @@ function makeSlug(value: string) {
     .replace(/^-+|-+$/g, "");
 }
 
+function normalizeKey(value: string) {
+  return value.trim().toLowerCase().replace(/\s+/g, "_");
+}
+
 function isValidImageUrl(value: string) {
   if (!value.trim()) return true;
 
@@ -130,7 +157,9 @@ function formatDate(value: string) {
 
   const date = new Date(value);
 
-  if (Number.isNaN(date.getTime())) return "Recently updated";
+  if (Number.isNaN(date.getTime())) {
+    return "Recently updated";
+  }
 
   return date.toLocaleDateString("en-NP", {
     day: "numeric",
@@ -140,25 +169,32 @@ function formatDate(value: string) {
 }
 
 function getErrorMessage(data: unknown, fallback: string) {
-  if (
-    typeof data === "object" &&
-    data !== null &&
-    "message" in data &&
-    typeof data.message === "string"
-  ) {
-    return data.message;
-  }
+  if (typeof data === "object" && data !== null) {
+    if (
+      "message" in data &&
+      typeof data.message === "string"
+    ) {
+      return data.message;
+    }
 
-  if (
-    typeof data === "object" &&
-    data !== null &&
-    "error" in data &&
-    typeof data.error === "string"
-  ) {
-    return data.error;
+    if ("error" in data && typeof data.error === "string") {
+      return data.error;
+    }
   }
 
   return fallback;
+}
+
+function matchesContentSection(
+  item: ContentItem,
+  section?: ContentSection,
+) {
+  if (!section) return true;
+
+  const key = normalizeKey(item.key);
+  const prefix = `${sectionConfig[section].prefix}_`;
+
+  return key.startsWith(prefix);
 }
 
 function StatusBadge({ status }: { status: ContentStatus }) {
@@ -166,17 +202,13 @@ function StatusBadge({ status }: { status: ContentStatus }) {
 
   return (
     <span
-      className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
+      className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold ${
         published
           ? "bg-emerald-50 text-emerald-700"
           : "bg-amber-50 text-amber-700"
       }`}
     >
-      {published ? (
-        <CheckCircle2 size={13} />
-      ) : (
-        <Clock3 size={13} />
-      )}
+      {published ? <CheckCircle2 size={13} /> : <Clock3 size={13} />}
       {published ? "Published" : "Draft"}
     </span>
   );
@@ -209,10 +241,7 @@ function ImagePreview({ url }: { url: string }) {
   if (!isValidImageUrl(cleanUrl)) {
     return (
       <div className="flex min-h-24 items-center gap-3 rounded-xl border border-amber-200 bg-amber-50 p-4">
-        <AlertCircle
-          size={20}
-          className="shrink-0 text-amber-600"
-        />
+        <AlertCircle size={20} className="shrink-0 text-amber-600" />
         <div>
           <p className="text-sm font-semibold text-amber-800">
             Check the image URL
@@ -234,8 +263,7 @@ function ImagePreview({ url }: { url: string }) {
             Image could not be loaded
           </p>
           <p className="mt-1 text-xs leading-5 text-red-600">
-            Check that the link is publicly accessible and points
-            directly to an image.
+            Check that the link is public and points directly to an image.
           </p>
         </div>
       </div>
@@ -255,6 +283,7 @@ function ImagePreview({ url }: { url: string }) {
       </div>
 
       <div className="flex min-h-36 items-center justify-center bg-slate-50 p-2">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           key={cleanUrl}
           src={cleanUrl}
@@ -267,10 +296,15 @@ function ImagePreview({ url }: { url: string }) {
   );
 }
 
-export default function ContentClient() {
+export default function ContentClient({
+  section,
+}: {
+  section?: ContentSection;
+}) {
   const [items, setItems] = useState<ContentItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [deleting, setDeleting] = useState(false);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [search, setSearch] = useState("");
@@ -278,9 +312,11 @@ export default function ContentClient() {
   const [statusFilter, setStatusFilter] = useState("ALL");
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState<ContentItem | null>(null);
-  const [form, setForm] = useState<ContentForm>(emptyForm);
+  const [form, setForm] = useState<ContentForm>({ ...emptyForm });
   const [advancedOpen, setAdvancedOpen] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
+
+  const currentSection = section ? sectionConfig[section] : null;
 
   const loadContent = useCallback(async () => {
     setLoading(true);
@@ -292,7 +328,7 @@ export default function ContentClient() {
         cache: "no-store",
       });
 
-      const result: unknown = await response.json();
+      const result: unknown = await response.json().catch(() => null);
 
       if (!response.ok) {
         throw new Error(
@@ -303,18 +339,13 @@ export default function ContentClient() {
       if (
         typeof result !== "object" ||
         result === null ||
-        !("data" in result)
+        !("data" in result) ||
+        !Array.isArray(result.data)
       ) {
-        throw new Error("Unexpected content response from the server.");
+        throw new Error("The server returned an invalid content response.");
       }
 
-      const data = result.data;
-
-      if (!Array.isArray(data)) {
-        throw new Error("The server did not return a content list.");
-      }
-
-      setItems(data as ContentItem[]);
+      setItems(result.data as ContentItem[]);
     } catch (err) {
       setError(
         err instanceof Error
@@ -330,10 +361,15 @@ export default function ContentClient() {
     void loadContent();
   }, [loadContent]);
 
+  const sectionItems = useMemo(
+    () => items.filter((item) => matchesContentSection(item, section)),
+    [items, section],
+  );
+
   const filteredItems = useMemo(() => {
     const term = search.trim().toLowerCase();
 
-    return items.filter((item) => {
+    return sectionItems.filter((item) => {
       const matchesSearch =
         !term ||
         item.title?.toLowerCase().includes(term) ||
@@ -349,20 +385,23 @@ export default function ContentClient() {
 
       return matchesSearch && matchesType && matchesStatus;
     });
-  }, [items, search, typeFilter, statusFilter]);
+  }, [sectionItems, search, typeFilter, statusFilter]);
 
-  const publishedCount = items.filter(
+  const publishedCount = sectionItems.filter(
     (item) => item.status === "PUBLISHED",
   ).length;
 
-  const draftCount = items.filter(
+  const draftCount = sectionItems.filter(
     (item) => item.status === "DRAFT",
   ).length;
 
   function openCreate() {
     setEditing(null);
-    setForm({ ...emptyForm });
-    setAdvancedOpen(false);
+    setForm({
+      ...emptyForm,
+      key: currentSection ? `${currentSection.prefix}_` : "",
+    });
+    setAdvancedOpen(Boolean(currentSection));
     setError("");
     setNotice("");
     setModalOpen(true);
@@ -396,10 +435,7 @@ export default function ContentClient() {
     field: K,
     value: ContentForm[K],
   ) {
-    setForm((previous) => ({
-      ...previous,
-      [field]: value,
-    }));
+    setForm((previous) => ({ ...previous, [field]: value }));
   }
 
   function updateTitle(value: string) {
@@ -408,10 +444,10 @@ export default function ContentClient() {
       title: value,
       key: editing
         ? previous.key
-        : makeKey(value),
-      slug: editing
-        ? previous.slug
-        : makeSlug(value),
+        : currentSection
+          ? `${currentSection.prefix}_${makeKey(value)}`
+          : makeKey(value),
+      slug: editing ? previous.slug : makeSlug(value),
     }));
   }
 
@@ -420,14 +456,39 @@ export default function ContentClient() {
     setError("");
     setNotice("");
 
-    if (!form.title.trim()) {
+    const title = form.title.trim();
+    const key = normalizeKey(form.key);
+
+    if (!title) {
       setError("Please enter a title.");
       return;
     }
 
-    if (!form.key.trim()) {
+    if (!key) {
       setError("Please enter a content key.");
+      setAdvancedOpen(true);
       return;
+    }
+
+    if (currentSection) {
+      const requiredPrefix = `${currentSection.prefix}_`;
+
+      if (!key.startsWith(requiredPrefix) || key.length <= requiredPrefix.length) {
+        setError(
+          `The content key must start with "${requiredPrefix}" and include a name after the prefix.`,
+        );
+        setAdvancedOpen(true);
+        return;
+      }
+
+      // Do not allow an item opened from one section to be reassigned.
+      if (
+        editing &&
+        !matchesContentSection(editing, section)
+      ) {
+        setError("This item does not belong to the current section.");
+        return;
+      }
     }
 
     if (!isValidImageUrl(form.imageUrl)) {
@@ -435,11 +496,17 @@ export default function ContentClient() {
       return;
     }
 
-    setSaving(true);
+    if (
+      !Number.isFinite(Number(form.sortOrder)) ||
+      Number(form.sortOrder) < 0
+    ) {
+      setError("Display order must be a non-negative number.");
+      return;
+    }
 
     const payload = {
-      title: form.title.trim(),
-      key: form.key.trim(),
+      title,
+      key,
       slug: form.slug.trim() || null,
       type: form.type,
       status: form.status,
@@ -454,19 +521,19 @@ export default function ContentClient() {
       sortOrder: Number(form.sortOrder) || 0,
     };
 
+    setSaving(true);
+
     try {
       const response = await fetch(
-        editing ? `/api/content/${editing.id}` : "/api/content",
+        editing ? `/api/content/${encodeURIComponent(editing.id)}` : "/api/content",
         {
           method: editing ? "PATCH" : "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
         },
       );
 
-      const result: unknown = await response.json();
+      const result: unknown = await response.json().catch(() => null);
 
       if (!response.ok) {
         throw new Error(
@@ -501,11 +568,13 @@ export default function ContentClient() {
   async function handleDelete(id: string) {
     setError("");
     setNotice("");
+    setDeleting(true);
 
     try {
-      const response = await fetch(`/api/content/${id}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `/api/content/${encodeURIComponent(id)}`,
+        { method: "DELETE" },
+      );
 
       const result: unknown = await response.json().catch(() => null);
 
@@ -524,9 +593,12 @@ export default function ContentClient() {
           ? err.message
           : "Something went wrong while deleting content.",
       );
-      setDeleteId(null);
+    } finally {
+      setDeleting(false);
     }
   }
+
+  const activeDeleteItem = items.find((item) => item.id === deleteId);
 
   return (
     <div className="min-h-screen bg-[#FCFAF7] px-4 py-6 text-slate-900 sm:px-6 lg:px-8">
@@ -539,12 +611,12 @@ export default function ContentClient() {
             </div>
 
             <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
-              Content Management
+              {currentSection?.title ?? "Content Management"}
             </h1>
 
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-              Manage website pages, homepage sections, images, and
-              published content from one place.
+              {currentSection?.description ??
+                "Manage website pages, homepage sections, images, and published content from one place."}
             </p>
           </div>
 
@@ -568,7 +640,7 @@ export default function ContentClient() {
               className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#2457C5] px-4 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-[#1947A8]"
             >
               <Plus size={17} />
-              Add content
+              Add {section ? section.slice(0, -1) : "content"}
             </button>
           </div>
         </header>
@@ -585,15 +657,10 @@ export default function ContentClient() {
             {error ? (
               <AlertCircle size={19} className="mt-0.5 shrink-0" />
             ) : (
-              <CheckCircle2
-                size={19}
-                className="mt-0.5 shrink-0"
-              />
+              <CheckCircle2 size={19} className="mt-0.5 shrink-0" />
             )}
 
-            <p className="min-w-0 flex-1 break-words">
-              {error || notice}
-            </p>
+            <p className="min-w-0 flex-1 break-words">{error || notice}</p>
 
             <button
               type="button"
@@ -613,7 +680,7 @@ export default function ContentClient() {
           {[
             {
               label: "Total content",
-              value: items.length,
+              value: sectionItems.length,
               icon: FileText,
               color: "text-blue-700",
               background: "bg-blue-50",
@@ -669,7 +736,6 @@ export default function ContentClient() {
                   size={18}
                   className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
                 />
-
                 <input
                   type="search"
                   value={search}
@@ -686,7 +752,6 @@ export default function ContentClient() {
                     size={15}
                     className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
                   />
-
                   <select
                     value={typeFilter}
                     onChange={(event) => setTypeFilter(event.target.value)}
@@ -697,7 +762,6 @@ export default function ContentClient() {
                     <option value="PAGE">Pages</option>
                     <option value="SECTION">Sections</option>
                   </select>
-
                   <ChevronDown
                     size={15}
                     className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
@@ -715,7 +779,6 @@ export default function ContentClient() {
                     <option value="PUBLISHED">Published</option>
                     <option value="DRAFT">Draft</option>
                   </select>
-
                   <ChevronDown
                     size={15}
                     className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-slate-400"
@@ -725,16 +788,14 @@ export default function ContentClient() {
             </div>
 
             <p className="mt-3 text-xs text-slate-500">
-              Showing {filteredItems.length} of {items.length} content items
+              Showing {filteredItems.length} of {sectionItems.length}{" "}
+              {section ?? "content"} items
             </p>
           </div>
 
           {loading ? (
             <div className="flex min-h-64 flex-col items-center justify-center gap-3 p-8">
-              <Loader2
-                size={27}
-                className="animate-spin text-[#2457C5]"
-              />
+              <Loader2 size={27} className="animate-spin text-[#2457C5]" />
               <p className="text-sm text-slate-500">
                 Loading website content...
               </p>
@@ -746,18 +807,18 @@ export default function ContentClient() {
               </div>
 
               <h2 className="mt-4 text-base font-semibold text-slate-800">
-                {items.length === 0
-                  ? "No content yet"
-                  : "No matching content"}
+                {search || typeFilter !== "ALL" || statusFilter !== "ALL"
+                  ? "No matching content"
+                  : `No ${section ?? ""} content yet`}
               </h2>
 
               <p className="mt-2 max-w-sm text-sm leading-6 text-slate-500">
-                {items.length === 0
-                  ? "Create your first page or section to get started."
-                  : "Try a different search term or change your filters."}
+                {search || typeFilter !== "ALL" || statusFilter !== "ALL"
+                  ? "Try a different search term or change your filters."
+                  : "Create your first item to get started."}
               </p>
 
-              {items.length === 0 && (
+              {!search && typeFilter === "ALL" && statusFilter === "ALL" && (
                 <button
                   type="button"
                   onClick={openCreate}
@@ -769,7 +830,7 @@ export default function ContentClient() {
               )}
             </div>
           ) : (
-            <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 xl:grid-cols-3 sm:p-5">
+            <div className="grid grid-cols-1 gap-4 p-4 sm:p-5 md:grid-cols-2 xl:grid-cols-3">
               {filteredItems.map((item) => (
                 <article
                   key={item.id}
@@ -777,6 +838,7 @@ export default function ContentClient() {
                 >
                   <div className="relative flex h-40 items-center justify-center overflow-hidden bg-slate-100">
                     {item.imageUrl ? (
+                      // eslint-disable-next-line @next/next/no-img-element
                       <img
                         src={item.imageUrl}
                         alt={item.title}
@@ -901,11 +963,7 @@ export default function ContentClient() {
             <header className="flex items-center justify-between gap-4 border-b border-slate-100 px-5 py-4 sm:px-7">
               <div className="flex min-w-0 items-center gap-3">
                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-[#2457C5]">
-                  {editing ? (
-                    <Edit3 size={20} />
-                  ) : (
-                    <Plus size={21} />
-                  )}
+                  {editing ? <Edit3 size={20} /> : <Plus size={21} />}
                 </div>
 
                 <div className="min-w-0">
@@ -939,10 +997,7 @@ export default function ContentClient() {
               <div className="flex-1 space-y-6 overflow-y-auto px-5 py-6 sm:px-7">
                 {error && (
                   <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-                    <AlertCircle
-                      size={18}
-                      className="mt-0.5 shrink-0"
-                    />
+                    <AlertCircle size={18} className="mt-0.5 shrink-0" />
                     <p className="break-words">{error}</p>
                   </div>
                 )}
@@ -966,7 +1021,7 @@ export default function ContentClient() {
                         id="content-title"
                         value={form.title}
                         onChange={(event) => updateTitle(event.target.value)}
-                        placeholder="e.g. About Lifeline Achham"
+                        placeholder="e.g. Community Health Program"
                         required
                         className={inputClass}
                       />
@@ -980,10 +1035,7 @@ export default function ContentClient() {
                         id="content-type"
                         value={form.type}
                         onChange={(event) =>
-                          updateField(
-                            "type",
-                            event.target.value as ContentType,
-                          )
+                          updateField("type", event.target.value as ContentType)
                         }
                         className={inputClass}
                       >
@@ -1075,7 +1127,6 @@ export default function ContentClient() {
                           size={18}
                           className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"
                         />
-
                         <input
                           id="content-image-url"
                           type="url"
@@ -1087,7 +1138,7 @@ export default function ContentClient() {
                           }
                           placeholder="https://example.com/image.jpg"
                           aria-describedby="image-url-help"
-                          className={`${inputClass} pl-10`}
+                          className={`${inputClass} pl-10 pr-12`}
                         />
 
                         {form.imageUrl.trim() && (
@@ -1096,9 +1147,11 @@ export default function ContentClient() {
                             title="Open image URL in a new tab"
                             aria-label="Open image URL"
                             onClick={() => {
-                              if (isValidImageUrl(form.imageUrl) && form.imageUrl.trim()) {
+                              const url = form.imageUrl.trim();
+
+                              if (url && isValidImageUrl(url)) {
                                 window.open(
-                                  form.imageUrl.trim(),
+                                  url,
                                   "_blank",
                                   "noopener,noreferrer",
                                 );
@@ -1116,16 +1169,16 @@ export default function ContentClient() {
                         className="text-xs leading-5 text-slate-500"
                       >
                         Paste a publicly accessible image link. Use HTTPS
-                        when available. The URL field automatically expands
-                        to fit its container.
+                        when available.
                       </p>
 
-                      {form.imageUrl.trim() && !isValidImageUrl(form.imageUrl) && (
-                        <p className="flex items-center gap-1.5 text-xs font-medium text-red-600">
-                          <AlertCircle size={14} />
-                          Enter a valid HTTP or HTTPS URL.
-                        </p>
-                      )}
+                      {form.imageUrl.trim() &&
+                        !isValidImageUrl(form.imageUrl) && (
+                          <p className="flex items-center gap-1.5 text-xs font-medium text-red-600">
+                            <AlertCircle size={14} />
+                            Enter a valid HTTP or HTTPS URL.
+                          </p>
+                        )}
                     </div>
 
                     <div className="min-w-0">
@@ -1221,12 +1274,19 @@ export default function ContentClient() {
                           onChange={(event) =>
                             updateField("key", event.target.value)
                           }
-                          placeholder="about_lifeline"
+                          placeholder={
+                            currentSection
+                              ? `${currentSection.prefix}_example`
+                              : "about_lifeline"
+                          }
                           required
                           className={inputClass}
                         />
                         <p className="mt-2 text-xs text-slate-400">
                           Must be unique across your content.
+                          {currentSection
+                            ? ` Use the ${currentSection.prefix}_ prefix for this section.`
+                            : ""}
                         </p>
                       </div>
 
@@ -1252,11 +1312,15 @@ export default function ContentClient() {
                         <input
                           id="content-sort"
                           type="number"
+                          min={0}
+                          step={1}
                           value={form.sortOrder}
                           onChange={(event) =>
                             updateField(
                               "sortOrder",
-                              Number(event.target.value) || 0,
+                              event.target.value === ""
+                                ? 0
+                                : Number(event.target.value),
                             )
                           }
                           className={inputClass}
@@ -1267,7 +1331,10 @@ export default function ContentClient() {
                       </div>
 
                       <div>
-                        <label htmlFor="content-seo-title" className={labelClass}>
+                        <label
+                          htmlFor="content-seo-title"
+                          className={labelClass}
+                        >
                           SEO title
                         </label>
                         <input
@@ -1282,7 +1349,10 @@ export default function ContentClient() {
                       </div>
 
                       <div className="sm:col-span-2">
-                        <label htmlFor="content-seo-description" className={labelClass}>
+                        <label
+                          htmlFor="content-seo-description"
+                          className={labelClass}
+                        >
                           SEO description
                         </label>
                         <textarea
@@ -1298,7 +1368,10 @@ export default function ContentClient() {
                       </div>
 
                       <div className="sm:col-span-2">
-                        <label htmlFor="content-seo-keywords" className={labelClass}>
+                        <label
+                          htmlFor="content-seo-keywords"
+                          className={labelClass}
+                        >
                           SEO keywords
                         </label>
                         <input
@@ -1318,7 +1391,9 @@ export default function ContentClient() {
 
               <footer className="flex flex-col-reverse gap-3 border-t border-slate-100 bg-white px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-7">
                 <p className="hidden text-xs text-slate-400 sm:block">
-                  {editing ? "Changes are saved to this item." : "New content starts as a draft unless published."}
+                  {editing
+                    ? "Changes are saved to this item."
+                    : "New content starts as a draft unless published."}
                 </p>
 
                 <div className="flex flex-col-reverse gap-2 sm:flex-row">
@@ -1333,7 +1408,11 @@ export default function ContentClient() {
 
                   <button
                     type="submit"
-                    disabled={saving || !form.title.trim() || !form.key.trim()}
+                    disabled={
+                      saving ||
+                      !form.title.trim() ||
+                      !form.key.trim()
+                    }
                     className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#2457C5] px-5 py-3 text-sm font-semibold text-white transition hover:bg-[#1947A8] disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {saving ? (
@@ -1375,26 +1454,38 @@ export default function ContentClient() {
             </h2>
 
             <p className="mt-2 text-sm leading-6 text-slate-500">
-              This action cannot be undone. Make sure you no longer need
-              this content before deleting it.
+              {activeDeleteItem
+                ? `You are about to permanently delete "${activeDeleteItem.title}". This action cannot be undone.`
+                : "This action cannot be undone."}
             </p>
 
             <div className="mt-6 flex flex-col-reverse gap-2 sm:flex-row sm:justify-end">
               <button
                 type="button"
+                disabled={deleting}
                 onClick={() => setDeleteId(null)}
-                className="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50"
+                className="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50"
               >
                 Cancel
               </button>
 
               <button
                 type="button"
+                disabled={deleting}
                 onClick={() => void handleDelete(deleteId)}
-                className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-3 text-sm font-semibold text-white hover:bg-red-700"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-red-600 px-4 py-3 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                <Trash2 size={16} />
-                Delete permanently
+                {deleting ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    Deleting...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 size={16} />
+                    Delete permanently
+                  </>
+                )}
               </button>
             </div>
           </section>

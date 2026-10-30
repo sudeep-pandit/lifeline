@@ -1,8 +1,19 @@
 import OrganizationLogo from "@/components/website/OrganizationLogo";
 import Link from "next/link";
-import { ArrowUpRight, Mail, MapPin, Phone } from "lucide-react";
+import {
+  ArrowUpRight,
+  Mail,
+  MapPin,
+  Phone,
+} from "lucide-react";
 
 import { siteConfig } from "@/config/site";
+
+const contactNumbers = [
+  "+977 9742387566",
+  "+977 9866101290",
+  "+977 9848568972",
+];
 
 export default function Footer() {
   return (
@@ -47,7 +58,7 @@ export default function Footer() {
       {/* MAIN FOOTER */}
       <div className="container-main relative py-12 sm:py-14 lg:py-16">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-12 lg:grid-cols-4 lg:gap-10 xl:gap-12">
-          {/* BRAND */}
+          {/* BRAND AND SOCIAL LINKS */}
           <div className="min-w-0">
             <Link
               href="/"
@@ -70,11 +81,11 @@ export default function Footer() {
             </Link>
 
             <p className="mt-5 max-w-sm text-sm leading-7 text-slate-600">
-              Working with communities to create meaningful, sustainable and
-              lasting social impact.
+              Working with communities to create meaningful,
+              sustainable and lasting social impact.
             </p>
 
-            {/* SOCIAL LINKS */}
+            {/* FACEBOOK AND INSTAGRAM */}
             <div className="mt-6 flex items-center gap-3">
               <SocialLink
                 href={siteConfig.social.facebook}
@@ -125,7 +136,7 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* ORGANIZATION — VERTICAL LIST */}
+          {/* ORGANIZATION */}
           <div className="min-w-0">
             <FooterHeading>Organization</FooterHeading>
 
@@ -151,19 +162,28 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* EXPLORE — VERTICAL LIST */}
+          {/* EXPLORE */}
           <div className="min-w-0">
             <FooterHeading>Explore</FooterHeading>
 
             <ul className="mt-5 space-y-3">
               <li>
-                <FooterLink href="/work/programs" label="Programs" />
+                <FooterLink
+                  href="/work/programs"
+                  label="Programs"
+                />
               </li>
               <li>
-                <FooterLink href="/work/projects" label="Projects" />
+                <FooterLink
+                  href="/work/projects"
+                  label="Projects"
+                />
               </li>
               <li>
-                <FooterLink href="/work/campaigns" label="Campaigns" />
+                <FooterLink
+                  href="/work/campaigns"
+                  label="Campaigns"
+                />
               </li>
               <li>
                 <FooterLink
@@ -172,7 +192,10 @@ export default function Footer() {
                 />
               </li>
               <li>
-                <FooterLink href="/resources/gallery" label="Gallery" />
+                <FooterLink
+                  href="/resources/gallery"
+                  label="Gallery"
+                />
               </li>
             </ul>
           </div>
@@ -182,19 +205,23 @@ export default function Footer() {
             <FooterHeading>Contact</FooterHeading>
 
             <div className="mt-5 space-y-4">
+              {/* ADDRESS */}
               <div className="flex min-w-0 items-start gap-3">
                 <ContactIcon color="burgundy">
                   <MapPin size={16} />
                 </ContactIcon>
+
                 <span className="min-w-0 break-words pt-1 text-sm leading-6 text-slate-600">
                   {siteConfig.contact.address}
                 </span>
               </div>
 
+              {/* EMAIL */}
               <div className="flex min-w-0 items-start gap-3">
                 <ContactIcon color="blue">
                   <Mail size={16} />
                 </ContactIcon>
+
                 <a
                   href={`mailto:${siteConfig.contact.email}`}
                   className="min-w-0 break-all pt-1 text-sm leading-6 text-slate-600 transition-colors hover:text-[#2457C5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457C5]"
@@ -203,19 +230,24 @@ export default function Footer() {
                 </a>
               </div>
 
-              {siteConfig.contact.phone && (
-                <div className="flex min-w-0 items-start gap-3">
-                  <ContactIcon color="burgundy">
-                    <Phone size={16} />
-                  </ContactIcon>
-                  <a
-                    href={`tel:${siteConfig.contact.phone}`}
-                    className="min-w-0 break-words pt-1 text-sm leading-6 text-slate-600 transition-colors hover:text-[#2457C5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457C5]"
-                  >
-                    {siteConfig.contact.phone}
-                  </a>
+              {/* ALL THREE PHONE NUMBERS */}
+              <div className="flex min-w-0 items-start gap-3">
+                <ContactIcon color="burgundy">
+                  <Phone size={16} />
+                </ContactIcon>
+
+                <div className="min-w-0 flex-1 space-y-2 pt-1">
+                  {contactNumbers.map((number) => (
+                    <a
+                      key={number}
+                      href={`tel:${number.replace(/[^\d+]/g, "")}`}
+                      className="block break-words text-sm leading-6 text-slate-600 transition-colors hover:text-[#2457C5] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2457C5]"
+                    >
+                      {number}
+                    </a>
+                  ))}
                 </div>
-              )}
+              </div>
             </div>
 
             <Link
@@ -236,7 +268,8 @@ export default function Footer() {
       <div className="relative border-t border-slate-200">
         <div className="container-main flex flex-col gap-4 py-5 sm:py-6 lg:flex-row lg:items-center lg:justify-between">
           <p className="text-xs leading-5 text-slate-600">
-            © {new Date().getFullYear()} Lifeline Achham. All rights reserved.
+            © {new Date().getFullYear()} Lifeline Achham. All rights
+            reserved.
           </p>
 
           <div className="flex flex-col items-start gap-3 text-xs sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-2">
@@ -268,7 +301,11 @@ export default function Footer() {
 }
 
 /* FOOTER SECTION HEADING */
-function FooterHeading({ children }: { children: React.ReactNode }) {
+function FooterHeading({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <h3 className="text-xs font-bold uppercase tracking-[0.16em] text-[#172033]">
       {children}
@@ -304,12 +341,13 @@ function SocialLink({
   label,
   children,
 }: {
-  href: string;
+  href: string | undefined | null;
   label: string;
   children: React.ReactNode;
 }) {
   const configured =
-    typeof href === "string" && /^https?:\/\//i.test(href);
+    typeof href === "string" &&
+    /^https?:\/\//i.test(href);
 
   if (!configured) {
     return (

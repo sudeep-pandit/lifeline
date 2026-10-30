@@ -1,6 +1,6 @@
+
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useState } from "react";
 import {
@@ -11,6 +11,8 @@ import {
   LockKeyhole,
   Mail,
 } from "lucide-react";
+
+import OrganizationLogo from "@/components/website/OrganizationLogo";
 
 const VERSION = "v26.1.1";
 
@@ -27,6 +29,9 @@ export default function LoginPage() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (loading) return;
+
     setError("");
     setLoading(true);
 
@@ -61,19 +66,22 @@ export default function LoginPage() {
   }
 
   return (
-    <main className="login-page relative flex min-h-screen items-center justify-center overflow-hidden bg-[#FCFAF7] px-4 py-10">
+    <main className="login-page relative flex min-h-screen items-center justify-center overflow-hidden bg-[#FCFAF7] px-4 py-8 sm:py-10">
       {/* Background watermark */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-10 select-none text-center"
+        className="pointer-events-none absolute inset-x-0 top-8 select-none text-center sm:top-10"
       >
         <p className="watermark-text text-[clamp(2.5rem,8vw,6.5rem)] font-bold tracking-tight text-[#7A1F3D]">
           Lifeline Achham
         </p>
       </div>
 
-      {/* Decorative animated background */}
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* Decorative background */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 overflow-hidden"
+      >
         <div className="floating-heart heart-one">♥</div>
         <div className="floating-heart heart-two">♥</div>
         <div className="floating-heart heart-three">♥</div>
@@ -88,7 +96,7 @@ export default function LoginPage() {
           preserveAspectRatio="none"
         >
           <path
-            d="M-30 80 C 180 -10, 230 190, 440 100 S 760 30, 970 110 S 1250 160, 1470 30"
+            d="M-30 80 C180 -10 230 190 440 100 S760 30 970 110 S1250 160 1470 30"
             stroke="#D7A0B0"
             strokeWidth="1.5"
           />
@@ -119,22 +127,17 @@ export default function LoginPage() {
       </div>
 
       {/* Login card */}
-      <section className="login-card relative z-10 w-full max-w-[420px] rounded-2xl border border-[#DDE1E8] bg-white/95 p-6 shadow-[0_15px_50px_rgba(23,32,51,0.07)] backdrop-blur-sm sm:p-9">
-        {/* Original organization logo */}
-        <div className="mb-7 flex justify-center">
-          <div className="relative flex h-[66px] w-full items-center justify-center">
-            <Image
-              src="/images/logo/logo.png"
-              alt="Lifeline Achham logo"
-              width={300}
-              height={90}
-              priority
-              className="h-[66px] w-auto max-w-full object-contain"
-            />
-          </div>
+      <section className="login-card relative z-10 my-auto w-full max-w-[420px] rounded-2xl border border-[#DDE1E8] bg-white/95 p-6 shadow-[0_15px_50px_rgba(23,32,51,0.07)] backdrop-blur-sm sm:p-8">
+        {/* Shared organization logo */}
+        <div className="mb-5 flex h-[100px] w-full items-center justify-center overflow-hidden">
+          <OrganizationLogo
+            className="block h-auto max-h-[88px] w-auto max-w-[160px] object-contain"
+            fallbackClassName="flex h-16 w-16 items-center justify-center rounded-2xl bg-[#7A1F3D] text-xl font-bold text-white"
+          />
         </div>
 
-        <div className="mb-7 text-center">
+        {/* Heading */}
+        <div className="mb-6 text-center">
           <h1 className="text-2xl font-semibold tracking-tight text-[#172033]">
             Welcome Back
           </h1>
@@ -143,6 +146,7 @@ export default function LoginPage() {
           </p>
         </div>
 
+        {/* Login form */}
         <form onSubmit={handleSubmit} className="space-y-5">
           {/* Email */}
           <div>
@@ -157,18 +161,23 @@ export default function LoginPage() {
               <Mail
                 size={19}
                 strokeWidth={1.8}
+                aria-hidden="true"
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#718096]"
               />
 
               <input
                 id="email"
+                name="email"
                 type="email"
                 autoComplete="username"
                 required
                 placeholder="you@example.com"
                 value={form.email}
                 onChange={(event) =>
-                  setForm({ ...form, email: event.target.value })
+                  setForm((previous) => ({
+                    ...previous,
+                    email: event.target.value,
+                  }))
                 }
                 className="h-12 w-full rounded-lg border border-[#D5DBE5] bg-white pl-11 pr-3 text-sm text-[#172033] outline-none transition placeholder:text-[#9AA5B7] focus:border-[#7A1F3D] focus:ring-2 focus:ring-[#7A1F3D]/10"
               />
@@ -188,18 +197,23 @@ export default function LoginPage() {
               <LockKeyhole
                 size={19}
                 strokeWidth={1.8}
+                aria-hidden="true"
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#718096]"
               />
 
               <input
                 id="password"
+                name="password"
                 type={showPassword ? "text" : "password"}
                 autoComplete="current-password"
                 required
                 placeholder="Enter your password"
                 value={form.password}
                 onChange={(event) =>
-                  setForm({ ...form, password: event.target.value })
+                  setForm((previous) => ({
+                    ...previous,
+                    password: event.target.value,
+                  }))
                 }
                 className="h-12 w-full rounded-lg border border-[#D5DBE5] bg-white pl-11 pr-11 text-sm text-[#172033] outline-none transition placeholder:text-[#9AA5B7] focus:border-[#7A1F3D] focus:ring-2 focus:ring-[#7A1F3D]/10"
               />
@@ -208,9 +222,14 @@ export default function LoginPage() {
                 type="button"
                 onClick={() => setShowPassword((previous) => !previous)}
                 aria-label={showPassword ? "Hide password" : "Show password"}
-                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#718096] transition hover:text-[#7A1F3D]"
+                aria-pressed={showPassword}
+                className="absolute right-3.5 top-1/2 -translate-y-1/2 text-[#718096] transition hover:text-[#7A1F3D] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#7A1F3D]/30"
               >
-                {showPassword ? <EyeOff size={19} /> : <Eye size={19} />}
+                {showPassword ? (
+                  <EyeOff size={19} />
+                ) : (
+                  <Eye size={19} />
+                )}
               </button>
             </div>
           </div>
@@ -219,6 +238,7 @@ export default function LoginPage() {
           <label className="flex cursor-pointer items-center gap-2.5 text-sm text-[#475569]">
             <input
               type="checkbox"
+              name="rememberMe"
               checked={rememberMe}
               onChange={(event) => setRememberMe(event.target.checked)}
               className="h-4 w-4 rounded border-gray-300 accent-[#7A1F3D]"
@@ -226,10 +246,11 @@ export default function LoginPage() {
             Remember me
           </label>
 
-          {/* Error */}
+          {/* Error message */}
           {error && (
             <p
               role="alert"
+              aria-live="polite"
               className="rounded-lg border border-red-200 bg-red-50 px-3 py-2.5 text-sm text-red-700"
             >
               {error}
@@ -242,28 +263,39 @@ export default function LoginPage() {
             disabled={loading}
             className="group flex h-12 w-full items-center justify-center gap-2 rounded-lg bg-[#7A1F3D] px-4 text-sm font-semibold text-white transition duration-200 hover:bg-[#641830] active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60"
           >
-            {loading ? "Signing in..." : "Sign in"}
-            {!loading && (
-              <ArrowRight
-                size={17}
-                className="transition-transform duration-200 group-hover:translate-x-1"
-              />
+            {loading ? (
+              <>
+                <span
+                  aria-hidden="true"
+                  className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white"
+                />
+                Signing in...
+              </>
+            ) : (
+              <>
+                Sign in
+                <ArrowRight
+                  size={17}
+                  className="transition-transform duration-200 group-hover:translate-x-1"
+                />
+              </>
             )}
           </button>
         </form>
 
-        {/* Card footer */}
+        {/* Footer */}
         <div className="mt-7 border-t border-[#E8EBF0] pt-5">
           <div className="flex items-center justify-between gap-3">
             <a
               href="https://www.sudeeppandit.com.np"
-              className="group inline-flex min-w-0 items-center gap-2 text-xs text-[#64748B] transition hover:text-[#7A1F3D]"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener noreferrer"
+              className="group inline-flex min-w-0 items-center gap-2 text-xs text-[#64748B] transition hover:text-[#7A1F3D]"
             >
               <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#7A1F3D]/5 text-[#7A1F3D]">
                 <ArrowLeft size={14} />
               </span>
+
               <span>
                 Powered by{" "}
                 <span className="font-semibold text-[#344054] group-hover:text-[#7A1F3D]">
@@ -288,6 +320,7 @@ export default function LoginPage() {
         </div>
       </section>
 
+      {/* Animations */}
       <style jsx>{`
         .watermark-text {
           opacity: 0.055;
@@ -353,6 +386,7 @@ export default function LoginPage() {
           100% {
             transform: translateY(0);
           }
+
           50% {
             transform: translateY(-12px);
           }
@@ -362,6 +396,7 @@ export default function LoginPage() {
           from {
             transform: translate(0, 0) scale(1);
           }
+
           to {
             transform: translate(30px, -20px) scale(1.15);
           }
@@ -371,6 +406,7 @@ export default function LoginPage() {
           from {
             opacity: 0.035;
           }
+
           to {
             opacity: 0.07;
           }
@@ -381,6 +417,7 @@ export default function LoginPage() {
             opacity: 0;
             transform: translateY(12px);
           }
+
           to {
             opacity: 1;
             transform: translateY(0);

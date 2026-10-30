@@ -1,3 +1,4 @@
+
 "use client";
 
 import {
@@ -5,16 +6,17 @@ import {
   useEffect,
   useState,
 } from "react";
-import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   Activity,
   Bell,
+  BookOpen,
   ChevronDown,
   ChevronLeft,
   ChevronRight,
   Droplet,
+  FileBarChart,
   FileText,
   FolderOpen,
   HeartPulse,
@@ -23,12 +25,15 @@ import {
   LogOut,
   Menu,
   MessageSquare,
+  PanelsTopLeft,
   ReceiptText,
   Settings,
   ShieldCheck,
   Users,
   X,
 } from "lucide-react";
+
+import OrganizationLogo from "@/components/website/OrganizationLogo";
 
 type NavigationItem = {
   label: string;
@@ -48,10 +53,6 @@ type AdminUser = {
   email?: string | null;
   role?: string | null;
   permissions?: string[];
-};
-
-type BrandingResponse = {
-  logoUrl?: string | null;
 };
 
 type ApiResponse = {
@@ -102,6 +103,12 @@ const navigation: NavigationSection[] = [
         icon: Users,
         permission: "team.view",
       },
+      {
+        label: "Footer",
+        href: "/admin/organization/footer",
+        icon: PanelsTopLeft,
+        permission: "content.view",
+      },
     ],
   },
   {
@@ -111,6 +118,18 @@ const navigation: NavigationSection[] = [
         label: "News & Notices",
         href: "/admin/content",
         icon: FileText,
+        permission: "content.view",
+      },
+      {
+        label: "Reports",
+        href: "/admin/content",
+        icon: FileBarChart,
+        permission: "content.view",
+      },
+      {
+        label: "Publications",
+        href: "/admin/publications",
+        icon: BookOpen,
         permission: "content.view",
       },
     ],
@@ -175,37 +194,14 @@ export default function AdminShell({
   children: React.ReactNode;
 }) {
   const pathname = usePathname();
-  const router = useRouter();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [profileOpen, setProfileOpen] = useState(false);
   const [user, setUser] = useState<AdminUser | null>(null);
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [loggingOut, setLoggingOut] = useState(false);
   const [logoutError, setLogoutError] = useState("");
-
-  const loadBranding = useCallback(async () => {
-    try {
-      const response = await fetch(
-        "/api/settings/organization-branding",
-        {
-          cache: "no-store",
-        },
-      );
-
-      if (!response.ok) return;
-
-      const data: BrandingResponse = await response.json();
-
-      if (data.logoUrl) {
-        setLogoUrl(data.logoUrl);
-      }
-    } catch (error) {
-      console.error("Unable to load organization logo:", error);
-    }
-  }, []);
 
   useEffect(() => {
     let cancelled = false;
@@ -254,12 +250,11 @@ export default function AdminShell({
     }
 
     void initialize();
-    void loadBranding();
 
     return () => {
       cancelled = true;
     };
-  }, [loadBranding]);
+  }, []);
 
   const role = user?.role?.toUpperCase();
 
@@ -289,7 +284,6 @@ export default function AdminShell({
     setProfileOpen(false);
 
     try {
-      // Use the endpoint already present in your AdminShell.
       const response = await fetch("/api/logout", {
         method: "POST",
         credentials: "same-origin",
@@ -299,7 +293,9 @@ export default function AdminShell({
         },
       });
 
-      const result: ApiResponse = await response.json().catch(() => ({}));
+      const result: ApiResponse = await response
+        .json()
+        .catch(() => ({}));
 
       if (!response.ok || result.success !== true) {
         throw new Error(
@@ -307,15 +303,16 @@ export default function AdminShell({
         );
       }
 
-      // Full navigation avoids stale admin UI after logout.
       window.location.replace(LOGIN_PATH);
     } catch (error) {
       console.error("Logout failed:", error);
+
       setLogoutError(
         error instanceof Error
           ? error.message
           : "Unable to sign out. Please try again.",
       );
+
       setLoggingOut(false);
     }
   }, [loggingOut]);
@@ -329,8 +326,17 @@ export default function AdminShell({
     }))
     .filter((section) => section.items.length > 0);
 
+  const currentPageTitle =
+    navigation
+      .flatMap((section) => section.items)
+      .find((item) => isActive(item.href))?.label ??
+    (pathname.startsWith("/admin/organization/footer")
+      ? "Footer"
+      : "Admin Portal");
+
   return (
     <div className="min-h-screen bg-[#FCFAF7] text-slate-800">
+      {/* Mobile navigation backdrop */}
       {sidebarOpen && (
         <button
           type="button"
@@ -340,6 +346,7 @@ export default function AdminShell({
         />
       )}
 
+      {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-50 flex flex-col border-r border-slate-200 bg-white transition-all duration-300 ${
           sidebarCollapsed ? "lg:w-[88px]" : "lg:w-[270px]"
@@ -349,27 +356,22 @@ export default function AdminShell({
             : "-translate-x-full lg:translate-x-0"
         }`}
       >
-        <div className="flex h-[76px] shrink-0 items-center justify-between border-b border-slate-100 px-5">
+        {/* Sidebar branding */}
+        <div className="flex h-[76px] shrink-0 items-center justify-between border-b border-slate-100 px-4">
           <Link
             href="/admin/dashboard"
             onClick={() => setSidebarOpen(false)}
-            className="flex min-w-0 items-center gap-3"
+            title={sidebarCollapsed ? "Lifeline Achham" : undefined}
+            className={`flex min-w-0 items-center gap-3 ${
+              sidebarCollapsed ? "lg:justify-center" : ""
+            }`}
           >
-            <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white">
-              {logoUrl ? (
-                <Image
-                  src={logoUrl}
-                  alt="Lifeline Achham logo"
-                  fill
-                  sizes="40px"
-                  unoptimized
-                  className="object-contain p-0.5"
-                />
-              ) : (
-                <span className="text-sm font-extrabold text-[#7A1F3D]">
-                  LA
-                </span>
-              )}
+            {/* Fixed-size logo container */}
+            <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden">
+              <OrganizationLogo
+                className="block !h-auto !max-h-10 !w-auto !max-w-10 object-contain"
+                fallbackClassName="flex h-10 w-10 items-center justify-center rounded-xl bg-[#7A1F3D] text-sm font-bold text-white"
+              />
             </div>
 
             {!sidebarCollapsed && (
@@ -394,6 +396,7 @@ export default function AdminShell({
           </button>
         </div>
 
+        {/* Navigation */}
         <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-5">
           {visibleNavigation.map((section) => (
             <div key={section.title}>
@@ -414,6 +417,7 @@ export default function AdminShell({
                       href={item.href}
                       title={sidebarCollapsed ? item.label : undefined}
                       onClick={() => setSidebarOpen(false)}
+                      aria-current={active ? "page" : undefined}
                       className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-medium transition-colors ${
                         active
                           ? "bg-[#7A1F3D] text-white shadow-sm shadow-rose-950/10"
@@ -441,10 +445,14 @@ export default function AdminShell({
           ))}
         </nav>
 
+        {/* Sidebar footer */}
         <div className="shrink-0 border-t border-slate-100 p-3">
           <button
             type="button"
             onClick={() => setSidebarCollapsed((value) => !value)}
+            aria-label={
+              sidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
+            }
             className="hidden w-full items-center justify-center gap-2 rounded-xl px-3 py-2.5 text-xs font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-900 lg:flex"
           >
             {sidebarCollapsed ? (
@@ -463,6 +471,7 @@ export default function AdminShell({
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-rose-100 text-[#7A1F3D]">
                   <Activity size={16} />
                 </div>
+
                 <div className="min-w-0">
                   <p className="text-xs font-semibold text-slate-800">
                     Lifeline Achham
@@ -477,11 +486,13 @@ export default function AdminShell({
         </div>
       </aside>
 
+      {/* Main area */}
       <div
         className={`min-h-screen transition-[margin] duration-300 ${
           sidebarCollapsed ? "lg:ml-[88px]" : "lg:ml-[270px]"
         }`}
       >
+        {/* Header */}
         <header className="sticky top-0 z-30 flex h-[76px] items-center justify-between border-b border-slate-200/80 bg-white/90 px-4 backdrop-blur-xl sm:px-6 lg:px-8">
           <div className="flex min-w-0 items-center gap-3">
             <button
@@ -495,10 +506,7 @@ export default function AdminShell({
 
             <div className="min-w-0">
               <h1 className="truncate text-base font-bold text-slate-900">
-                {navigation
-                  .flatMap((section) => section.items)
-                  .find((item) => isActive(item.href))?.label ??
-                  "Admin Portal"}
+                {currentPageTitle}
               </h1>
               <p className="mt-0.5 hidden text-xs text-slate-500 sm:block">
                 Manage your organization and operations
@@ -515,10 +523,12 @@ export default function AdminShell({
               <Bell size={18} />
             </Link>
 
+            {/* User profile */}
             <div className="relative">
               <button
                 type="button"
                 onClick={() => setProfileOpen((value) => !value)}
+                aria-expanded={profileOpen}
                 className="flex items-center gap-2 rounded-xl p-1.5 transition hover:bg-slate-50 sm:gap-3"
               >
                 <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#7A1F3D] text-sm font-bold text-white">
@@ -596,6 +606,7 @@ export default function AdminShell({
           </div>
         </header>
 
+        {/* Page content */}
         <main className="min-h-[calc(100vh-76px)] p-4 sm:p-6 lg:p-8">
           {loading ? (
             <div className="flex min-h-[280px] items-center justify-center">
@@ -609,17 +620,19 @@ export default function AdminShell({
           )}
         </main>
 
+        {/* Footer */}
         <footer className="border-t border-slate-200/80 bg-white px-6 py-4">
           <div className="flex flex-col items-center justify-between gap-2 text-center text-[11px] text-slate-500 sm:flex-row sm:text-left">
             <p>
               © {new Date().getFullYear()} Lifeline Achham. All rights reserved.
             </p>
+
             <p>
               Designed and Developed by{" "}
               <a
                 href="https://sudeeppandit.com.np"
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener noreferrer"
                 className="font-semibold text-[#7A1F3D] hover:underline"
               >
                 Sudeep Pandit

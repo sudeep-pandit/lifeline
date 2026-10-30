@@ -31,7 +31,7 @@ export const siteConfig = {
   },
 
   social: {
-    facebook: "#",
+    facebook: "https://www.facebook.com/profile.php?id=61573814103252",
     instagram: "#",
     youtube: "#",
     linkedin: "#",

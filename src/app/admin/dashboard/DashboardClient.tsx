@@ -4,28 +4,33 @@
 import {
   Activity,
   AlertCircle,
-  ArrowDownRight,
   ArrowRight,
   ArrowUpRight,
   CalendarDays,
-  CheckCircle2,
   Clock3,
+  Database,
   FileText,
   LayoutDashboard,
   LoaderCircle,
-  LogOut,
   RefreshCw,
+  Server,
   Settings,
   ShieldCheck,
   UserCheck,
   UserCog,
-  UserPlus,
   Users,
   UsersRound,
   XCircle,
 } from "lucide-react";
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
+import OrganizationLogo from "@/components/website/OrganizationLogo";
 
 type UserRole =
   | "SUPER_ADMIN"
@@ -65,6 +70,28 @@ type ApiResponse<T> = {
   user?: UserData;
 };
 
+type HealthStatus =
+  | "healthy"
+  | "degraded"
+  | "unavailable"
+  | "checking";
+
+type HealthResponse = {
+  status?: string;
+  checks?: {
+    application?: string;
+    database?: string;
+  };
+  checkedAt?: string;
+};
+
+type HealthData = {
+  application: HealthStatus;
+  database: HealthStatus;
+  checkedAt: string | null;
+  error: string | null;
+};
+
 const ROLE_LABELS: Record<UserRole, string> = {
   SUPER_ADMIN: "Super Admin",
   ADMIN: "Administrator",
@@ -98,6 +125,7 @@ const BS_MONTH_STARTS = [
 
 const BS_SUPPORTED_FROM = "2026-04-14";
 const BS_SUPPORTED_UNTIL = "2027-04-14";
+const HEALTH_CHECK_INTERVAL = 60_000;
 
 function getKathmanduDateKey(date = new Date()) {
   const parts = new Intl.DateTimeFormat("en-CA", {
@@ -137,11 +165,10 @@ function getNepaliDate(dateKey: string) {
     }
   }
 
-  if (currentMonthIndex < 0) {
-    return null;
-  }
+  if (currentMonthIndex < 0) return null;
 
   const month = BS_MONTH_STARTS[currentMonthIndex];
+
   const day =
     Math.floor(
       (dateKeyToUtc(dateKey) - dateKeyToUtc(month.date)) /
@@ -194,16 +221,34 @@ function formatDateTime(value: string) {
   }).format(date);
 }
 
-function getInitials(name: string) {
-  const initials = name
-    .trim()
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join("");
+function formatTime(value: string | null) {
+  if (!value) return "Not checked yet";
 
-  return initials.toUpperCase() || "U";
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Time unavailable";
+  }
+
+  return new Intl.DateTimeFormat("en-US", {
+    timeZone: "Asia/Kathmandu",
+    hour: "numeric",
+    minute: "2-digit",
+    second: "2-digit",
+  }).format(date);
+}
+
+function getInitials(name: string) {
+  return (
+    name
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean)
+      .slice(0, 2)
+      .map((part) => part[0])
+      .join("")
+      .toUpperCase() || "U"
+  );
 }
 
 function getErrorMessage(error: unknown) {
@@ -226,13 +271,116 @@ function getEmptyDashboardData(): DashboardData {
   };
 }
 
+function normalizeHealthStatus(value: unknown): HealthStatus {
+  if (value === "healthy") return "healthy";
+  if (value === "degraded") return "degraded";
+  if (value === "checking") return "checking";
+  return "unavailable";
+}
+
+function getHealthLabel(status: HealthStatus) {
+  switch (status) {
+    case "healthy":
+      return "Operational";
+    case "degraded":
+      return "Degraded";
+    case "checking":
+      return "Checking...";
+    default:
+      return "Unavailable";
+  }
+}
+
+function getHealthClasses(status: HealthStatus) {
+  switch (status) {
+    case "healthy":
+      return {
+        badge: "bg-emerald-50 text-emerald-700 ring-emerald-200",
+        dot: "bg-emerald-500",
+        icon: "text-emerald-600",
+      };
+    case "degraded":
+      return {
+        badge: "bg-amber-50 text-amber-700 ring-amber-200",
+        dot: "bg-amber-500",
+        icon: "text-amber-600",
+      };
+    case "checking":
+      return {
+        badge: "bg-blue-50 text-blue-700 ring-blue-200",
+        dot: "bg-blue-500",
+        icon: "text-blue-600",
+      };
+    default:
+      return {
+        badge: "bg-rose-50 text-rose-700 ring-rose-200",
+        dot: "bg-rose-500",
+        icon: "text-rose-600",
+      };
+  }
+}
+
+function HealthRow({
+  title,
+  description,
+  status,
+  icon: Icon,
+}: {
+  title: string;
+  description: string;
+  status: HealthStatus;
+  icon: typeof Server;
+}) {
+  const classes = getHealthClasses(status);
+
+  return (
+    <div className="flex min-w-0 items-start gap-3 rounded-xl border border-slate-200 bg-white p-4">
+      <div
+        className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-50 ${classes.icon}`}
+      >
+        <Icon size={20} />
+      </div>
+
+      <div className="min-w-0 flex-1">
+        <p className="font-semibold text-slate-900">{title}</p>
+        <p className="mt-1 text-xs leading-5 text-slate-500">
+          {description}
+        </p>
+      </div>
+
+      <span
+        className={`inline-flex shrink-0 items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 ${classes.badge}`}
+      >
+        {status === "checking" ? (
+          <LoaderCircle size={12} className="animate-spin" />
+        ) : (
+          <span
+            className={`h-1.5 w-1.5 rounded-full ${classes.dot}`}
+          />
+        )}
+        {getHealthLabel(status)}
+      </span>
+    </div>
+  );
+}
+
 export default function DashboardClient() {
   const [user, setUser] = useState<UserData | null>(null);
   const [dashboard, setDashboard] =
     useState<DashboardData | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+
+  const [health, setHealth] = useState<HealthData>({
+    application: "checking",
+    database: "checking",
+    checkedAt: null,
+    error: null,
+  });
+
+  const [healthLoading, setHealthLoading] = useState(false);
 
   const today = useMemo(() => getKathmanduDateKey(), []);
   const nepaliDate = useMemo(() => getNepaliDate(today), [today]);
@@ -256,20 +404,27 @@ export default function DashboardClient() {
         }),
       ]);
 
-      if (meResponse.status === 401 || dashboardResponse.status === 401) {
+      if (
+        meResponse.status === 401 ||
+        dashboardResponse.status === 401
+      ) {
         window.location.assign("/login");
         return;
       }
 
-      if (dashboardResponse.status === 403) {
+      if (
+        meResponse.status === 403 ||
+        dashboardResponse.status === 403
+      ) {
         window.location.assign("/admin/forbidden");
         return;
       }
 
-      const meJson = (await meResponse.json().catch(() => ({}))) as
-        ApiResponse<UserData> & {
-          data?: UserData | { user?: UserData };
-        };
+      const meJson = (await meResponse
+        .json()
+        .catch(() => ({}))) as ApiResponse<UserData> & {
+        data?: UserData | { user?: UserData };
+      };
 
       const dashboardJson = (await dashboardResponse
         .json()
@@ -283,24 +438,27 @@ export default function DashboardClient() {
 
       if (!dashboardResponse.ok || !dashboardJson.success) {
         throw new Error(
-          dashboardJson.message || "Unable to load dashboard information.",
+          dashboardJson.message ||
+            "Unable to load dashboard information.",
         );
       }
 
-      const meData: UserData | { user?: UserData } | undefined =
-  meJson.data;
+      const meData = meJson.data;
 
-const currentUser: UserData | undefined =
-  meJson.user ??
-  (meData && "id" in meData
-    ? meData
-    : meData?.user);
-    
+      const currentUser: UserData | undefined =
+        meJson.user ??
+        (meData && "id" in meData
+          ? meData
+          : meData?.user);
+
       if (currentUser) {
         setUser(currentUser);
       }
 
-      setDashboard(dashboardJson.data ?? getEmptyDashboardData());
+      setDashboard(
+        dashboardJson.data ?? getEmptyDashboardData(),
+      );
+
       setLastUpdated(new Date());
     } catch (loadError) {
       setError(getErrorMessage(loadError));
@@ -309,9 +467,66 @@ const currentUser: UserData | undefined =
     }
   }, []);
 
+  const checkSystemHealth = useCallback(async () => {
+    setHealthLoading(true);
+
+    try {
+      const response = await fetch("/api/health/ready", {
+        method: "GET",
+        cache: "no-store",
+        credentials: "same-origin",
+        headers: {
+          Accept: "application/json",
+        },
+      });
+
+      const result = (await response
+        .json()
+        .catch(() => ({}))) as HealthResponse;
+
+      const applicationStatus: HealthStatus = response.ok
+        ? normalizeHealthStatus(result.checks?.application)
+        : result.checks?.application === "healthy"
+          ? "healthy"
+          : "unavailable";
+
+      const databaseStatus: HealthStatus = response.ok
+        ? normalizeHealthStatus(result.checks?.database)
+        : result.checks?.database === "degraded"
+          ? "degraded"
+          : "unavailable";
+
+      setHealth({
+        application: applicationStatus,
+        database: databaseStatus,
+        checkedAt: result.checkedAt ?? new Date().toISOString(),
+        error: response.ok
+          ? null
+          : `Health endpoint returned HTTP ${response.status}.`,
+      });
+    } catch {
+      setHealth({
+        application: "unavailable",
+        database: "unavailable",
+        checkedAt: new Date().toISOString(),
+        error:
+          "Could not reach the health endpoint. Check the route and server connection.",
+      });
+    } finally {
+      setHealthLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     void loadDashboard();
-  }, [loadDashboard]);
+    void checkSystemHealth();
+
+    const interval = window.setInterval(() => {
+      void checkSystemHealth();
+    }, HEALTH_CHECK_INTERVAL);
+
+    return () => window.clearInterval(interval);
+  }, [loadDashboard, checkSystemHealth]);
 
   const stats = useMemo(() => {
     const data = dashboard ?? getEmptyDashboardData();
@@ -384,11 +599,6 @@ const currentUser: UserData | undefined =
     ];
   }, [dashboard]);
 
-  const maxRoleCount = Math.max(
-    1,
-    ...roleStats.map((role) => role.count),
-  );
-
   const quickActions = [
     {
       title: "Manage Users",
@@ -420,6 +630,20 @@ const currentUser: UserData | undefined =
     },
   ];
 
+  const overallHealth: HealthStatus =
+    health.application === "checking" ||
+    health.database === "checking"
+      ? "checking"
+      : health.application === "unavailable" ||
+          health.database === "unavailable"
+        ? "unavailable"
+        : health.application === "degraded" ||
+            health.database === "degraded"
+          ? "degraded"
+          : "healthy";
+
+  const overallHealthClasses = getHealthClasses(overallHealth);
+
   return (
     <main className="min-w-0 space-y-6 pb-8">
       {/* Page heading */}
@@ -428,6 +652,7 @@ const currentUser: UserData | undefined =
           aria-hidden="true"
           className="pointer-events-none absolute -right-10 -top-16 h-48 w-48 rounded-full bg-blue-50"
         />
+
         <div
           aria-hidden="true"
           className="pointer-events-none absolute -bottom-24 right-24 h-40 w-40 rounded-full bg-rose-50"
@@ -435,9 +660,22 @@ const currentUser: UserData | undefined =
 
         <div className="relative flex flex-col gap-5 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            <div className="mb-3 inline-flex items-center gap-2 rounded-full bg-rose-50 px-3 py-1.5 text-xs font-semibold text-[#7A1F3D] ring-1 ring-rose-100">
-              <LayoutDashboard size={14} />
-              Lifeline Achham Administration
+            {/* Organization logo and dashboard identity */}
+            <div className="mb-4 flex items-center gap-3">
+              <OrganizationLogo
+                className="h-12 w-12 rounded-xl object-contain"
+                fallbackClassName="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-[#7A1F3D] text-sm font-bold text-white"
+              />
+
+              <div className="min-w-0">
+                <p className="text-sm font-bold text-[#7A1F3D]">
+                  Lifeline Achham
+                </p>
+                <div className="mt-1 inline-flex items-center gap-1.5 rounded-full bg-rose-50 px-2.5 py-1 text-[11px] font-semibold text-[#7A1F3D] ring-1 ring-rose-100">
+                  <LayoutDashboard size={12} />
+                  Administration Dashboard
+                </div>
+              </div>
             </div>
 
             <h1 className="text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl">
@@ -446,13 +684,16 @@ const currentUser: UserData | undefined =
             </h1>
 
             <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 sm:text-base">
-              Welcome to your dashboard. Here&apos;s an overview of your
-              organization&apos;s administration.
+              Welcome to your dashboard. Here&apos;s an overview of
+              your organization&apos;s administration.
             </p>
 
             <div className="mt-4 flex flex-col gap-2 text-sm text-slate-500 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-5">
               <span className="inline-flex items-center gap-2">
-                <CalendarDays size={16} className="text-[#7A1F3D]" />
+                <CalendarDays
+                  size={16}
+                  className="text-[#7A1F3D]"
+                />
                 {formatDate(today)}
               </span>
 
@@ -480,20 +721,25 @@ const currentUser: UserData | undefined =
 
           <button
             type="button"
-            onClick={() => void loadDashboard()}
-            disabled={loading}
+            onClick={() => {
+              void loadDashboard();
+              void checkSystemHealth();
+            }}
+            disabled={loading || healthLoading}
             className="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 self-start rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-slate-300 hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
           >
             <RefreshCw
               size={16}
-              className={loading ? "animate-spin" : ""}
+              className={
+                loading || healthLoading ? "animate-spin" : ""
+              }
             />
-            {loading ? "Refreshing..." : "Refresh"}
+            {loading || healthLoading ? "Refreshing..." : "Refresh"}
           </button>
         </div>
       </section>
 
-      {/* Error state */}
+      {/* Dashboard loading errors */}
       {error && (
         <section
           role="alert"
@@ -591,6 +837,110 @@ const currentUser: UserData | undefined =
         </div>
       </section>
 
+      {/* System health */}
+      <section
+        aria-labelledby="system-health-heading"
+        className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm"
+      >
+        <div className="flex flex-col gap-4 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+          <div className="flex items-start gap-3">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-700">
+              <Activity size={22} />
+            </div>
+
+            <div>
+              <h2
+                id="system-health-heading"
+                className="text-lg font-bold text-slate-900"
+              >
+                System Health
+              </h2>
+              <p className="mt-1 text-sm leading-5 text-slate-500">
+                Application and database readiness status
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2">
+            <span
+              className={`inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-semibold ring-1 ${overallHealthClasses.badge}`}
+            >
+              {overallHealth === "checking" ? (
+                <LoaderCircle
+                  size={13}
+                  className="animate-spin"
+                />
+              ) : (
+                <span
+                  className={`h-2 w-2 rounded-full ${overallHealthClasses.dot}`}
+                />
+              )}
+
+              {overallHealth === "healthy"
+                ? "All systems operational"
+                : overallHealth === "degraded"
+                  ? "System degraded"
+                  : overallHealth === "checking"
+                    ? "Checking systems"
+                    : "System unavailable"}
+            </span>
+
+            <button
+              type="button"
+              onClick={() => void checkSystemHealth()}
+              disabled={healthLoading}
+              className="inline-flex min-h-9 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs font-semibold text-slate-700 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <RefreshCw
+                size={14}
+                className={healthLoading ? "animate-spin" : ""}
+              />
+              Check now
+            </button>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 gap-3 p-5 sm:p-6 lg:grid-cols-2">
+          <HealthRow
+            title="Next.js Application"
+            description="Health endpoint response from the running application."
+            status={health.application}
+            icon={Server}
+          />
+
+          <HealthRow
+            title="PostgreSQL Database"
+            description="Database connectivity as reported by the readiness endpoint."
+            status={health.database}
+            icon={Database}
+          />
+        </div>
+
+        <div className="flex flex-col gap-2 border-t border-slate-100 bg-slate-50/70 px-5 py-4 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between sm:px-6">
+          <span className="inline-flex items-center gap-2">
+            <Clock3 size={14} />
+            Last checked: {formatTime(health.checkedAt)}
+          </span>
+
+          <span>
+            Automatic check every 60 seconds while this page is open
+          </span>
+        </div>
+
+        {health.error && (
+          <div
+            role="status"
+            className="flex items-start gap-2 border-t border-amber-100 bg-amber-50 px-5 py-3 text-xs leading-5 text-amber-800 sm:px-6"
+          >
+            <AlertCircle
+              size={15}
+              className="mt-0.5 shrink-0"
+            />
+            <span>{health.error}</span>
+          </div>
+        )}
+      </section>
+
       {/* Main dashboard grid */}
       <section className="grid min-w-0 grid-cols-1 gap-6 xl:grid-cols-3">
         {/* Recent users */}
@@ -644,7 +994,6 @@ const currentUser: UserData | undefined =
                     <p className="break-words text-sm font-semibold text-slate-900">
                       {recentUser.name}
                     </p>
-
                     <p className="mt-0.5 break-all text-xs text-slate-500">
                       {recentUser.email}
                     </p>
@@ -695,12 +1044,15 @@ const currentUser: UserData | undefined =
               <div className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-400">
                 <Users size={25} />
               </div>
+
               <h3 className="mt-4 font-semibold text-slate-900">
                 No users yet
               </h3>
+
               <p className="mt-1 max-w-sm text-sm leading-6 text-slate-500">
                 Newly registered accounts will appear here.
               </p>
+
               <Link
                 href="/admin/users"
                 className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-[#7A1F3D] hover:underline"
@@ -782,14 +1134,17 @@ const currentUser: UserData | undefined =
                 size={19}
                 className="mt-0.5 shrink-0 text-blue-700"
               />
+
               <div>
                 <p className="text-sm font-semibold text-blue-900">
                   Access management
                 </p>
+
                 <p className="mt-1 text-xs leading-5 text-blue-800">
                   Assign roles carefully and review account access
                   regularly.
                 </p>
+
                 <Link
                   href="/admin/users"
                   className="mt-3 inline-flex items-center gap-1.5 text-xs font-bold text-blue-800 hover:underline"
@@ -834,9 +1189,11 @@ const currentUser: UserData | undefined =
                   <h3 className="break-words text-sm font-bold text-slate-900 group-hover:text-[#7A1F3D]">
                     {action.title}
                   </h3>
+
                   <p className="mt-1 text-xs leading-5 text-slate-500">
                     {action.description}
                   </p>
+
                   <span className="mt-3 inline-flex items-center gap-1 text-xs font-semibold text-[#7A1F3D]">
                     Open page
                     <ArrowUpRight
@@ -851,93 +1208,14 @@ const currentUser: UserData | undefined =
         </div>
       </section>
 
-      {/* Platform information */}
-      <section className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm sm:p-6">
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex items-start gap-3">
-            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[#7A1F3D]/10 text-[#7A1F3D]">
-              <Activity size={21} />
-            </div>
-
-            <div>
-              <h2 className="font-bold text-slate-900">
-                Platform Information
-              </h2>
-              <p className="mt-1 text-sm leading-6 text-slate-500">
-                Dashboard data is loaded from your existing API.
-                Infrastructure health checks are not configured here.
-              </p>
-            </div>
-          </div>
-
-          <span className="inline-flex w-fit items-center gap-2 rounded-full bg-slate-100 px-3 py-1.5 text-xs font-semibold text-slate-600">
-            <span className="h-2 w-2 rounded-full bg-slate-400" />
-            Health checks not configured
-          </span>
-        </div>
-
-        <div className="mt-5 grid grid-cols-1 gap-3 border-t border-slate-100 pt-5 sm:grid-cols-3">
-          <div className="flex items-start gap-3 rounded-xl bg-slate-50 p-4">
-            <CheckCircle2
-              size={18}
-              className="mt-0.5 shrink-0 text-slate-500"
-            />
-            <div>
-              <p className="text-sm font-semibold text-slate-800">
-                Data source
-              </p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">
-                Existing dashboard API
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3 rounded-xl bg-slate-50 p-4">
-            <ShieldCheck
-              size={18}
-              className="mt-0.5 shrink-0 text-slate-500"
-            />
-            <div>
-              <p className="text-sm font-semibold text-slate-800">
-                Authentication
-              </p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">
-                Session-protected dashboard
-              </p>
-            </div>
-          </div>
-
-          <div className="flex items-start gap-3 rounded-xl bg-slate-50 p-4">
-            <Clock3
-              size={18}
-              className="mt-0.5 shrink-0 text-slate-500"
-            />
-            <div>
-              <p className="text-sm font-semibold text-slate-800">
-                Last refresh
-              </p>
-              <p className="mt-1 text-xs leading-5 text-slate-500">
-                {lastUpdated
-                  ? new Intl.DateTimeFormat("en-US", {
-                      timeZone: "Asia/Kathmandu",
-                      dateStyle: "medium",
-                      timeStyle: "short",
-                    }).format(lastUpdated)
-                  : "Not available"}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Footer */}
       <footer className="flex flex-col gap-2 border-t border-slate-200 pt-5 text-xs text-slate-400 sm:flex-row sm:items-center sm:justify-between">
-       
+        <p>Lifeline Achham Administration Dashboard</p>
 
         <p className="flex items-center gap-1.5">
-          <span>Administration Dashboard</span>
-          <span aria-hidden="true">·</span>
           <span>Nepal Time (NPT)</span>
+          <span aria-hidden="true">·</span>
+          <span>System checks refresh every 60 seconds</span>
         </p>
       </footer>
     </main>

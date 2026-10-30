@@ -36,6 +36,36 @@ export const ContentStatus = {
 export type ContentStatus = (typeof ContentStatus)[keyof typeof ContentStatus]
 
 
+export const NewsCategory = {
+  NEWS: 'NEWS',
+  NOTICE: 'NOTICE',
+  ANNOUNCEMENT: 'ANNOUNCEMENT',
+  UPDATES: 'UPDATES'
+} as const
+
+export type NewsCategory = (typeof NewsCategory)[keyof typeof NewsCategory]
+
+
+export const ReportCategory = {
+  ANNUAL: 'ANNUAL',
+  FINANCIAL: 'FINANCIAL',
+  PROGRAM: 'PROGRAM',
+  PROJECT: 'PROJECT'
+} as const
+
+export type ReportCategory = (typeof ReportCategory)[keyof typeof ReportCategory]
+
+
+export const PublicationCategory = {
+  GUIDE_MANUAL: 'GUIDE_MANUAL',
+  AWARENESS_MATERIAL: 'AWARENESS_MATERIAL',
+  RESEARCH_LEARNING: 'RESEARCH_LEARNING',
+  PUBLICATION: 'PUBLICATION'
+} as const
+
+export type PublicationCategory = (typeof PublicationCategory)[keyof typeof PublicationCategory]
+
+
 export const FinanceTransactionType = {
   INCOME: 'INCOME',
   EXPENSE: 'EXPENSE'
@@ -91,3 +121,57 @@ export const FinanceAuditAction = {
 } as const
 
 export type FinanceAuditAction = (typeof FinanceAuditAction)[keyof typeof FinanceAuditAction]
+
+
+export const BloodGroup = {
+  A_POSITIVE: 'A_POSITIVE',
+  A_NEGATIVE: 'A_NEGATIVE',
+  B_POSITIVE: 'B_POSITIVE',
+  B_NEGATIVE: 'B_NEGATIVE',
+  AB_POSITIVE: 'AB_POSITIVE',
+  AB_NEGATIVE: 'AB_NEGATIVE',
+  O_POSITIVE: 'O_POSITIVE',
+  O_NEGATIVE: 'O_NEGATIVE'
+} as const
+
+export type BloodGroup = (typeof BloodGroup)[keyof typeof BloodGroup]
+
+
+export const DonorStatus = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  SUSPENDED: 'SUSPENDED'
+} as const
+
+export type DonorStatus = (typeof DonorStatus)[keyof typeof DonorStatus]
+
+
+export const DonorApplicationStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  WITHDRAWN: 'WITHDRAWN'
+} as const
+
+export type DonorApplicationStatus = (typeof DonorApplicationStatus)[keyof typeof DonorApplicationStatus]
+
+
+export const BloodRequestStatus = {
+  PENDING: 'PENDING',
+  VERIFIED: 'VERIFIED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  FULFILLED: 'FULFILLED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type BloodRequestStatus = (typeof BloodRequestStatus)[keyof typeof BloodRequestStatus]
+
+
+export const BloodRequestUrgency = {
+  NORMAL: 'NORMAL',
+  URGENT: 'URGENT',
+  EMERGENCY: 'EMERGENCY'
+} as const
+
+export type BloodRequestUrgency = (typeof BloodRequestUrgency)[keyof typeof BloodRequestUrgency]

@@ -1,3 +1,4 @@
+
 import { getSessionUser } from "@/lib/auth";
 
 /* -------------------------------------------------------------------------- */
@@ -13,6 +14,7 @@ export type UserRole =
 
 /* -------------------------------------------------------------------------- */
 /* Permission Registry                                                        */
+/* Keep existing keys compatible with existing API routes.                   */
 /* -------------------------------------------------------------------------- */
 
 export const PERMISSIONS = {
@@ -261,19 +263,96 @@ export const PERMISSION_GROUPS = [
 ] as const;
 
 /* -------------------------------------------------------------------------- */
-/* Base Permissions by Role                                                   */
+/* Role Permission Defaults                                                   */
 /* -------------------------------------------------------------------------- */
 
 type StandardRole = Exclude<UserRole, "SUPER_ADMIN">;
 
 const ROLE_PERMISSIONS: Record<StandardRole, Permission[]> = {
+  /**
+   * ADMIN
+   *
+   * Operational administration:
+   * - Manages content, programs, projects, campaigns, gallery and team.
+   * - Manages blood donation records and messages.
+   * - Can view reports and finance summaries.
+   *
+   * User administration, system settings and sensitive financial
+   * operations are not granted by default.
+   */
   ADMIN: [
-    ...ALL_PERMISSIONS.filter(
-      (permission) => permission !== PERMISSIONS.DASHBOARD_VIEW,
-    ),
     PERMISSIONS.DASHBOARD_VIEW,
+
+    // Content
+    PERMISSIONS.CONTENT_VIEW,
+    PERMISSIONS.CONTENT_CREATE,
+    PERMISSIONS.CONTENT_EDIT,
+    PERMISSIONS.CONTENT_DELETE,
+
+    // Programs
+    PERMISSIONS.PROGRAMS_VIEW,
+    PERMISSIONS.PROGRAMS_CREATE,
+    PERMISSIONS.PROGRAMS_EDIT,
+    PERMISSIONS.PROGRAMS_DELETE,
+
+    // Projects
+    PERMISSIONS.PROJECTS_VIEW,
+    PERMISSIONS.PROJECTS_CREATE,
+    PERMISSIONS.PROJECTS_EDIT,
+    PERMISSIONS.PROJECTS_DELETE,
+
+    // Campaigns
+    PERMISSIONS.CAMPAIGNS_VIEW,
+    PERMISSIONS.CAMPAIGNS_CREATE,
+    PERMISSIONS.CAMPAIGNS_EDIT,
+    PERMISSIONS.CAMPAIGNS_DELETE,
+
+    // Media
+    PERMISSIONS.MEDIA_VIEW,
+    PERMISSIONS.MEDIA_UPLOAD,
+    PERMISSIONS.MEDIA_EDIT,
+    PERMISSIONS.MEDIA_DELETE,
+
+    // Gallery
+    PERMISSIONS.GALLERY_VIEW,
+    PERMISSIONS.GALLERY_CREATE,
+    PERMISSIONS.GALLERY_EDIT,
+    PERMISSIONS.GALLERY_DELETE,
+
+    // Team
+    PERMISSIONS.TEAM_VIEW,
+    PERMISSIONS.TEAM_CREATE,
+    PERMISSIONS.TEAM_EDIT,
+    PERMISSIONS.TEAM_DELETE,
+
+    // Blood donation
+    PERMISSIONS.BLOOD_DONATION_VIEW,
+    PERMISSIONS.BLOOD_DONATION_CREATE,
+    PERMISSIONS.BLOOD_DONATION_EDIT,
+    PERMISSIONS.BLOOD_DONATION_DELETE,
+    PERMISSIONS.BLOOD_DONATION_MANAGE,
+
+    // Messages
+    PERMISSIONS.MESSAGES_VIEW,
+    PERMISSIONS.MESSAGES_MANAGE,
+
+    // Reports: no delete by default
+    PERMISSIONS.REPORTS_VIEW,
+    PERMISSIONS.REPORTS_CREATE,
+    PERMISSIONS.REPORTS_EDIT,
+
+    // Read-only financial visibility
+    PERMISSIONS.FINANCE_VIEW,
+    PERMISSIONS.FINANCE_REPORTS,
   ],
 
+  /**
+   * EDITOR
+   *
+   * Creates and edits content, programs, projects, campaigns,
+   * media and gallery items. Cannot manage users, finances,
+   * system settings or blood donation records by default.
+   */
   EDITOR: [
     PERMISSIONS.DASHBOARD_VIEW,
 
@@ -304,9 +383,17 @@ const ROLE_PERMISSIONS: Record<StandardRole, Permission[]> = {
     PERMISSIONS.TEAM_VIEW,
   ],
 
+  /**
+   * ACCOUNTANT
+   *
+   * Creates, edits and submits financial transactions.
+   * Approval/rejection is kept separate to support separation
+   * of duties. Financial configuration is available to accountants.
+   */
   ACCOUNTANT: [
     PERMISSIONS.DASHBOARD_VIEW,
 
+    // Finance operations
     PERMISSIONS.FINANCE_VIEW,
     PERMISSIONS.FINANCE_CREATE,
     PERMISSIONS.FINANCE_EDIT,
@@ -316,25 +403,42 @@ const ROLE_PERMISSIONS: Record<StandardRole, Permission[]> = {
     PERMISSIONS.FINANCE_MANAGE_PARTIES,
     PERMISSIONS.FINANCE_REPORTS,
 
+    // Financial reports
     PERMISSIONS.REPORTS_VIEW,
     PERMISSIONS.REPORTS_CREATE,
     PERMISSIONS.REPORTS_EDIT,
-
-    PERMISSIONS.BLOOD_DONATION_VIEW,
-    PERMISSIONS.MESSAGES_VIEW,
   ],
 
+  /**
+   * STAFF
+   *
+   * Limited operational access. Staff can view common modules,
+   * register/update blood donation records, and upload media.
+   * They cannot delete records, publish through privileged
+   * workflows, manage users, or access financial records by default.
+   */
   STAFF: [
     PERMISSIONS.DASHBOARD_VIEW,
+
     PERMISSIONS.CONTENT_VIEW,
+
     PERMISSIONS.PROGRAMS_VIEW,
     PERMISSIONS.PROJECTS_VIEW,
     PERMISSIONS.CAMPAIGNS_VIEW,
+
     PERMISSIONS.MEDIA_VIEW,
+    PERMISSIONS.MEDIA_UPLOAD,
+
     PERMISSIONS.GALLERY_VIEW,
+
     PERMISSIONS.TEAM_VIEW,
+
     PERMISSIONS.BLOOD_DONATION_VIEW,
+    PERMISSIONS.BLOOD_DONATION_CREATE,
+    PERMISSIONS.BLOOD_DONATION_EDIT,
+
     PERMISSIONS.MESSAGES_VIEW,
+
     PERMISSIONS.REPORTS_VIEW,
   ],
 };
@@ -363,7 +467,7 @@ export function getRolePermissions(role: UserRole): Permission[] {
 /**
  * Custom grants add permissions.
  * Custom revocations remove permissions.
- * Revocations take precedence if a permission appears in both lists.
+ * Revocations take precedence when a permission appears in both lists.
  * SUPER_ADMIN cannot be restricted by custom permissions.
  */
 export function getEffectivePermissions(

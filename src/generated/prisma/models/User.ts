@@ -213,10 +213,20 @@ export type UserWhereInput = {
   uploadedMedia?: Prisma.MediaListRelationFilter
   createdContentItems?: Prisma.ContentItemListRelationFilter
   updatedContentItems?: Prisma.ContentItemListRelationFilter
+  newsArticlesCreated?: Prisma.NewsArticleListRelationFilter
+  newsArticlesUpdated?: Prisma.NewsArticleListRelationFilter
+  reportsCreated?: Prisma.ReportListRelationFilter
+  reportsUpdated?: Prisma.ReportListRelationFilter
+  publicationsCreated?: Prisma.PublicationListRelationFilter
+  publicationsUpdated?: Prisma.PublicationListRelationFilter
   financeTransactionsCreated?: Prisma.FinanceTransactionListRelationFilter
   financeTransactionsApproved?: Prisma.FinanceTransactionListRelationFilter
   financeTransactionsPaid?: Prisma.FinanceTransactionListRelationFilter
   financeAuditLogs?: Prisma.FinanceAuditLogListRelationFilter
+  donorsCreated?: Prisma.DonorListRelationFilter
+  donorApplicationsReviewed?: Prisma.DonorApplicationListRelationFilter
+  bloodRequestsCreated?: Prisma.BloodRequestListRelationFilter
+  donationsRecorded?: Prisma.DonationRecordListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -232,10 +242,20 @@ export type UserOrderByWithRelationInput = {
   uploadedMedia?: Prisma.MediaOrderByRelationAggregateInput
   createdContentItems?: Prisma.ContentItemOrderByRelationAggregateInput
   updatedContentItems?: Prisma.ContentItemOrderByRelationAggregateInput
+  newsArticlesCreated?: Prisma.NewsArticleOrderByRelationAggregateInput
+  newsArticlesUpdated?: Prisma.NewsArticleOrderByRelationAggregateInput
+  reportsCreated?: Prisma.ReportOrderByRelationAggregateInput
+  reportsUpdated?: Prisma.ReportOrderByRelationAggregateInput
+  publicationsCreated?: Prisma.PublicationOrderByRelationAggregateInput
+  publicationsUpdated?: Prisma.PublicationOrderByRelationAggregateInput
   financeTransactionsCreated?: Prisma.FinanceTransactionOrderByRelationAggregateInput
   financeTransactionsApproved?: Prisma.FinanceTransactionOrderByRelationAggregateInput
   financeTransactionsPaid?: Prisma.FinanceTransactionOrderByRelationAggregateInput
   financeAuditLogs?: Prisma.FinanceAuditLogOrderByRelationAggregateInput
+  donorsCreated?: Prisma.DonorOrderByRelationAggregateInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationOrderByRelationAggregateInput
+  bloodRequestsCreated?: Prisma.BloodRequestOrderByRelationAggregateInput
+  donationsRecorded?: Prisma.DonationRecordOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -254,10 +274,20 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   uploadedMedia?: Prisma.MediaListRelationFilter
   createdContentItems?: Prisma.ContentItemListRelationFilter
   updatedContentItems?: Prisma.ContentItemListRelationFilter
+  newsArticlesCreated?: Prisma.NewsArticleListRelationFilter
+  newsArticlesUpdated?: Prisma.NewsArticleListRelationFilter
+  reportsCreated?: Prisma.ReportListRelationFilter
+  reportsUpdated?: Prisma.ReportListRelationFilter
+  publicationsCreated?: Prisma.PublicationListRelationFilter
+  publicationsUpdated?: Prisma.PublicationListRelationFilter
   financeTransactionsCreated?: Prisma.FinanceTransactionListRelationFilter
   financeTransactionsApproved?: Prisma.FinanceTransactionListRelationFilter
   financeTransactionsPaid?: Prisma.FinanceTransactionListRelationFilter
   financeAuditLogs?: Prisma.FinanceAuditLogListRelationFilter
+  donorsCreated?: Prisma.DonorListRelationFilter
+  donorApplicationsReviewed?: Prisma.DonorApplicationListRelationFilter
+  bloodRequestsCreated?: Prisma.BloodRequestListRelationFilter
+  donationsRecorded?: Prisma.DonationRecordListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -303,10 +333,20 @@ export type UserCreateInput = {
   uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
   createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
   financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -322,10 +362,20 @@ export type UserUncheckedCreateInput = {
   uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
   createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserUpdateInput = {
@@ -341,10 +391,20 @@ export type UserUpdateInput = {
   uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
   createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -360,10 +420,20 @@ export type UserUncheckedUpdateInput = {
   uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -510,6 +580,102 @@ export type UserUpdateOneWithoutUpdatedContentItemsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutUpdatedContentItemsInput, Prisma.UserUpdateWithoutUpdatedContentItemsInput>, Prisma.UserUncheckedUpdateWithoutUpdatedContentItemsInput>
 }
 
+export type UserCreateNestedOneWithoutNewsArticlesCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNewsArticlesCreatedInput, Prisma.UserUncheckedCreateWithoutNewsArticlesCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNewsArticlesCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutNewsArticlesUpdatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNewsArticlesUpdatedInput, Prisma.UserUncheckedCreateWithoutNewsArticlesUpdatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNewsArticlesUpdatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutNewsArticlesCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNewsArticlesCreatedInput, Prisma.UserUncheckedCreateWithoutNewsArticlesCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNewsArticlesCreatedInput
+  upsert?: Prisma.UserUpsertWithoutNewsArticlesCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNewsArticlesCreatedInput, Prisma.UserUpdateWithoutNewsArticlesCreatedInput>, Prisma.UserUncheckedUpdateWithoutNewsArticlesCreatedInput>
+}
+
+export type UserUpdateOneWithoutNewsArticlesUpdatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutNewsArticlesUpdatedInput, Prisma.UserUncheckedCreateWithoutNewsArticlesUpdatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutNewsArticlesUpdatedInput
+  upsert?: Prisma.UserUpsertWithoutNewsArticlesUpdatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutNewsArticlesUpdatedInput, Prisma.UserUpdateWithoutNewsArticlesUpdatedInput>, Prisma.UserUncheckedUpdateWithoutNewsArticlesUpdatedInput>
+}
+
+export type UserCreateNestedOneWithoutReportsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsCreatedInput, Prisma.UserUncheckedCreateWithoutReportsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutReportsUpdatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsUpdatedInput, Prisma.UserUncheckedCreateWithoutReportsUpdatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsUpdatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutReportsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsCreatedInput, Prisma.UserUncheckedCreateWithoutReportsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutReportsCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReportsCreatedInput, Prisma.UserUpdateWithoutReportsCreatedInput>, Prisma.UserUncheckedUpdateWithoutReportsCreatedInput>
+}
+
+export type UserUpdateOneWithoutReportsUpdatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutReportsUpdatedInput, Prisma.UserUncheckedCreateWithoutReportsUpdatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutReportsUpdatedInput
+  upsert?: Prisma.UserUpsertWithoutReportsUpdatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutReportsUpdatedInput, Prisma.UserUpdateWithoutReportsUpdatedInput>, Prisma.UserUncheckedUpdateWithoutReportsUpdatedInput>
+}
+
+export type UserCreateNestedOneWithoutPublicationsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPublicationsCreatedInput, Prisma.UserUncheckedCreateWithoutPublicationsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPublicationsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutPublicationsUpdatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPublicationsUpdatedInput, Prisma.UserUncheckedCreateWithoutPublicationsUpdatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPublicationsUpdatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutPublicationsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPublicationsCreatedInput, Prisma.UserUncheckedCreateWithoutPublicationsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPublicationsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutPublicationsCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPublicationsCreatedInput, Prisma.UserUpdateWithoutPublicationsCreatedInput>, Prisma.UserUncheckedUpdateWithoutPublicationsCreatedInput>
+}
+
+export type UserUpdateOneWithoutPublicationsUpdatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutPublicationsUpdatedInput, Prisma.UserUncheckedCreateWithoutPublicationsUpdatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutPublicationsUpdatedInput
+  upsert?: Prisma.UserUpsertWithoutPublicationsUpdatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutPublicationsUpdatedInput, Prisma.UserUpdateWithoutPublicationsUpdatedInput>, Prisma.UserUncheckedUpdateWithoutPublicationsUpdatedInput>
+}
+
 export type UserCreateNestedOneWithoutFinanceTransactionsCreatedInput = {
   create?: Prisma.XOR<Prisma.UserCreateWithoutFinanceTransactionsCreatedInput, Prisma.UserUncheckedCreateWithoutFinanceTransactionsCreatedInput>
   connectOrCreate?: Prisma.UserCreateOrConnectWithoutFinanceTransactionsCreatedInput
@@ -572,6 +738,70 @@ export type UserUpdateOneWithoutFinanceAuditLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFinanceAuditLogsInput, Prisma.UserUpdateWithoutFinanceAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutFinanceAuditLogsInput>
 }
 
+export type UserCreateNestedOneWithoutDonorApplicationsReviewedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDonorApplicationsReviewedInput, Prisma.UserUncheckedCreateWithoutDonorApplicationsReviewedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDonorApplicationsReviewedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutDonorApplicationsReviewedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDonorApplicationsReviewedInput, Prisma.UserUncheckedCreateWithoutDonorApplicationsReviewedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDonorApplicationsReviewedInput
+  upsert?: Prisma.UserUpsertWithoutDonorApplicationsReviewedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDonorApplicationsReviewedInput, Prisma.UserUpdateWithoutDonorApplicationsReviewedInput>, Prisma.UserUncheckedUpdateWithoutDonorApplicationsReviewedInput>
+}
+
+export type UserCreateNestedOneWithoutDonorsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDonorsCreatedInput, Prisma.UserUncheckedCreateWithoutDonorsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDonorsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutDonorsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDonorsCreatedInput, Prisma.UserUncheckedCreateWithoutDonorsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDonorsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutDonorsCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDonorsCreatedInput, Prisma.UserUpdateWithoutDonorsCreatedInput>, Prisma.UserUncheckedUpdateWithoutDonorsCreatedInput>
+}
+
+export type UserCreateNestedOneWithoutBloodRequestsCreatedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBloodRequestsCreatedInput, Prisma.UserUncheckedCreateWithoutBloodRequestsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBloodRequestsCreatedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutBloodRequestsCreatedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutBloodRequestsCreatedInput, Prisma.UserUncheckedCreateWithoutBloodRequestsCreatedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutBloodRequestsCreatedInput
+  upsert?: Prisma.UserUpsertWithoutBloodRequestsCreatedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutBloodRequestsCreatedInput, Prisma.UserUpdateWithoutBloodRequestsCreatedInput>, Prisma.UserUncheckedUpdateWithoutBloodRequestsCreatedInput>
+}
+
+export type UserCreateNestedOneWithoutDonationsRecordedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDonationsRecordedInput, Prisma.UserUncheckedCreateWithoutDonationsRecordedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDonationsRecordedInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneWithoutDonationsRecordedNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDonationsRecordedInput, Prisma.UserUncheckedCreateWithoutDonationsRecordedInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDonationsRecordedInput
+  upsert?: Prisma.UserUpsertWithoutDonationsRecordedInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDonationsRecordedInput, Prisma.UserUpdateWithoutDonationsRecordedInput>, Prisma.UserUncheckedUpdateWithoutDonationsRecordedInput>
+}
+
 export type UserCreateWithoutUploadedMediaInput = {
   id?: string
   name: string
@@ -584,10 +814,20 @@ export type UserCreateWithoutUploadedMediaInput = {
   updatedAt?: Date | string
   createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
   financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserUncheckedCreateWithoutUploadedMediaInput = {
@@ -602,10 +842,20 @@ export type UserUncheckedCreateWithoutUploadedMediaInput = {
   updatedAt?: Date | string
   createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserCreateOrConnectWithoutUploadedMediaInput = {
@@ -636,10 +886,20 @@ export type UserUpdateWithoutUploadedMediaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUploadedMediaInput = {
@@ -654,10 +914,20 @@ export type UserUncheckedUpdateWithoutUploadedMediaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserCreateWithoutCreatedContentItemsInput = {
@@ -672,10 +942,20 @@ export type UserCreateWithoutCreatedContentItemsInput = {
   updatedAt?: Date | string
   uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
   financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedContentItemsInput = {
@@ -690,10 +970,20 @@ export type UserUncheckedCreateWithoutCreatedContentItemsInput = {
   updatedAt?: Date | string
   uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedContentItemsInput = {
@@ -713,10 +1003,20 @@ export type UserCreateWithoutUpdatedContentItemsInput = {
   updatedAt?: Date | string
   uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
   createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
   financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserUncheckedCreateWithoutUpdatedContentItemsInput = {
@@ -731,10 +1031,20 @@ export type UserUncheckedCreateWithoutUpdatedContentItemsInput = {
   updatedAt?: Date | string
   uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
   createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserCreateOrConnectWithoutUpdatedContentItemsInput = {
@@ -765,10 +1075,20 @@ export type UserUpdateWithoutCreatedContentItemsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedContentItemsInput = {
@@ -783,10 +1103,20 @@ export type UserUncheckedUpdateWithoutCreatedContentItemsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserUpsertWithoutUpdatedContentItemsInput = {
@@ -812,10 +1142,20 @@ export type UserUpdateWithoutUpdatedContentItemsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
   createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUpdatedContentItemsInput = {
@@ -830,10 +1170,788 @@ export type UserUncheckedUpdateWithoutUpdatedContentItemsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserCreateWithoutNewsArticlesCreatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserUncheckedCreateWithoutNewsArticlesCreatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserCreateOrConnectWithoutNewsArticlesCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNewsArticlesCreatedInput, Prisma.UserUncheckedCreateWithoutNewsArticlesCreatedInput>
+}
+
+export type UserCreateWithoutNewsArticlesUpdatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserUncheckedCreateWithoutNewsArticlesUpdatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserCreateOrConnectWithoutNewsArticlesUpdatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutNewsArticlesUpdatedInput, Prisma.UserUncheckedCreateWithoutNewsArticlesUpdatedInput>
+}
+
+export type UserUpsertWithoutNewsArticlesCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNewsArticlesCreatedInput, Prisma.UserUncheckedUpdateWithoutNewsArticlesCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNewsArticlesCreatedInput, Prisma.UserUncheckedCreateWithoutNewsArticlesCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNewsArticlesCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNewsArticlesCreatedInput, Prisma.UserUncheckedUpdateWithoutNewsArticlesCreatedInput>
+}
+
+export type UserUpdateWithoutNewsArticlesCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNewsArticlesCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserUpsertWithoutNewsArticlesUpdatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutNewsArticlesUpdatedInput, Prisma.UserUncheckedUpdateWithoutNewsArticlesUpdatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutNewsArticlesUpdatedInput, Prisma.UserUncheckedCreateWithoutNewsArticlesUpdatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutNewsArticlesUpdatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutNewsArticlesUpdatedInput, Prisma.UserUncheckedUpdateWithoutNewsArticlesUpdatedInput>
+}
+
+export type UserUpdateWithoutNewsArticlesUpdatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutNewsArticlesUpdatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserCreateWithoutReportsCreatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserUncheckedCreateWithoutReportsCreatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserCreateOrConnectWithoutReportsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsCreatedInput, Prisma.UserUncheckedCreateWithoutReportsCreatedInput>
+}
+
+export type UserCreateWithoutReportsUpdatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserUncheckedCreateWithoutReportsUpdatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserCreateOrConnectWithoutReportsUpdatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsUpdatedInput, Prisma.UserUncheckedCreateWithoutReportsUpdatedInput>
+}
+
+export type UserUpsertWithoutReportsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReportsCreatedInput, Prisma.UserUncheckedUpdateWithoutReportsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsCreatedInput, Prisma.UserUncheckedCreateWithoutReportsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReportsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReportsCreatedInput, Prisma.UserUncheckedUpdateWithoutReportsCreatedInput>
+}
+
+export type UserUpdateWithoutReportsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReportsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserUpsertWithoutReportsUpdatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutReportsUpdatedInput, Prisma.UserUncheckedUpdateWithoutReportsUpdatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutReportsUpdatedInput, Prisma.UserUncheckedCreateWithoutReportsUpdatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutReportsUpdatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutReportsUpdatedInput, Prisma.UserUncheckedUpdateWithoutReportsUpdatedInput>
+}
+
+export type UserUpdateWithoutReportsUpdatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutReportsUpdatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserCreateWithoutPublicationsCreatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserUncheckedCreateWithoutPublicationsCreatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserCreateOrConnectWithoutPublicationsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPublicationsCreatedInput, Prisma.UserUncheckedCreateWithoutPublicationsCreatedInput>
+}
+
+export type UserCreateWithoutPublicationsUpdatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserUncheckedCreateWithoutPublicationsUpdatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserCreateOrConnectWithoutPublicationsUpdatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutPublicationsUpdatedInput, Prisma.UserUncheckedCreateWithoutPublicationsUpdatedInput>
+}
+
+export type UserUpsertWithoutPublicationsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPublicationsCreatedInput, Prisma.UserUncheckedUpdateWithoutPublicationsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPublicationsCreatedInput, Prisma.UserUncheckedCreateWithoutPublicationsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPublicationsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPublicationsCreatedInput, Prisma.UserUncheckedUpdateWithoutPublicationsCreatedInput>
+}
+
+export type UserUpdateWithoutPublicationsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPublicationsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserUpsertWithoutPublicationsUpdatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutPublicationsUpdatedInput, Prisma.UserUncheckedUpdateWithoutPublicationsUpdatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutPublicationsUpdatedInput, Prisma.UserUncheckedCreateWithoutPublicationsUpdatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutPublicationsUpdatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutPublicationsUpdatedInput, Prisma.UserUncheckedUpdateWithoutPublicationsUpdatedInput>
+}
+
+export type UserUpdateWithoutPublicationsUpdatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutPublicationsUpdatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserCreateWithoutFinanceTransactionsCreatedInput = {
@@ -849,9 +1967,19 @@ export type UserCreateWithoutFinanceTransactionsCreatedInput = {
   uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
   createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
   financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserUncheckedCreateWithoutFinanceTransactionsCreatedInput = {
@@ -867,9 +1995,19 @@ export type UserUncheckedCreateWithoutFinanceTransactionsCreatedInput = {
   uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
   createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserCreateOrConnectWithoutFinanceTransactionsCreatedInput = {
@@ -890,9 +2028,19 @@ export type UserCreateWithoutFinanceTransactionsApprovedInput = {
   uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
   createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
   financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserUncheckedCreateWithoutFinanceTransactionsApprovedInput = {
@@ -908,9 +2056,19 @@ export type UserUncheckedCreateWithoutFinanceTransactionsApprovedInput = {
   uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
   createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserCreateOrConnectWithoutFinanceTransactionsApprovedInput = {
@@ -931,9 +2089,19 @@ export type UserCreateWithoutFinanceTransactionsPaidInput = {
   uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
   createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
   financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserUncheckedCreateWithoutFinanceTransactionsPaidInput = {
@@ -949,9 +2117,19 @@ export type UserUncheckedCreateWithoutFinanceTransactionsPaidInput = {
   uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
   createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserCreateOrConnectWithoutFinanceTransactionsPaidInput = {
@@ -983,9 +2161,19 @@ export type UserUpdateWithoutFinanceTransactionsCreatedInput = {
   uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
   createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFinanceTransactionsCreatedInput = {
@@ -1001,9 +2189,19 @@ export type UserUncheckedUpdateWithoutFinanceTransactionsCreatedInput = {
   uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserUpsertWithoutFinanceTransactionsApprovedInput = {
@@ -1030,9 +2228,19 @@ export type UserUpdateWithoutFinanceTransactionsApprovedInput = {
   uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
   createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFinanceTransactionsApprovedInput = {
@@ -1048,9 +2256,19 @@ export type UserUncheckedUpdateWithoutFinanceTransactionsApprovedInput = {
   uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserUpsertWithoutFinanceTransactionsPaidInput = {
@@ -1077,9 +2295,19 @@ export type UserUpdateWithoutFinanceTransactionsPaidInput = {
   uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
   createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFinanceTransactionsPaidInput = {
@@ -1095,9 +2323,19 @@ export type UserUncheckedUpdateWithoutFinanceTransactionsPaidInput = {
   uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
   financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserCreateWithoutFinanceAuditLogsInput = {
@@ -1113,9 +2351,19 @@ export type UserCreateWithoutFinanceAuditLogsInput = {
   uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
   createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserUncheckedCreateWithoutFinanceAuditLogsInput = {
@@ -1131,9 +2379,19 @@ export type UserUncheckedCreateWithoutFinanceAuditLogsInput = {
   uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
   createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
   updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
 }
 
 export type UserCreateOrConnectWithoutFinanceAuditLogsInput = {
@@ -1165,9 +2423,19 @@ export type UserUpdateWithoutFinanceAuditLogsInput = {
   uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
   createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutFinanceAuditLogsInput = {
@@ -1183,9 +2451,531 @@ export type UserUncheckedUpdateWithoutFinanceAuditLogsInput = {
   uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
   createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
   updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
   financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
   financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
   financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserCreateWithoutDonorApplicationsReviewedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserUncheckedCreateWithoutDonorApplicationsReviewedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserCreateOrConnectWithoutDonorApplicationsReviewedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDonorApplicationsReviewedInput, Prisma.UserUncheckedCreateWithoutDonorApplicationsReviewedInput>
+}
+
+export type UserUpsertWithoutDonorApplicationsReviewedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDonorApplicationsReviewedInput, Prisma.UserUncheckedUpdateWithoutDonorApplicationsReviewedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDonorApplicationsReviewedInput, Prisma.UserUncheckedCreateWithoutDonorApplicationsReviewedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDonorApplicationsReviewedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDonorApplicationsReviewedInput, Prisma.UserUncheckedUpdateWithoutDonorApplicationsReviewedInput>
+}
+
+export type UserUpdateWithoutDonorApplicationsReviewedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDonorApplicationsReviewedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserCreateWithoutDonorsCreatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserUncheckedCreateWithoutDonorsCreatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserCreateOrConnectWithoutDonorsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDonorsCreatedInput, Prisma.UserUncheckedCreateWithoutDonorsCreatedInput>
+}
+
+export type UserUpsertWithoutDonorsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDonorsCreatedInput, Prisma.UserUncheckedUpdateWithoutDonorsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDonorsCreatedInput, Prisma.UserUncheckedCreateWithoutDonorsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDonorsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDonorsCreatedInput, Prisma.UserUncheckedUpdateWithoutDonorsCreatedInput>
+}
+
+export type UserUpdateWithoutDonorsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDonorsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserCreateWithoutBloodRequestsCreatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  donationsRecorded?: Prisma.DonationRecordCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserUncheckedCreateWithoutBloodRequestsCreatedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedCreateNestedManyWithoutRecordedByInput
+}
+
+export type UserCreateOrConnectWithoutBloodRequestsCreatedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutBloodRequestsCreatedInput, Prisma.UserUncheckedCreateWithoutBloodRequestsCreatedInput>
+}
+
+export type UserUpsertWithoutBloodRequestsCreatedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutBloodRequestsCreatedInput, Prisma.UserUncheckedUpdateWithoutBloodRequestsCreatedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutBloodRequestsCreatedInput, Prisma.UserUncheckedCreateWithoutBloodRequestsCreatedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutBloodRequestsCreatedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutBloodRequestsCreatedInput, Prisma.UserUncheckedUpdateWithoutBloodRequestsCreatedInput>
+}
+
+export type UserUpdateWithoutBloodRequestsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutBloodRequestsCreatedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  donationsRecorded?: Prisma.DonationRecordUncheckedUpdateManyWithoutRecordedByNestedInput
+}
+
+export type UserCreateWithoutDonationsRecordedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutDonationsRecordedInput = {
+  id?: string
+  name: string
+  email: string
+  passwordHash: string
+  role?: $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  uploadedMedia?: Prisma.MediaUncheckedCreateNestedManyWithoutCreatedByInput
+  createdContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutCreatedByInput
+  updatedContentItems?: Prisma.ContentItemUncheckedCreateNestedManyWithoutUpdatedByInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutCreatedByInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedCreateNestedManyWithoutUpdatedByInput
+  reportsCreated?: Prisma.ReportUncheckedCreateNestedManyWithoutCreatedByInput
+  reportsUpdated?: Prisma.ReportUncheckedCreateNestedManyWithoutUpdatedByInput
+  publicationsCreated?: Prisma.PublicationUncheckedCreateNestedManyWithoutCreatedByInput
+  publicationsUpdated?: Prisma.PublicationUncheckedCreateNestedManyWithoutUpdatedByInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutCreatedByInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutApprovedByInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedCreateNestedManyWithoutPaidByInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedCreateNestedManyWithoutActorInput
+  donorsCreated?: Prisma.DonorUncheckedCreateNestedManyWithoutCreatedByInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedCreateNestedManyWithoutReviewedByInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutDonationsRecordedInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDonationsRecordedInput, Prisma.UserUncheckedCreateWithoutDonationsRecordedInput>
+}
+
+export type UserUpsertWithoutDonationsRecordedInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDonationsRecordedInput, Prisma.UserUncheckedUpdateWithoutDonationsRecordedInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDonationsRecordedInput, Prisma.UserUncheckedCreateWithoutDonationsRecordedInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDonationsRecordedInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDonationsRecordedInput, Prisma.UserUncheckedUpdateWithoutDonationsRecordedInput>
+}
+
+export type UserUpdateWithoutDonationsRecordedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDonationsRecordedInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  passwordHash?: Prisma.StringFieldUpdateOperationsInput | string
+  role?: Prisma.EnumRoleFieldUpdateOperationsInput | $Enums.Role
+  customPermissions?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  isActive?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  uploadedMedia?: Prisma.MediaUncheckedUpdateManyWithoutCreatedByNestedInput
+  createdContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutCreatedByNestedInput
+  updatedContentItems?: Prisma.ContentItemUncheckedUpdateManyWithoutUpdatedByNestedInput
+  newsArticlesCreated?: Prisma.NewsArticleUncheckedUpdateManyWithoutCreatedByNestedInput
+  newsArticlesUpdated?: Prisma.NewsArticleUncheckedUpdateManyWithoutUpdatedByNestedInput
+  reportsCreated?: Prisma.ReportUncheckedUpdateManyWithoutCreatedByNestedInput
+  reportsUpdated?: Prisma.ReportUncheckedUpdateManyWithoutUpdatedByNestedInput
+  publicationsCreated?: Prisma.PublicationUncheckedUpdateManyWithoutCreatedByNestedInput
+  publicationsUpdated?: Prisma.PublicationUncheckedUpdateManyWithoutUpdatedByNestedInput
+  financeTransactionsCreated?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutCreatedByNestedInput
+  financeTransactionsApproved?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutApprovedByNestedInput
+  financeTransactionsPaid?: Prisma.FinanceTransactionUncheckedUpdateManyWithoutPaidByNestedInput
+  financeAuditLogs?: Prisma.FinanceAuditLogUncheckedUpdateManyWithoutActorNestedInput
+  donorsCreated?: Prisma.DonorUncheckedUpdateManyWithoutCreatedByNestedInput
+  donorApplicationsReviewed?: Prisma.DonorApplicationUncheckedUpdateManyWithoutReviewedByNestedInput
+  bloodRequestsCreated?: Prisma.BloodRequestUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 
@@ -1197,20 +2987,40 @@ export type UserCountOutputType = {
   uploadedMedia: number
   createdContentItems: number
   updatedContentItems: number
+  newsArticlesCreated: number
+  newsArticlesUpdated: number
+  reportsCreated: number
+  reportsUpdated: number
+  publicationsCreated: number
+  publicationsUpdated: number
   financeTransactionsCreated: number
   financeTransactionsApproved: number
   financeTransactionsPaid: number
   financeAuditLogs: number
+  donorsCreated: number
+  donorApplicationsReviewed: number
+  bloodRequestsCreated: number
+  donationsRecorded: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   uploadedMedia?: boolean | UserCountOutputTypeCountUploadedMediaArgs
   createdContentItems?: boolean | UserCountOutputTypeCountCreatedContentItemsArgs
   updatedContentItems?: boolean | UserCountOutputTypeCountUpdatedContentItemsArgs
+  newsArticlesCreated?: boolean | UserCountOutputTypeCountNewsArticlesCreatedArgs
+  newsArticlesUpdated?: boolean | UserCountOutputTypeCountNewsArticlesUpdatedArgs
+  reportsCreated?: boolean | UserCountOutputTypeCountReportsCreatedArgs
+  reportsUpdated?: boolean | UserCountOutputTypeCountReportsUpdatedArgs
+  publicationsCreated?: boolean | UserCountOutputTypeCountPublicationsCreatedArgs
+  publicationsUpdated?: boolean | UserCountOutputTypeCountPublicationsUpdatedArgs
   financeTransactionsCreated?: boolean | UserCountOutputTypeCountFinanceTransactionsCreatedArgs
   financeTransactionsApproved?: boolean | UserCountOutputTypeCountFinanceTransactionsApprovedArgs
   financeTransactionsPaid?: boolean | UserCountOutputTypeCountFinanceTransactionsPaidArgs
   financeAuditLogs?: boolean | UserCountOutputTypeCountFinanceAuditLogsArgs
+  donorsCreated?: boolean | UserCountOutputTypeCountDonorsCreatedArgs
+  donorApplicationsReviewed?: boolean | UserCountOutputTypeCountDonorApplicationsReviewedArgs
+  bloodRequestsCreated?: boolean | UserCountOutputTypeCountBloodRequestsCreatedArgs
+  donationsRecorded?: boolean | UserCountOutputTypeCountDonationsRecordedArgs
 }
 
 /**
@@ -1247,6 +3057,48 @@ export type UserCountOutputTypeCountUpdatedContentItemsArgs<ExtArgs extends runt
 /**
  * UserCountOutputType without action
  */
+export type UserCountOutputTypeCountNewsArticlesCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NewsArticleWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountNewsArticlesUpdatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.NewsArticleWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReportsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReportWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountReportsUpdatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ReportWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPublicationsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PublicationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountPublicationsUpdatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PublicationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
 export type UserCountOutputTypeCountFinanceTransactionsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.FinanceTransactionWhereInput
 }
@@ -1272,6 +3124,34 @@ export type UserCountOutputTypeCountFinanceAuditLogsArgs<ExtArgs extends runtime
   where?: Prisma.FinanceAuditLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDonorsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DonorWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDonorApplicationsReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DonorApplicationWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountBloodRequestsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BloodRequestWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDonationsRecordedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DonationRecordWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1286,10 +3166,20 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   uploadedMedia?: boolean | Prisma.User$uploadedMediaArgs<ExtArgs>
   createdContentItems?: boolean | Prisma.User$createdContentItemsArgs<ExtArgs>
   updatedContentItems?: boolean | Prisma.User$updatedContentItemsArgs<ExtArgs>
+  newsArticlesCreated?: boolean | Prisma.User$newsArticlesCreatedArgs<ExtArgs>
+  newsArticlesUpdated?: boolean | Prisma.User$newsArticlesUpdatedArgs<ExtArgs>
+  reportsCreated?: boolean | Prisma.User$reportsCreatedArgs<ExtArgs>
+  reportsUpdated?: boolean | Prisma.User$reportsUpdatedArgs<ExtArgs>
+  publicationsCreated?: boolean | Prisma.User$publicationsCreatedArgs<ExtArgs>
+  publicationsUpdated?: boolean | Prisma.User$publicationsUpdatedArgs<ExtArgs>
   financeTransactionsCreated?: boolean | Prisma.User$financeTransactionsCreatedArgs<ExtArgs>
   financeTransactionsApproved?: boolean | Prisma.User$financeTransactionsApprovedArgs<ExtArgs>
   financeTransactionsPaid?: boolean | Prisma.User$financeTransactionsPaidArgs<ExtArgs>
   financeAuditLogs?: boolean | Prisma.User$financeAuditLogsArgs<ExtArgs>
+  donorsCreated?: boolean | Prisma.User$donorsCreatedArgs<ExtArgs>
+  donorApplicationsReviewed?: boolean | Prisma.User$donorApplicationsReviewedArgs<ExtArgs>
+  bloodRequestsCreated?: boolean | Prisma.User$bloodRequestsCreatedArgs<ExtArgs>
+  donationsRecorded?: boolean | Prisma.User$donationsRecordedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -1334,10 +3224,20 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   uploadedMedia?: boolean | Prisma.User$uploadedMediaArgs<ExtArgs>
   createdContentItems?: boolean | Prisma.User$createdContentItemsArgs<ExtArgs>
   updatedContentItems?: boolean | Prisma.User$updatedContentItemsArgs<ExtArgs>
+  newsArticlesCreated?: boolean | Prisma.User$newsArticlesCreatedArgs<ExtArgs>
+  newsArticlesUpdated?: boolean | Prisma.User$newsArticlesUpdatedArgs<ExtArgs>
+  reportsCreated?: boolean | Prisma.User$reportsCreatedArgs<ExtArgs>
+  reportsUpdated?: boolean | Prisma.User$reportsUpdatedArgs<ExtArgs>
+  publicationsCreated?: boolean | Prisma.User$publicationsCreatedArgs<ExtArgs>
+  publicationsUpdated?: boolean | Prisma.User$publicationsUpdatedArgs<ExtArgs>
   financeTransactionsCreated?: boolean | Prisma.User$financeTransactionsCreatedArgs<ExtArgs>
   financeTransactionsApproved?: boolean | Prisma.User$financeTransactionsApprovedArgs<ExtArgs>
   financeTransactionsPaid?: boolean | Prisma.User$financeTransactionsPaidArgs<ExtArgs>
   financeAuditLogs?: boolean | Prisma.User$financeAuditLogsArgs<ExtArgs>
+  donorsCreated?: boolean | Prisma.User$donorsCreatedArgs<ExtArgs>
+  donorApplicationsReviewed?: boolean | Prisma.User$donorApplicationsReviewedArgs<ExtArgs>
+  bloodRequestsCreated?: boolean | Prisma.User$bloodRequestsCreatedArgs<ExtArgs>
+  donationsRecorded?: boolean | Prisma.User$donationsRecordedArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1349,10 +3249,20 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     uploadedMedia: Prisma.$MediaPayload<ExtArgs>[]
     createdContentItems: Prisma.$ContentItemPayload<ExtArgs>[]
     updatedContentItems: Prisma.$ContentItemPayload<ExtArgs>[]
+    newsArticlesCreated: Prisma.$NewsArticlePayload<ExtArgs>[]
+    newsArticlesUpdated: Prisma.$NewsArticlePayload<ExtArgs>[]
+    reportsCreated: Prisma.$ReportPayload<ExtArgs>[]
+    reportsUpdated: Prisma.$ReportPayload<ExtArgs>[]
+    publicationsCreated: Prisma.$PublicationPayload<ExtArgs>[]
+    publicationsUpdated: Prisma.$PublicationPayload<ExtArgs>[]
     financeTransactionsCreated: Prisma.$FinanceTransactionPayload<ExtArgs>[]
     financeTransactionsApproved: Prisma.$FinanceTransactionPayload<ExtArgs>[]
     financeTransactionsPaid: Prisma.$FinanceTransactionPayload<ExtArgs>[]
     financeAuditLogs: Prisma.$FinanceAuditLogPayload<ExtArgs>[]
+    donorsCreated: Prisma.$DonorPayload<ExtArgs>[]
+    donorApplicationsReviewed: Prisma.$DonorApplicationPayload<ExtArgs>[]
+    bloodRequestsCreated: Prisma.$BloodRequestPayload<ExtArgs>[]
+    donationsRecorded: Prisma.$DonationRecordPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1761,10 +3671,20 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   uploadedMedia<T extends Prisma.User$uploadedMediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$uploadedMediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$MediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdContentItems<T extends Prisma.User$createdContentItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdContentItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContentItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   updatedContentItems<T extends Prisma.User$updatedContentItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$updatedContentItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContentItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  newsArticlesCreated<T extends Prisma.User$newsArticlesCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$newsArticlesCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NewsArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  newsArticlesUpdated<T extends Prisma.User$newsArticlesUpdatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$newsArticlesUpdatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NewsArticlePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reportsCreated<T extends Prisma.User$reportsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  reportsUpdated<T extends Prisma.User$reportsUpdatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$reportsUpdatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ReportPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  publicationsCreated<T extends Prisma.User$publicationsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$publicationsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  publicationsUpdated<T extends Prisma.User$publicationsUpdatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$publicationsUpdatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PublicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   financeTransactionsCreated<T extends Prisma.User$financeTransactionsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$financeTransactionsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FinanceTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   financeTransactionsApproved<T extends Prisma.User$financeTransactionsApprovedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$financeTransactionsApprovedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FinanceTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   financeTransactionsPaid<T extends Prisma.User$financeTransactionsPaidArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$financeTransactionsPaidArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FinanceTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   financeAuditLogs<T extends Prisma.User$financeAuditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$financeAuditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FinanceAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  donorsCreated<T extends Prisma.User$donorsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$donorsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DonorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  donorApplicationsReviewed<T extends Prisma.User$donorApplicationsReviewedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$donorApplicationsReviewedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DonorApplicationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  bloodRequestsCreated<T extends Prisma.User$bloodRequestsCreatedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$bloodRequestsCreatedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BloodRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  donationsRecorded<T extends Prisma.User$donationsRecordedArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$donationsRecordedArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DonationRecordPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2268,6 +4188,150 @@ export type User$updatedContentItemsArgs<ExtArgs extends runtime.Types.Extension
 }
 
 /**
+ * User.newsArticlesCreated
+ */
+export type User$newsArticlesCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NewsArticle
+   */
+  select?: Prisma.NewsArticleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NewsArticle
+   */
+  omit?: Prisma.NewsArticleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NewsArticleInclude<ExtArgs> | null
+  where?: Prisma.NewsArticleWhereInput
+  orderBy?: Prisma.NewsArticleOrderByWithRelationInput | Prisma.NewsArticleOrderByWithRelationInput[]
+  cursor?: Prisma.NewsArticleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NewsArticleScalarFieldEnum | Prisma.NewsArticleScalarFieldEnum[]
+}
+
+/**
+ * User.newsArticlesUpdated
+ */
+export type User$newsArticlesUpdatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the NewsArticle
+   */
+  select?: Prisma.NewsArticleSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the NewsArticle
+   */
+  omit?: Prisma.NewsArticleOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.NewsArticleInclude<ExtArgs> | null
+  where?: Prisma.NewsArticleWhereInput
+  orderBy?: Prisma.NewsArticleOrderByWithRelationInput | Prisma.NewsArticleOrderByWithRelationInput[]
+  cursor?: Prisma.NewsArticleWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.NewsArticleScalarFieldEnum | Prisma.NewsArticleScalarFieldEnum[]
+}
+
+/**
+ * User.reportsCreated
+ */
+export type User$reportsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Report
+   */
+  select?: Prisma.ReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Report
+   */
+  omit?: Prisma.ReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReportInclude<ExtArgs> | null
+  where?: Prisma.ReportWhereInput
+  orderBy?: Prisma.ReportOrderByWithRelationInput | Prisma.ReportOrderByWithRelationInput[]
+  cursor?: Prisma.ReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReportScalarFieldEnum | Prisma.ReportScalarFieldEnum[]
+}
+
+/**
+ * User.reportsUpdated
+ */
+export type User$reportsUpdatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Report
+   */
+  select?: Prisma.ReportSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Report
+   */
+  omit?: Prisma.ReportOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ReportInclude<ExtArgs> | null
+  where?: Prisma.ReportWhereInput
+  orderBy?: Prisma.ReportOrderByWithRelationInput | Prisma.ReportOrderByWithRelationInput[]
+  cursor?: Prisma.ReportWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ReportScalarFieldEnum | Prisma.ReportScalarFieldEnum[]
+}
+
+/**
+ * User.publicationsCreated
+ */
+export type User$publicationsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Publication
+   */
+  select?: Prisma.PublicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Publication
+   */
+  omit?: Prisma.PublicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PublicationInclude<ExtArgs> | null
+  where?: Prisma.PublicationWhereInput
+  orderBy?: Prisma.PublicationOrderByWithRelationInput | Prisma.PublicationOrderByWithRelationInput[]
+  cursor?: Prisma.PublicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PublicationScalarFieldEnum | Prisma.PublicationScalarFieldEnum[]
+}
+
+/**
+ * User.publicationsUpdated
+ */
+export type User$publicationsUpdatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Publication
+   */
+  select?: Prisma.PublicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Publication
+   */
+  omit?: Prisma.PublicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PublicationInclude<ExtArgs> | null
+  where?: Prisma.PublicationWhereInput
+  orderBy?: Prisma.PublicationOrderByWithRelationInput | Prisma.PublicationOrderByWithRelationInput[]
+  cursor?: Prisma.PublicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PublicationScalarFieldEnum | Prisma.PublicationScalarFieldEnum[]
+}
+
+/**
  * User.financeTransactionsCreated
  */
 export type User$financeTransactionsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2361,6 +4425,102 @@ export type User$financeAuditLogsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.FinanceAuditLogScalarFieldEnum | Prisma.FinanceAuditLogScalarFieldEnum[]
+}
+
+/**
+ * User.donorsCreated
+ */
+export type User$donorsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Donor
+   */
+  select?: Prisma.DonorSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Donor
+   */
+  omit?: Prisma.DonorOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DonorInclude<ExtArgs> | null
+  where?: Prisma.DonorWhereInput
+  orderBy?: Prisma.DonorOrderByWithRelationInput | Prisma.DonorOrderByWithRelationInput[]
+  cursor?: Prisma.DonorWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DonorScalarFieldEnum | Prisma.DonorScalarFieldEnum[]
+}
+
+/**
+ * User.donorApplicationsReviewed
+ */
+export type User$donorApplicationsReviewedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DonorApplication
+   */
+  select?: Prisma.DonorApplicationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DonorApplication
+   */
+  omit?: Prisma.DonorApplicationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DonorApplicationInclude<ExtArgs> | null
+  where?: Prisma.DonorApplicationWhereInput
+  orderBy?: Prisma.DonorApplicationOrderByWithRelationInput | Prisma.DonorApplicationOrderByWithRelationInput[]
+  cursor?: Prisma.DonorApplicationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DonorApplicationScalarFieldEnum | Prisma.DonorApplicationScalarFieldEnum[]
+}
+
+/**
+ * User.bloodRequestsCreated
+ */
+export type User$bloodRequestsCreatedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BloodRequest
+   */
+  select?: Prisma.BloodRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BloodRequest
+   */
+  omit?: Prisma.BloodRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BloodRequestInclude<ExtArgs> | null
+  where?: Prisma.BloodRequestWhereInput
+  orderBy?: Prisma.BloodRequestOrderByWithRelationInput | Prisma.BloodRequestOrderByWithRelationInput[]
+  cursor?: Prisma.BloodRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BloodRequestScalarFieldEnum | Prisma.BloodRequestScalarFieldEnum[]
+}
+
+/**
+ * User.donationsRecorded
+ */
+export type User$donationsRecordedArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DonationRecord
+   */
+  select?: Prisma.DonationRecordSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DonationRecord
+   */
+  omit?: Prisma.DonationRecordOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DonationRecordInclude<ExtArgs> | null
+  where?: Prisma.DonationRecordWhereInput
+  orderBy?: Prisma.DonationRecordOrderByWithRelationInput | Prisma.DonationRecordOrderByWithRelationInput[]
+  cursor?: Prisma.DonationRecordWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DonationRecordScalarFieldEnum | Prisma.DonationRecordScalarFieldEnum[]
 }
 
 /**

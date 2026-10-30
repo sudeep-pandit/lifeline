@@ -56,6 +56,9 @@ export const ModelName = {
   Media: 'Media',
   TeamMember: 'TeamMember',
   ContentItem: 'ContentItem',
+  NewsArticle: 'NewsArticle',
+  Report: 'Report',
+  Publication: 'Publication',
   GalleryAlbum: 'GalleryAlbum',
   GalleryPhoto: 'GalleryPhoto',
   Message: 'Message',
@@ -63,7 +66,11 @@ export const ModelName = {
   FinanceCategory: 'FinanceCategory',
   FinanceParty: 'FinanceParty',
   FinanceTransaction: 'FinanceTransaction',
-  FinanceAuditLog: 'FinanceAuditLog'
+  FinanceAuditLog: 'FinanceAuditLog',
+  DonorApplication: 'DonorApplication',
+  Donor: 'Donor',
+  BloodRequest: 'BloodRequest',
+  DonationRecord: 'DonationRecord'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -174,6 +181,85 @@ export const ContentItemScalarFieldEnum = {
 } as const
 
 export type ContentItemScalarFieldEnum = (typeof ContentItemScalarFieldEnum)[keyof typeof ContentItemScalarFieldEnum]
+
+
+export const NewsArticleScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  excerpt: 'excerpt',
+  content: 'content',
+  category: 'category',
+  status: 'status',
+  imageUrl: 'imageUrl',
+  imageAlt: 'imageAlt',
+  location: 'location',
+  isFeatured: 'isFeatured',
+  publishedAt: 'publishedAt',
+  seoTitle: 'seoTitle',
+  seoDescription: 'seoDescription',
+  createdById: 'createdById',
+  updatedById: 'updatedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type NewsArticleScalarFieldEnum = (typeof NewsArticleScalarFieldEnum)[keyof typeof NewsArticleScalarFieldEnum]
+
+
+export const ReportScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  description: 'description',
+  category: 'category',
+  status: 'status',
+  reportYear: 'reportYear',
+  publishedAt: 'publishedAt',
+  isFeatured: 'isFeatured',
+  sortOrder: 'sortOrder',
+  pdfUrl: 'pdfUrl',
+  pdfName: 'pdfName',
+  pdfSize: 'pdfSize',
+  mimeType: 'mimeType',
+  coverImageUrl: 'coverImageUrl',
+  createdById: 'createdById',
+  updatedById: 'updatedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ReportScalarFieldEnum = (typeof ReportScalarFieldEnum)[keyof typeof ReportScalarFieldEnum]
+
+
+export const PublicationScalarFieldEnum = {
+  id: 'id',
+  title: 'title',
+  slug: 'slug',
+  description: 'description',
+  category: 'category',
+  status: 'status',
+  publicationYear: 'publicationYear',
+  language: 'language',
+  publisher: 'publisher',
+  author: 'author',
+  edition: 'edition',
+  isbn: 'isbn',
+  pdfUrl: 'pdfUrl',
+  pdfName: 'pdfName',
+  pdfSize: 'pdfSize',
+  mimeType: 'mimeType',
+  coverImageUrl: 'coverImageUrl',
+  isFeatured: 'isFeatured',
+  sortOrder: 'sortOrder',
+  publishedAt: 'publishedAt',
+  createdById: 'createdById',
+  updatedById: 'updatedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PublicationScalarFieldEnum = (typeof PublicationScalarFieldEnum)[keyof typeof PublicationScalarFieldEnum]
 
 
 export const GalleryAlbumScalarFieldEnum = {
@@ -309,6 +395,103 @@ export const FinanceAuditLogScalarFieldEnum = {
 } as const
 
 export type FinanceAuditLogScalarFieldEnum = (typeof FinanceAuditLogScalarFieldEnum)[keyof typeof FinanceAuditLogScalarFieldEnum]
+
+
+export const DonorApplicationScalarFieldEnum = {
+  id: 'id',
+  applicationNumber: 'applicationNumber',
+  fullName: 'fullName',
+  phone: 'phone',
+  email: 'email',
+  dateOfBirth: 'dateOfBirth',
+  dateOfBirthBS: 'dateOfBirthBS',
+  bloodGroup: 'bloodGroup',
+  province: 'province',
+  district: 'district',
+  localLevel: 'localLevel',
+  wardName: 'wardName',
+  wardNumber: 'wardNumber',
+  address: 'address',
+  notes: 'notes',
+  consentGiven: 'consentGiven',
+  status: 'status',
+  reviewNote: 'reviewNote',
+  reviewedById: 'reviewedById',
+  reviewedAt: 'reviewedAt',
+  donorId: 'donorId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DonorApplicationScalarFieldEnum = (typeof DonorApplicationScalarFieldEnum)[keyof typeof DonorApplicationScalarFieldEnum]
+
+
+export const DonorScalarFieldEnum = {
+  id: 'id',
+  donorCode: 'donorCode',
+  fullName: 'fullName',
+  phone: 'phone',
+  email: 'email',
+  dateOfBirth: 'dateOfBirth',
+  dateOfBirthBS: 'dateOfBirthBS',
+  bloodGroup: 'bloodGroup',
+  province: 'province',
+  district: 'district',
+  localLevel: 'localLevel',
+  wardName: 'wardName',
+  wardNumber: 'wardNumber',
+  address: 'address',
+  status: 'status',
+  isVerified: 'isVerified',
+  consentGiven: 'consentGiven',
+  lastDonationAt: 'lastDonationAt',
+  notes: 'notes',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DonorScalarFieldEnum = (typeof DonorScalarFieldEnum)[keyof typeof DonorScalarFieldEnum]
+
+
+export const BloodRequestScalarFieldEnum = {
+  id: 'id',
+  requestNumber: 'requestNumber',
+  requesterName: 'requesterName',
+  requesterPhone: 'requesterPhone',
+  bloodGroup: 'bloodGroup',
+  unitsNeeded: 'unitsNeeded',
+  hospitalName: 'hospitalName',
+  district: 'district',
+  province: 'province',
+  locationDetails: 'locationDetails',
+  urgency: 'urgency',
+  status: 'status',
+  neededBy: 'neededBy',
+  notes: 'notes',
+  consentToContact: 'consentToContact',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type BloodRequestScalarFieldEnum = (typeof BloodRequestScalarFieldEnum)[keyof typeof BloodRequestScalarFieldEnum]
+
+
+export const DonationRecordScalarFieldEnum = {
+  id: 'id',
+  donorId: 'donorId',
+  bloodRequestId: 'bloodRequestId',
+  donationDate: 'donationDate',
+  donationCenter: 'donationCenter',
+  unitsDonated: 'unitsDonated',
+  notes: 'notes',
+  recordedById: 'recordedById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DonationRecordScalarFieldEnum = (typeof DonationRecordScalarFieldEnum)[keyof typeof DonationRecordScalarFieldEnum]
 
 
 export const SortOrder = {
